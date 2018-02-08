@@ -19,11 +19,15 @@ import { BootstrapNavbarComponent } from './modules/bootstrap-navbar/bootstrap-n
 // -End
 
 import { AppComponent } from './app.component';
+import { MyOwnJioHomeComponent } from './my-own-jio-home/my-own-jio-home.component';
+import { MyOwnJioTibcoComponent } from './my-own-jio-tibco/my-own-jio-tibco.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MyOwnJioHomeComponent,
+    MyOwnJioTibcoComponent
   ],
   imports: [
     BrowserModule,
