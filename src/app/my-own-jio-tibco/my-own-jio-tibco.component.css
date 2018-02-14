@@ -1,4 +1,10 @@
 .demo{ background: #ffded7; }
+.tab {
+  transform: rotate(270deg);
+  /* Apply flex */
+  /* display:flex; */
+  /* flex-direction: column; */
+}
 a:hover,a:focus{
     outline: none;
     text-decoration: none;
@@ -6,6 +12,8 @@ a:hover,a:focus{
 .tab .nav-tabs{
     padding-left: 15px;
     border-bottom: 4px solid #692f6c;
+    display: flex;
+    flex-direction: row-reverse;
 }
 .tab .nav-tabs li a{
     color: #fff;
@@ -75,6 +83,11 @@ a:hover,a:focus{
     font-size: 16px;
     color: #6c6c6c;
     line-height: 25px;
+    /* align-content: center; */
+    /* align-items:  */
+    /* transform: rotate(90deg);
+    margin-right: 165px; */
+    display: flex;
 }
 .tab .tab-content h3{
     font-size: 24px;

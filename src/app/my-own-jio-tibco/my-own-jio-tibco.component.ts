@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MyOwnJioTibcoopsdataComponent} from '../my-own-jio-tibcoopsdata/my-own-jio-tibcoopsdata.component'
 
 @Component({
   selector: 'app-my-own-jio-tibco',
