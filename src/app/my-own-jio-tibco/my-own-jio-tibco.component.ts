@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MyOwnJioTibcoopsdataComponent} from '../my-own-jio-tibcoopsdata/my-own-jio-tibcoopsdata.component'
+import {MyOwnJioTibcoopsdataComponent} from '../my-own-jio-tibcoopsdata/my-own-jio-tibcoopsdata.component';
 
 @Component({
   selector: 'app-my-own-jio-tibco',
@@ -7,8 +7,10 @@ import {MyOwnJioTibcoopsdataComponent} from '../my-own-jio-tibcoopsdata/my-own-j
   styleUrls: ['./my-own-jio-tibco.component.css']
 })
 export class MyOwnJioTibcoComponent implements OnInit {
+  meaning: number;
+  constructor( ) {
 
-  constructor() { }
+  }
 
   ngOnInit() {
   }

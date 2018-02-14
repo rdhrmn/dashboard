@@ -1,4 +1,13 @@
-.demo{ background: #ffded7; }
+
+.MyOwnJioHeader {
+   background: #764ee2;
+   font-size: 20px;
+   font-style: oblique;
+   color: aliceblue
+
+}
+
+.MyOwnJioDetails{ background: #ffded7; }
 .tab {
   transform: rotate(270deg);
   /* Apply flex */
@@ -12,8 +21,8 @@ a:hover,a:focus{
 .tab .nav-tabs{
     padding-left: 15px;
     border-bottom: 4px solid #692f6c;
-    display: flex;
-    flex-direction: row-reverse;
+    /* display: flex;
+    flex-direction: row-reverse; */
 }
 .tab .nav-tabs li a{
     color: #fff;

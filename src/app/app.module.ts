@@ -11,7 +11,8 @@ import { NgModule } from '@angular/core';
 // -End
 
 // #my 3rd Party Modules
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 
 import { AppComponent } from './app.component';
@@ -35,7 +36,8 @@ import { MyOwnJioTibcoopsdataComponent } from './my-own-jio-tibcoopsdata/my-own-
     // FormsModule,
     // HttpModule,
     // RouterModule.forRoot([]),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+   //  AngularFontAwesomeModule
     // - End
 
   ],
