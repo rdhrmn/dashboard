@@ -1,29 +1,100 @@
-
+/*
 .MyOwnJioHeader {
    background: #764ee2;
    font-size: 20px;
    font-style: oblique;
    color: aliceblue
 
+} */
+
+/* .tab-content .tab-pane app-my-own-jio-tibcoopsdata {
+  border: inset;
+  border: solid salmon;
+  background: yellow;
+  box-sizing: border-box;
+  transform: rotate(90deg);
+
+} */
+
+/* .tab-content .tab-pane cite {
+  border: inset;
+  border: solid salmon;
+  background: yellow;
+  box-sizing: border-box;
+  transform: rotate(90deg);
+
+} */
+
+
+.MyOwnJioDetails{ background: #ffded7;
+/* width: fit-content;
+height: fit-content; */
+/* display: flex;
+justify-content: flex-start; */
+ /* transform: rotate(270deg); */
 }
 
-.MyOwnJioDetails{ background: #ffded7; }
-.tab {
-  transform: rotate(270deg);
-  /* Apply flex */
-  /* display:flex; */
-  /* flex-direction: column; */
+.tab-content .tab-pane .jumbotron {
+  /* border: inset; */
+  position: fixed;
+  border: solid salmon;
+  background: yellow;
+  box-sizing: border-box;
+  transform: rotate(90deg);
+
 }
+
+.tab-content .tab-pane{
+  border: 1px ridge #d3d3d3;
+  padding: 20px;
+  background:#fff;
+  line-height: 22px;
+  position: fixed;
+  /* left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%; */
+  /* box-sizing: border-box ; */
+}
+.tab-content .tab-pane h3{
+  margin-top: 0;
+}
+.tab {
+  /* transform: rotate(270deg); */
+  position: fixed;
+  left: 0px;
+  top: 10px;
+  box-sizing: border-box;
+  /* top: 20px; */
+  /* float: top; */
+  /* left: -60px; does not work */
+  /* Apply flex */
+
+  /* flex-direction: column; */
+
+  /* display:flex;
+  flex-wrap: wrap; */
+  /* nowrap with dispaly flex .. changes the view */
+  /* flex-direction: row-reverse; Not a place for this*/
+}
+
+
 a:hover,a:focus{
     outline: none;
     text-decoration: none;
 }
 .tab .nav-tabs{
-    padding-left: 15px;
+    /* padding-left: 15px; */ /*No impact with lower padding values*/
+    /* padding-left: 15px; */
     border-bottom: 4px solid #692f6c;
-    /* display: flex;
-    flex-direction: row-reverse; */
+    /* display: flex; this has no impact */
+    flex-direction: row-reverse;
 }
+/*
+.nav-tabs{
+
+} */
+
 .tab .nav-tabs li a{
     color: #fff;
     padding: 10px 20px;
@@ -86,23 +157,68 @@ a:hover,a:focus{
     opacity: 1;
     transition: all 0.3s ease 0s;
 }
-.tab .tab-content{
-    padding: 30px;
-    background: #fff;
+
+/*defines the text pane as whole but affect horizontal after rotation*/
+/* .tab .tab-pane{
+  background: red;
+  height:400px;
+  overflow-y:scroll;
+  width:10%;
+} */
+
+/*background does not work, defines horizontal after rotation*/
+/* .tab .tabs{
+  background:yellow;
+  height:400px;
+  overflow-y:scroll;
+  width:50%;
+} */
+
+/* .tab .tab-content{ */
+    /* padding: 30px; work below this is original*/
+    /* padding: 30px; */
+
+
+    /* width: 100px; */
+    /* width: 145px; */
+    /* width: 150px; */
+    /* width: 200px; */
+                                      /* width working 200 is best*/
+    /* Some useless try below */
+    /* border: 25px springgreen; */
+    /* border-bottom-color: sienna; */
+    /* border-top-color: turquoise; */
+    /* border-top-width: thick; */
+
+    /* box-sizing: unset; */
+    /* left: float; */
+    /* height:100px; */
+                                        /* height: working; */
+    /* box-sizing: border-box; */
+
+
+    /* background: #fff;
     font-size: 16px;
-    color: #6c6c6c;
-    line-height: 25px;
+    color: #6c6c6c; */
+
+
+    /* line-height: 25px; */
     /* align-content: center; */
     /* align-items:  */
-    /* transform: rotate(90deg);
-    margin-right: 165px; */
-    display: flex;
-}
-.tab .tab-content h3{
+    /* transform: rotate(90deg);   should not do */
+    /* margin-right: auto;
+    margin-left: 20px; */
+    /* display: flex; */
+    /* flex-basis: 2000rem;  No impact it effect childs only*/
+    /* flex-wrap: unset; */
+/* } */
+
+
+/* .tab .tab-content h3{
     font-size: 24px;
     margin-top: 0;
-}
-@media only screen and (max-width: 479px){
+} */
+/* @media only screen and (max-width: 479px){
     .tab .nav-tabs li{
         width: 100%;
         margin-bottom: 5px;
@@ -112,4 +228,4 @@ a:hover,a:focus{
         letter-spacing: 1px;
         opacity: 1;
     }
-}
+} */
