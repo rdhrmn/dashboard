@@ -1,0 +1,84 @@
+.MyOwnJioDetails{
+  /* background: #a69ddd; */
+  /* position: relative; */
+  /* padding: 10px 10px; */
+  /* outline: red; */
+  /* float: right; */
+  /* width: 100pc; */
+  /* bottom: 0px; */
+  /* float:bottom; */
+  /* padding: 500px; */
+
+}
+.btn{
+  color: #243256;
+  text-transform: uppercase;
+  border-radius: 0;
+  border-left: 20px solid #243256;
+  border-right: 20px solid #243256;
+  border-top: none;
+  border-bottom: none;
+  z-index: 1;
+  position: relative;
+  transition: all 0.3s ease 0s;
+  /* width: 25pc; */
+  }
+  .btn:before,
+  .btn:after{
+  content: "";
+  width: 0;
+  height: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: all 0.3s ease 0s;
+  }
+  .btn:after{
+  top: auto;
+  left: auto;
+  bottom: 0;
+  right: 0;
+  }
+  .btn:hover:before,
+  .btn:hover:after{
+  width: 100%;
+  }
+  .btn.red:hover{
+  color: #fe6d6d;
+  border-left: 3px solid #fe6d6d;
+  border-right: 3px solid #fe6d6d;
+  }
+  .btn.red:before,
+  .btn.red:after{
+  background: #fe6d6d;
+  }
+  .btn.blue:hover{
+  color: #3bb4e5;
+  border-left: 3px solid #3bb4e5;
+  border-right: 3px solid #3bb4e5;
+  }
+  .btn.blue:before,
+  .btn.blue:after{
+  background: #3bb4e5;
+  }
+  .btn.orange:hover{
+  color: #ee955b;
+  border-left: 3px solid #ee955b;
+  border-right: 3px solid #ee955b;
+  }
+  .btn.orange:before,
+  .btn.orange:after{
+  background: #ee955b;
+  }
+  .btn.green:hover{
+  color: #79d799;
+  border-left: 3px solid #79d799;
+  border-right: 3px solid #79d799;
+  }
+  .btn.green:before,
+  .btn.green:after{
+  background: #79d799;
+  }
+  @media only screen and (max-width: 767px){
+  .btn{ margin-bottom: 20px; }
+  }

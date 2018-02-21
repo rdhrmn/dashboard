@@ -26,56 +26,42 @@
 } */
 
 
-.MyOwnJioDetails{ background: #ffded7;
+/* .MyOwnJioDetails{ background: #ffded7; */
 /* width: fit-content;
 height: fit-content; */
 /* display: flex;
 justify-content: flex-start; */
  /* transform: rotate(270deg); */
-}
+/* } */
 
+/*
 .tab-content .tab-pane .jumbotron {
-  /* border: inset; */
-  position: fixed;
+    position: fixed;
   border: solid salmon;
   background: yellow;
   box-sizing: border-box;
   transform: rotate(90deg);
 
 }
-
+ */
+/*
 .tab-content .tab-pane{
   border: 1px ridge #d3d3d3;
   padding: 20px;
   background:#fff;
   line-height: 22px;
   position: fixed;
-  /* left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%; */
-  /* box-sizing: border-box ; */
-}
+  }
+   */
+/*
 .tab-content .tab-pane h3{
   margin-top: 0;
-}
+} */
 .tab {
   /* transform: rotate(270deg); */
+  /* box-sizing: border-box; */
   position: fixed;
-  left: 0px;
-  top: 10px;
-  box-sizing: border-box;
-  /* top: 20px; */
-  /* float: top; */
-  /* left: -60px; does not work */
-  /* Apply flex */
-
-  /* flex-direction: column; */
-
-  /* display:flex;
-  flex-wrap: wrap; */
-  /* nowrap with dispaly flex .. changes the view */
-  /* flex-direction: row-reverse; Not a place for this*/
+  left: 10px;
 }
 
 
@@ -85,9 +71,11 @@ a:hover,a:focus{
 }
 .tab .nav-tabs{
     /* padding-left: 15px; */ /*No impact with lower padding values*/
-    /* padding-left: 15px; */
+    padding-left: 15px;
     border-bottom: 4px solid #692f6c;
+
     /* display: flex; this has no impact */
+    /* float: right; */
     flex-direction: row-reverse;
 }
 /*
@@ -174,9 +162,13 @@ a:hover,a:focus{
   width:50%;
 } */
 
-/* .tab .tab-content{ */
+.tab .tab-content{
     /* padding: 30px; work below this is original*/
-    /* padding: 30px; */
+    padding: 30px;
+    background: #fff;
+    font-size: 16px;
+    color: #6c6c6c;
+/* line-height: 25px; */
 
 
     /* width: 100px; */
@@ -196,13 +188,6 @@ a:hover,a:focus{
                                         /* height: working; */
     /* box-sizing: border-box; */
 
-
-    /* background: #fff;
-    font-size: 16px;
-    color: #6c6c6c; */
-
-
-    /* line-height: 25px; */
     /* align-content: center; */
     /* align-items:  */
     /* transform: rotate(90deg);   should not do */
@@ -211,14 +196,16 @@ a:hover,a:focus{
     /* display: flex; */
     /* flex-basis: 2000rem;  No impact it effect childs only*/
     /* flex-wrap: unset; */
-/* } */
+}
 
 
-/* .tab .tab-content h3{
+.tab .tab-content h3{
     font-size: 24px;
     margin-top: 0;
-} */
-/* @media only screen and (max-width: 479px){
+}
+
+app-my-own-jio-footer {position:absolute; bottom: 0;}
+@media only screen and (max-width: 479px){
     .tab .nav-tabs li{
         width: 100%;
         margin-bottom: 5px;
@@ -228,4 +215,4 @@ a:hover,a:focus{
         letter-spacing: 1px;
         opacity: 1;
     }
-} */
+}

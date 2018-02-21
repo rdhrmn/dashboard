@@ -1,7 +1,23 @@
-.demo{ background: #ffded7; }
+.MyOwnJioDetails{
+  background: #ffded7;
+  /* position: fixed; */
+  padding: 10px 10px;
+  /* outline: red; */
+  /* float: right; */
+  /* width: 100pc; */
+  /* bottom: 10px; */
+  /* float:bottom; */
+}
 a:hover,a:focus{
     outline: none;
     text-decoration: none;
+}
+.tab{
+  /* position: fixed; */
+  /* padding: 10px 10px; */
+  /* box-sizing: border-box; */
+  /* width: 80pc; */
+
 }
 .tab .nav-tabs{
     padding-left: 15px;
@@ -70,12 +86,36 @@ a:hover,a:focus{
     transition: all 0.3s ease 0s;
 }
 .tab .tab-content{
-    padding: 30px;
-    background: #fff;
-    font-size: 16px;
-    color: #6c6c6c;
-    line-height: 25px;
+  /* border: 1px ridge #d3d3d3; */
+  padding: 20px;
+  background:#fff;
+  line-height: 22px;
+  /* word-wrap: normal; */
+  /* float: right; */
+  /* height: 100px; */
+  position: relative;
+  /* float: right; */
+  left: 5px;
+  top: 5px;
+  width: 98vw;
+  height: 80%;
+  /* box-sizing: border-box; */
 }
+/* .tab-content .tab-pane{
+  border: 1px ridge #d3d3d3;
+  padding: 20px;
+  background:#fff;
+  line-height: 22px;
+  /* word-wrap: normal; */
+  /* float: right; */
+  /* height: 100px; */
+  /* position: fixed;
+  left: 10px;
+  top: 95px;
+  width: 98%;
+  height: 80%;
+  box-sizing: border-box;
+} */
 .tab .tab-content h3{
     font-size: 24px;
     margin-top: 0;

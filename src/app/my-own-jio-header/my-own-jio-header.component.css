@@ -1,0 +1,20 @@
+.MyOwnJioHeader {
+  background: #764ee2;
+  font-size: 20px;
+  font-style: oblique;
+  color: aliceblue;
+  /* padding-left: 1px; */
+}
+
+.MyOwnJioHeader label {
+    /* justify-content:         flex-end; */
+    padding-left: 400px;
+
+}
+
+.MyOwnJioHeader button {
+  padding-left: 1px;
+  position: fixed;
+  /* font-size: 5px; */
+
+}
