@@ -12,21 +12,87 @@
         <!-- Tab panes -->
         <div class="tab-content tabs">
           <div class="tab-pane fade in active" id="REPLICA" role="tabpanel">
-            <h3>Section-1</h3>
-            <p>1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec urna aliquam, ornare eros vel, malesuada lorem. Nullam faucibus lorem at eros consectetur lobortis. Maecenas nec nibh congue, placerat sem id, rutrum velit. Phasellus porta enim at facilisis condimentum. Maecenas pharetra dolor vel elit tempor pellentesque sed sed eros. Aenean vitae mauris tincidunt, imperdiet orci semper, rhoncus ligula. Vivamus scelerisque.  </p>
+            <div class="myOwnJioFilterData">
+                <div class="section group">
+                  <div class="col span_1_of_2" id="SelectService">
+                    <div class="input-group">
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          ENV
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#">O2A</a>
+                          <a class="dropdown-item" href="#">N2A</a>
+                          <a class="dropdown-item" href="#">CCN</a>
+                          <div role="separator" class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#">REPLICA</a>
+                        </div>
+                      </div>
+                      <span class="input-group-addon" id="ServiceList">SelectService</span>
+                      <select class="form-control" id="chooseServices">
+                          <option>CCI-OP-Default</option>
+                          <option>CCI-OP-Digital</option>
+                          <option>SCI-OP-Default</option>
+                          <option>4</option>
+                      </select>
+                        <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button"> -->
+                    </div>
+
+                  </div>
+                  <div class="col span_1_of_2" id="MessagesOfSelectedService">
+                      <p><em>dynamic list of stored msg for the service</em></p>
+                    <ol type="1">
+                      <li><button type="submit" id="storedMsgBtn">stored msg name 1</button> <button type="button" id="removeMsgBtn" data-toggle="tooltip" data-placement="top" title="remove the message" >X</button> </li>
+                      <li><button type="submit" id="storedMsgBtn">stored msg name 2</button> <button type="button" id="removeMsgBtn" data-toggle="tooltip" data-placement="top" title="remove the message" >X</button> </li>
+                      <li><button type="submit" id="storedMsgBtn">stored msg name 3</button> <button type="button" id="removeMsgBtn" data-toggle="tooltip" data-placement="top" title="remove the message" >X</button> </li>
+                      <li><button type="submit" id="storedMsgBtn">stored msg name 4</button> <button type="button" id="removeMsgBtn" data-toggle="tooltip" data-placement="top" title="remove the message" >X</button> </li>
+                    </ol>
+                  </div>
+                </div>
+                <div class="section group">
+                  <div class="col span_1_of_2" id="DescriptionOfSelectedService">
+                      <p><em><b>Describe the selected service in word</b></em></p>
+                  </div>
+              </div>
+            </div>
+            <div class="myOwnJioDetailData">
+              <div class="section group">
+                <div class="col span_1_of_2" >
+                  <label id="myOwnJioSubHeader">Request Parameters</label>
+                    <p><em><b>By default it will display request parameter of selected message in a dynamic grid where name and value can be added or removed or modified. The modified vaule can be saved in same message or new message.
+                  Then SUBMIT the button to test.
+                  Display the new response in sideby column.</b></em></p>
+                </div>
+                <div class="col span_1_of_2">
+                  <label id="myOwnJioSubHeader">Response Parameters</label>
+                  <p><em>By default show the last response of the message selected.
+                  On submit in left column, it display current result</em></p>
+                </div>
+              </div>
+              <div class="section group">
+                <div class="col span_1_of_2">
+                  <label id="myOwnJioSubHeader">Diff against last test</label>
+                  <p><em>This column will always show the diff against last run that is stored in database.</em></p>
+                </div>
+                <div class="col span_1_of_2">
+                    <label id="myOwnJioSubHeader"> Service Running parameters</label>
+                    <p><em>This column will detail all running parameters, instances server name etc.</em></p>
+                </div>
+            </div>
           </div>
-          <div class="tab-pane fade" id="PROAD_O2A" role="tabpanel">
-            <h3>Section-2</h3>
-            <p>2 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec urna aliquam, ornare eros vel, malesuada lorem. Nullam faucibus lorem at eros consectetur lobortis. Maecenas nec nibh congue, placerat sem id, rutrum velit. Phasellus porta enim at facilisis condimentum. Maecenas pharetra dolor vel elit tempor pellentesque sed sed eros. Aenean vitae mauris tincidunt, imperdiet orci semper, rhoncus ligula. Vivamus scelerisque. </p>
           </div>
-          <div class="tab-pane fade" id="PROAD_N2A" role="tabpanel">
-            <h3>Section-3</h3>
-            <p>3 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec urna aliquam, ornare eros vel, malesuada lorem. Nullam faucibus lorem at eros consectetur lobortis. Maecenas nec nibh congue, placerat sem id, rutrum velit. Phasellus porta enim at facilisis condimentum. Maecenas pharetra dolor vel elit tempor pellentesque sed sed eros. Aenean vitae mauris tincidunt, imperdiet orci semper, rhoncus ligula. Vivamus scelerisque. </p>
-          </div>
-          <div class="tab-pane fade" id="OverAllStats" role="tabpanel">
-            <h3>Section-4</h3>
-            <p>4 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras nec urna aliquam, ornare eros vel, malesuada lorem. Nullam faucibus lorem at eros consectetur lobortis. Maecenas nec nibh congue, placerat sem id, rutrum velit. Phasellus porta enim at facilisis condimentum. Maecenas pharetra dolor vel elit tempor pellentesque sed sed eros. Aenean vitae mauris tincidunt, imperdiet orci semper, rhoncus ligula. Vivamus scelerisque. </p>
-          </div>
+        <div class="tab-pane fade" id="PROAD_O2A" role="tabpanel">
+          <h3>Section-2</h3>
+          <p>Blank </p>
+        </div>
+        <div class="tab-pane fade" id="PROAD_N2A" role="tabpanel">
+          <h3>Section-3</h3>
+          <p>Blank. </p>
+        </div>
+        <div class="tab-pane fade" id="OverAllStats" role="tabpanel">
+          <h3>Section-4</h3>
+          <p>Blank. </p>
+        </div>
         </div>
       </div>
     </div>

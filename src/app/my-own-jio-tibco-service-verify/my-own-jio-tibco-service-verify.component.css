@@ -40,7 +40,112 @@ border-color: #e4e4e4 #e4e4e4 transparent;
   color:#5a5c5d;
   padding: 20px;
   }
+
   /* .tab .nav-tabs .nav-pane{box-sizing: border-box; height: 80%;} */
+
+
+  /*  */
+/*  SECTIONS  */
+.section {
+	clear: both;
+	padding: 0px;
+	margin: 0px;
+}
+
+/*  COLUMN SETUP  */
+.myOwnJioFilterData {
+  border:3px ridge #f2f7f7;
+}
+
+#SelectService{
+	display: block;
+	float:left;
+  margin: 2% 0 0.1% 0.2%;
+  /* background: #fa9ed1; */
+  box-sizing: border-box;
+  height: 60px;
+}
+#removeMsgBtn {
+
+}
+#storedMsgBtn{
+  width: 20pc;
+}
+#MessagesOfSelectedService {
+	display: block;
+	float:left;
+  margin: 1% 0 0.1% 0.0%;
+  background: #dafa9e;
+  box-sizing: border-box;
+  height: 120px;
+  overflow: auto;
+}
+
+#DescriptionOfSelectedService{
+	display: block;
+	float:left;
+  margin: -6% 0 0.1% 0.0%;
+  background: #dafa9e;
+  box-sizing: border-box;
+  height: 60px;
+}
+/* .myOwnJioFilterData .col {
+	display: block;
+	float:left;
+  margin: 1% 0 0.1% 0.2%;
+  background: #bafaea;
+  box-sizing: border-box;
+  height: 120px;
+} */
+#myOwnJioSubHeader{
+  width: 100vw;
+  background: #faec9e ;
+  color: gray;
+  display: table-cell;
+  text-align: center;
+}
+/* .col level {float: right;background: red; color: gray} */
+.myOwnJioDetailData .col {
+	display: block;
+	float:left;
+  margin: 1% 0 0.1% 0.2%;
+  background: #bafaea;
+  box-sizing: border-box;
+  height: 120px;
+  overflow: auto;
+}
+.myOwnJioDetailData{
+  border:3px ridge #f2f7f7;
+  /* margin-top: 2px; */
+  background: #f7e6e4;
+}
+.col:first-child { margin-left: 0; }
+
+/*  GROUPING  */
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+.group { zoom:1; /* For IE 6/7 */ }
+/*  GRID OF TWO  */
+.span_2_of_2 {
+	width: 100%;
+}
+.span_1_of_2 {
+	width: 49.2%;
+}
+
+/*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+
+@media only screen and (max-width: 480px) {
+	.col {
+		margin: 1% 0 1% 0%;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.span_2_of_2, .span_1_of_2 { width: 100%; }
+}
+  /*  */
   @media only screen and (max-width: 480px){
   .tab .nav-tabs > li{ width:100%; }
   }

@@ -31,6 +31,7 @@ import { MyOwnJioFooterComponent } from './my-own-jio-footer/my-own-jio-footer.c
 const appRoutes: Routes = [
   { path: 'home', component: MyOwnJioHomeComponent },
   { path: 'tibco', component: MyOwnJioTibcoComponent },
+  { path: 'footer', component: MyOwnJioFooterComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];

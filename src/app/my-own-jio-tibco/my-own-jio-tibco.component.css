@@ -204,7 +204,7 @@ a:hover,a:focus{
     margin-top: 0;
 }
 
-app-my-own-jio-footer {position:absolute; bottom: 0;}
+app-my-own-jio-footer {position:fixed; bottom: 0;}
 @media only screen and (max-width: 479px){
     .tab .nav-tabs li{
         width: 100%;
