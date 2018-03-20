@@ -16,6 +16,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { RouterModule, Routes } from '@angular/router';
 
+// toastr
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 
 import { AppComponent } from './app.component';
 import { MyOwnJioHomeComponent } from './my-own-jio-home/my-own-jio-home.component';
@@ -60,7 +65,10 @@ const appRoutes: Routes = [
     NgbModule.forRoot(),
    //  AngularFontAwesomeModule
     // - End
-
+    // toastr
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule added
   ],
   providers: [],
   bootstrap: [AppComponent]
