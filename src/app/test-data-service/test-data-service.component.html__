@@ -1,0 +1,42 @@
+<p>
+  test-data-service works!
+</p>
+<div>
+  <h3>
+    Fluid Row Heights
+  </h3>
+  <div  style='float:left;width:75%'>
+    <div>
+    <!-- <div class="info">
+      <p></p>
+    </div> -->
+    <ngx-datatable
+      class="material"
+      [rows]="rows"
+      [limit]="5"
+      [columns]="columns"
+      [columnMode]="'force'"
+      [loadingIndicator]="loadingIndicator"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
+      [reorderable]="reorderable"
+
+      >
+    </ngx-datatable>
+  </div>
+
+  <!-- <div class='selected-column'>
+    <h4>Selections</h4>
+    <ul>
+      <li *ngFor='let sel of selected'>
+        {{sel.name}}
+      </li>
+      <li *ngIf="!selected.length">No Selections</li>
+    </ul>
+  </div> -->
+
+
+</div>
+
+

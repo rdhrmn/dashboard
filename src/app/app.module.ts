@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 // -Begin
 
 
@@ -21,6 +21,9 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+// ngx-datatable
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
 
 import { AppComponent } from './app.component';
 import { MyOwnJioHomeComponent } from './my-own-jio-home/my-own-jio-home.component';
@@ -32,6 +35,7 @@ import { MyOwnJioTibcoTasksComponent } from './my-own-jio-tibco-tasks/my-own-jio
 import { MyOwnJioHeaderComponent } from './my-own-jio-header/my-own-jio-header.component';
 import { MyOwnJioHighlightsComponent } from './my-own-jio-highlights/my-own-jio-highlights.component';
 import { MyOwnJioFooterComponent } from './my-own-jio-footer/my-own-jio-footer.component';
+import { TestDataServiceComponent } from './test-data-service/test-data-service.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: MyOwnJioHomeComponent },
@@ -53,12 +57,13 @@ const appRoutes: Routes = [
     MyOwnJioTibcoTasksComponent,
     MyOwnJioHeaderComponent,
     MyOwnJioHighlightsComponent,
-    MyOwnJioFooterComponent
+    MyOwnJioFooterComponent,
+    TestDataServiceComponent
   ],
   imports: [
     BrowserModule,
     // - Begin
-    // FormsModule,
+    FormsModule,
     // HttpModule,
     // RouterModule.forRoot([]),
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
@@ -69,6 +74,7 @@ const appRoutes: Routes = [
     CommonModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
+    NgxDatatableModule // Datatable
   ],
   providers: [],
   bootstrap: [AppComponent]
