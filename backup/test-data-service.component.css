@@ -238,22 +238,6 @@ select {
   background: pink;
 }
 
-.resptime-is-ten {
-  background: #ffc91f;
-}
-
-.resptime-less-hundred {
-  background: deepskyblue;
-}
-.is-testdata {
-  background: blue;
-  color: white;
-}
-
-.is-test {
-  background: pink;
-}
-
 .dark {
   background: #181B24;
 }

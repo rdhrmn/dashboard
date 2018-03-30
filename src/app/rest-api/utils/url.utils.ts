@@ -1,9 +1,13 @@
 import {Injectable, Inject} from '@angular/core';
+import {DataPathUtils} from './dataPath.utils'; // added while chnaging the constructor
 
 @Injectable()
 export class UrlUtils {
+  private dataPathUtils: DataPathUtils; // taken out from constructor
 
-    constructor(@Inject('DataPathUtils') private dataPathUtils) {
+    constructor(
+      // @Inject('DataPathUtils') private dataPathUtils
+    ) {
     }
 
     public urlIsClearOfParams(url) {

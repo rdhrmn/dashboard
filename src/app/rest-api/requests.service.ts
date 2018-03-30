@@ -4,11 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import {MyGlobal} from '../myglobals';
 
 @Injectable()
 export class RequestsService {
-
-  constructor(public http: Http) {}
+  reqBody: any;
+  constructor(public http: Http, public varGlobal: MyGlobal) {}
 
   public get(url, headers = null, queryParams = null) {
     return this.http.get(this.buildUrl(url, queryParams), { headers: this.buildHeaders(headers) })
@@ -51,7 +52,11 @@ export class RequestsService {
   private extractData(res: Response) {
     try {
       const  body = res.json();
+      // this.reqBody = res.json();
+      // this.varGlobal.reqBody = res.json();
       return body || { };
+      // return this.reqBody || { };
+      // return this.varGlobal.reqBody || { };
     } catch (e) {
       return res;
     }

@@ -3,29 +3,74 @@ import { ToastrService } from 'ngx-toastr';
 import {RequestsService} from './requests.service';
 import {DataPathUtils} from './utils/dataPath.utils';
 import {UrlUtils} from './utils/url.utils';
+import { MyGlobal } from '../myglobals';
+import clone from 'just-clone';
+import { Http, Response, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/observable/of';
 
 @Injectable()
 export class DataService {
 
 public  queryParams: any = [];
 public  data: Array<Object> = [];
+public  requestedData: any;
+public  response: any;
 public  rowData: Array<Object> = []; // rowdata and data can be same ...
   // url = null;
-  constructor(private requestsService: RequestsService,
+  // private dataPathUtils: DataPathUtils; //  removed injectable
+
+  constructor(
+              private requestsService: RequestsService,
               private dataPathUtils: DataPathUtils,
               private urlUtils: UrlUtils,
-              private toastrService: ToastrService
+              private toastrService: ToastrService,
+              public  varGlobals: MyGlobal,
+              public http: Http
             ) { }
+  public getData() {console.log('Test message: ', this.response); return this.response ; }
+  // public getData(): any[] {console.log('Test message: ', this.response); return Observable.of(this.response) ; }
 
-  public getRequest(url, queryParams = null, requestHeaders = null, dataPath = null) {
-    this.requestsService.get(url, requestHeaders,
+  public getRequest(url, response, queryParams = null, requestHeaders = null, dataPath = null) {
+
+    // this.http.get(url)
+    //   .map((res: Response) => res.json()).subscribe
+    //   (dat => { this.response = JSON.stringify(dat); this.varGlobals.reqBody = this.response; return this.response; },
+
+    this.http.get(url)
+      .map((res: Response) => res.json()).subscribe
+      (dat => {  this.response = JSON.stringify(dat); this.varGlobals.reqBody = this.response;
+        response = this.response; return this.response; },
+       error => {this.toastrService.error(error, 'Error'); } );
+       console.log('this.response', this.response);
+       console.log('from getRequest- response:', response);
+
+
+  /*   this.requestsService.get(url, requestHeaders,
        queryParams || this.queryParams).subscribe(data => {
-            this.data = this.dataPathUtils.extractDataFromResponse(data, dataPath);
-            console.log('Got data after dataPath: ', this.data);
+                  // this.data = this.dataPathUtils.extractDataFromResponse(data, dataPath);
+                  // this.requestedData = JSON.parse(this.dataPathUtils.extractDataFromResponse(data, dataPath));
+                  // this.data = JSON.parse(JSON.stringify(this.dataPathUtils.extractDataFromResponse(data, dataPath)));
+                  // this.requestedData(JSON.parse(JSON.stringify(this.dataPathUtils.extractDataFromResponse(data, dataPath))));
+            this.requestedData = JSON.stringify(data);
+                //
+                // this.data = clone(this.requestedData);
+                // this.data = this.requestedData.map(x => x);
+                // var dup_array = JSON.parse(JSON.stringify(original_array))
+                // this.varGlobals.requestedData = this.data;
+            console.log('Got data after dataPath: ', 'this.data :', this.data,
+                                                      'this.requestedData :', this.requestedData,
+                                                      'this.response :', this.response);
+            return this.response;
             }, error => {
             this.toastrService.error(error, 'Error');
             }
-        );
+
+        ); */
+        console.log('Test again : ', 'this.data :', this.data, 'this.requestedData :', this.requestedData,
+                                                                  'this.response :', this.response);
+        // return this.data;
   }
 
   public postRequest(data = {}, url, queryParams = null, requestHeaders = null, dataPath = null) {

@@ -1,10 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import {DatatableComponent} from '../../NgxDatatable/components/datatable.component';
-import {DataService} from '../rest-api/data.service';
-import {RequestsService} from '../rest-api/requests.service';
-import {diff} from 'just-diff';
-import pluck from 'just-pluck-it';
-import {MyGlobal} from '../myglobals';
 
 @Component({
   selector: 'app-test-data-service',
@@ -18,9 +13,6 @@ encapsulation: ViewEncapsulation.None
 })
 
 export class TestDataServiceComponent implements OnInit {
-
-  // New Table
-  newdata: any;
 
   rows = [];
   loadingIndicator = true;
@@ -39,12 +31,6 @@ export class TestDataServiceComponent implements OnInit {
   recordHighlightParam = 10;
   cellHighlightParam = 'female';
 
-obj1 = {a: 4, b: 5};
-obj2 = {a: 3, b: 5};
-obj3 = {a: 4, c: 5};
-test: any;
-newobj1 = {'myArray':[{'array':[1,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},'string':'Hello World'},{'array':[1,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},'string':'Hello World','newcomplexArray':[1,2,3]},{'array':[1,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},'string':'Hello World','newcomplexArray':[1,2,3]}]}
-newobj2 = {'myArray':[{'array':[1,2,3],'boolean':false,'null':null,'number2':123,'string':'Hello Mr','newcomplexArray':[1,2,3]},{'array':[1,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},'string':'Great World'},{'array':[10,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'x','c':'d','e':'y'},'string':'Hello World','newcomplexArray':[5,7,3]}]}
   // columns = [
   //   { prop: 'name' },
   //   { name: 'Gender' },
@@ -57,11 +43,7 @@ newobj2 = {'myArray':[{'array':[1,2,3],'boolean':false,'null':null,'number2':123
   //   { name: 'Gender' }
   // ];
   // @ViewChild(DatatableComponent) table: DatatableComponent;
-  constructor(public dataservice: DataService,
-    private requestsService: RequestsService,
-    private varGlobals: MyGlobal) {
-    console.log('My diff :', diff(this.obj2, this.obj3));
-    console.log('New diff :', diff(this.newobj1, this.newobj2));
+  constructor() {
     this.fetch((data) => {
       this.selected = [data[2]]; // for default selection
       // cache filtered list
@@ -70,22 +52,6 @@ newobj2 = {'myArray':[{'array':[1,2,3],'boolean':false,'null':null,'number2':123
       this.rows = data;
       setTimeout(() => { this.loadingIndicator = false; }, 1500);
     });
-    // New Table
-    // const req = new XMLHttpRequest();
-    // req.open('GET', `http://localhost:3004/services?`);
-    // req.onload = () => { this.newdata(JSON.parse(req.response)); };
-    // this.newdata = this.dataservice.getRequest(`http://localhost:3004/services?`);
-    this.dataservice.getRequest(`http://localhost:3004/services?`, this.test);
-    console.log('from Test- response:', this.test);
-    // this.newdata = this.requestsService.get(`http://localhost:3004/services?`).subscribe;
-    // this.newdata = this.dataservice.data;
-    // this.dataservice.response.
-    //     subscribe(dat => { this.test = JSON.stringify(dat); console.log('Test var value :', this.test); },
-    //     error => {console.log(error, 'Error'); }  )
-    console.log('NewData :', this.dataservice.response);
-    console.log('NewData2 :', this.dataservice.getData());
-    console.log('NewData3 :', this.dataservice.varGlobals.reqBody);
-    // New Table
    }
 
   fetch(cb) {
@@ -96,7 +62,7 @@ newobj2 = {'myArray':[{'array':[1,2,3],'boolean':false,'null':null,'number2':123
   req.onload = () => {
     cb(JSON.parse(req.response));
     // const fetchedRows = JSON.parse(req.response);
-    // cb(fetchedRows.splice(0, 50));//to trancate data
+    // cb(fetchedRows.splice(0, 50));
   };
 
   req.send();

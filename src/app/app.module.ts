@@ -21,9 +21,15 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+import { MyGlobal } from './myglobals';
+
 // ngx-datatable
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
+import {DataService} from './rest-api/data.service';
+import {RequestsService} from './rest-api/requests.service';
+import {DataPathUtils} from './rest-api/utils/dataPath.utils';
+import {UrlUtils} from './rest-api/utils/url.utils';
+import { HttpModule, Response, Headers  } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MyOwnJioHomeComponent } from './my-own-jio-home/my-own-jio-home.component';
@@ -41,7 +47,8 @@ const appRoutes: Routes = [
   { path: 'home', component: MyOwnJioHomeComponent },
   { path: 'tibco', component: MyOwnJioTibcoComponent },
   { path: 'footer', component: MyOwnJioFooterComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'working', component: TestDataServiceComponent },
+  { path: '', redirectTo: '/working', pathMatch: 'full' },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
@@ -64,7 +71,8 @@ const appRoutes: Routes = [
     BrowserModule,
     // - Begin
     FormsModule,
-    // HttpModule,
+    HttpModule,
+    // HttpClientModule,
     // RouterModule.forRoot([]),
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
     NgbModule.forRoot(),
@@ -76,7 +84,13 @@ const appRoutes: Routes = [
     ToastrModule.forRoot(), // ToastrModule added
     NgxDatatableModule // Datatable
   ],
-  providers: [],
+  providers: [
+    DataService, RequestsService,
+    UrlUtils,
+    DataPathUtils,
+    MyGlobal
+  ]
+    ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
