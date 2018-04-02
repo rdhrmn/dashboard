@@ -57,9 +57,11 @@ newobj2 = {'myArray':[{'array':[1,2,3],'boolean':false,'null':null,'number2':123
   //   { name: 'Gender' }
   // ];
   // @ViewChild(DatatableComponent) table: DatatableComponent;
-  constructor(public dataservice: DataService,
+  constructor(
+    public dataservice: DataService,
     private requestsService: RequestsService,
-    private varGlobals: MyGlobal) {
+    private varGlobals: MyGlobal
+  ) {
     console.log('My diff :', diff(this.obj2, this.obj3));
     console.log('New diff :', diff(this.newobj1, this.newobj2));
     this.fetch((data) => {
