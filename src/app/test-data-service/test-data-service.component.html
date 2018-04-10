@@ -1,134 +1,138 @@
-
-<div class="col span_1_of_2" id="SelectService">
-  <div class="input-group">
-    <div class="input-group-btn">
-      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        ENV
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">O2A</a>
-        <a class="dropdown-item" href="#">N2A</a>
-        <a class="dropdown-item" href="#">CCN</a>
-        <div role="separator" class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">REPLICA</a>
-      </div>
-    </div>
-    <span class="input-group-addon" id="ServiceList">SelectService</span>
-    <select class="form-control" id="chooseServices">
-        <option>CCI-OP-Default</option>
-        <option>CCI-OP-Digital</option>
-        <option>SCI-OP-Default</option>
-        <option>4</option>
-    </select>
-      <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button"> -->
-  </div>
-  <textarea ></textarea>
 <div>
   <h3>
-    Servcie Test details
+      Servcie Test details
   </h3>
+  <div class="col span_1_of_2" id="SelectService">
+    <div class="input-group">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" selected="selected">
+          {{currData.env.envName}}
+        </button>
+        <ul class="dropdown-menu">
+            <ng-container *ngFor="let uniqueEnvDiv of uniqueEnvDivs">
+              <li role="separator" class="dropdown-divider"></li>
+              <li class="dropdown-header">{{uniqueEnvDiv}}</li>
+              <ng-container *ngFor="let env of envs">
+                <ng-container *ngIf="env.envDiv === uniqueEnvDiv">
+                  <li class="dropdown-item" (click)="currData.env.envName=env.envName; currData.env.envId=env.id;">{{env.envName}}</li>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ul>
+      </div>
+      <span class="input-group-addon" id="ServiceList">SelectService</span>
+      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{currData.service.name}}-{{currData.service.operation}}
+      </button>
+      <ul class="dropdown-menu pull-right">
+          <ng-container *ngFor="let uniqueServiceArea of uniqueServiceAreas">
+            <li role="separator" class="dropdown-divider"></li>
+            <li class="dropdown-header">{{uniqueServiceArea}}</li>
+            <ng-container *ngFor="let service of services">
+              <ng-container *ngIf="service.serviceArea === uniqueServiceArea">
+                <li class="dropdown-item"(click)="currData.service.name=service.name; currData.service.operation=service.operation; currData.service.serviceId=service.id; getTestDataFromEnvForService();">{{service.name}}-{{service.operation}}</li>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ul>
+      <!-- <select class="form-control" id="chooseServices">
+          <option>CCI-OP-Default</option>
+          <option>CCI-OP-Digital</option>
+          <option>SCI-OP-Default</option>
+          <option>4</option>
+      </select> -->
+    </div>
+        <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button"> -->
+  </div>
+  <!-- <textarea >Test: ENV = {{currData.env.envId}} : {{currData.env.envName}} : SERVICE = {{currData.service.serviceId}} : {{currData.service.name}} : {{currData.service.operation}} </textarea> -->
+  <div>
   <!-- Name: <input type='text' [(ngModel)]="recordHighlightParam" ng-init="recordHighlightParam=10">
   <h1>{{recordHighlightParam}}</h1> -->
+  Filtering choices:
   <section class="selection">
-    <!-- <input type='text' value="Filter" /> -->
-    <input type='text' style='padding:8px;margin:1px auto;width:90%;'
-    placeholder='Filter the names...'
-    (keyup)='updateFilter($event)'
-    />
-    <!-- <input type='text' value="Filter" /> -->
-    <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
-      placeholder='Row highlight age==10...'
-    />
-    <!-- <input type='text' value="Filter" /> -->
-    <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
-      placeholder='Cell gender==female...'
-    />
-    <!-- <input type='text' style='background-color:slateblue;font-size:20px' value="Filter" /> -->
-    <!-- <input type='text'  style='padding:8px;margin:1px auto;width:100%; '
-      placeholder='Type to filter the name column...'
-    /> -->
-    <!-- <input type='text' value="Filter" /> -->
-    <!-- <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
-      placeholder='Type to filter the name column...'
-    /> -->
-  </section>
-  <textarea ></textarea>
+      <!-- <input type='text' value="Filter" /> -->
+      <input type='text' style='padding:8px;margin:1px auto;width:90%;'
+      placeholder='Filter the useCases...'
+      (keyup)='updateFilter($event)'
+      />
+      <!-- <input type='text' value="Filter" /> -->
+      <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+        placeholder='ResponseTime<100'
+      />
+      <!-- <input type='text' value="Filter" /> -->
+      <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+        placeholder='CellSelection==Test'
+      />
+      <!-- <input type='text' style='background-color:slateblue;font-size:20px' value="Filter" /> -->
+      <!-- <input type='text'  style='padding:8px;margin:1px auto;width:100%; '
+        placeholder='Type to filter the name column...'
+      /> -->
+      <!-- <input type='text' value="Filter" /> -->
+      <!-- <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+        placeholder='Type to filter the name column...'
+      /> -->
+    </section>
+  </div>
+</div>
+
+<div>
+  <!-- <textarea ></textarea> -->
     <!-- <div style='float:left;width:75%'> -->
-    <div>
-      <!-- <div class="info">
-        <p> abcd</p>
-      </div> -->
+<div class="section group" style='margin-bottom: 0px;'>
+  <div class="col span_3_of_4" >
+    <!-- <div class="info">
+      <p> abcd</p>
+    </div> -->
 
-      <ngx-datatable
-        class="material"
+    <ngx-datatable
+      class="material"
 
-        [rows]="rows"
-        [limit]="5"
+      [rows]="rows"
+      [limit]="5"
 
-        [columns]="columns"
-        [columnMode]="'force'"
+      [columns]="columns"
+      [columnMode]="'force'"
 
-        [headerHeight]="50"
-        [footerHeight]="50"
-        [rowHeight]="'auto'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="'auto'"
 
-        [selected]="selected"
-        [selectionType]="'multi'"
-        (activate)="onActivate($event)"
-        (select)='onSelect($event)'
+      [selected]="selected"
+      [selectionType]="'multi'"
+      (activate)="onActivate($event)"
+      (select)='onSelect($event)'
 
-        [selected]="selected"
-        [selectionType]="'cell'"
-        (select)="onCellSelect($event)"
-        (activate)="onCellActivate($event)"
+      [selected]="selected"
+      [selectionType]="'cell'"
+      (select)="onCellSelect($event)"
+      (activate)="onCellActivate($event)"
 
-        [scrollbarH]="true"
+      [scrollbarH]="true"
 
-        (tableContextmenu)="onTableContextMenu($event)"
+      (tableContextmenu)="onTableContextMenu($event)"
 
-        [rowClass]="getRowClass"
-      >
+      [rowClass]="getRowClass"
+    >
 
-      <ngx-datatable-column name="Id" [width]="30">
-        <ng-template ngx-datatable-cell-template let-value="value">
+    <ngx-datatable-column name="Id" [width]="30">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="ServcieOperation" prop="serviceId" [width]="120">
+      <ng-template ngx-datatable-cell-template let-value="value">
           {{value}}
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="serviceId" [width]="70">
-        <ng-template ngx-datatable-cell-template let-value="value">
-          {{value}}
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="requestId">
-        <ng-template ngx-datatable-cell-template let-value="value">
-          {{value}}
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="responseId">
-        <ng-template ngx-datatable-cell-template let-value="value">
-          {{value}}
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="envId" [width]="60">
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span
-          title="Double click to edit"
-          (dblclick)="editedRow[rowIndex + '-envId'] = true"
-          *ngIf="!editedRow[rowIndex + '-envId']">
-          {{value}}
-          </span>
-          <select
-            *ngIf="editedRow[rowIndex + '-envId']"
-            (blur)="editedRow[rowIndex + '-envId'] = false"
-            (change)="updateValue($event, 'envId', rowIndex)"
-            [value]="value">
-            <option value="replica">REPLICA</option>
-            <option value="o2a">O2A</option>
-			      <option value="new">http://localhost:3004/envs</option>
-          </select>
-        </ng-template>
-	    </ngx-datatable-column>
-      <ngx-datatable-column name="useCase">
+          <!-- {{(services | filter: {id:value})[0].name}} -->
+          <!-- <span value={{value * 1}}>{{value}}</span> -->
+          <!-- <span ng-repeat="service in services" ng-show="service.id==value">
+               {{service.id}}
+          </span> -->
+          <!-- <span "value=services.find( service => service.id === '1').name">{{value}}</span> -->
+          <!-- <span "value=100">{{value}}</span> -->
+          <!-- {{currData.service.name}} -->
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="UseCaseName" prop="useCase">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
           <span
             title="Double click to edit"
@@ -145,82 +149,256 @@
           />
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="touchPoints">
-        <ng-template ngx-datatable-cell-template let-value="value">
-          {{value}}
-        </ng-template>
-      </ngx-datatable-column>
-	    <ngx-datatable-column name="testdataType" headerClass="is-testdata" [cellClass]="getCellClass" [width]="60">
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span
-          title="Double click to edit"
-          (dblclick)="editedRow[rowIndex + '-testdatatype'] = true"
-          *ngIf="!editedRow[rowIndex + '-testdatatype']">
-          {{value}}
-          </span>
-          <select
-            *ngIf="editedRow[rowIndex + '-testdatatype']"
-            (blur)="editedRow[rowIndex + '-testdatatype'] = false"
-            (change)="updateValue($event, 'testdataType', rowIndex)"
-            [value]="value">
-            <option value="test">Test</option>
-            <option value="actual">Actual</option>
-          </select>
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="testType" [width]="60">
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span
-          title="Double click to edit"
-          (dblclick)="editedRow[rowIndex + '-testtype'] = true"
-          *ngIf="!editedRow[rowIndex + '-testtype']">
-          {{value}}
-          </span>
-          <select
-            *ngIf="editedRow[rowIndex + '-testtype']"
-            (blur)="editedRow[rowIndex + '-testtype'] = false"
-            (change)="updateValue($event, 'testType', rowIndex)"
-            [value]="value">
-            <option value="info">Info</option>
-            <option value="txn">Txn</option>
-			      <option value="ops">Ops</option>
-          </select>
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="diffId">
-        <ng-template ngx-datatable-cell-template let-value="value">
-          {{value}}
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="responseTime" [width]="60">
-        <ng-template ngx-datatable-cell-template let-value="value">
-          {{value}}
-        </ng-template>
-      </ngx-datatable-column>
-      <ngx-datatable-column name="dateTime">
-        <ng-template ngx-datatable-cell-template let-value="value">
-          {{value}}
-        </ng-template>
-      </ngx-datatable-column>
+    <ngx-datatable-column name="requestId">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="responseId">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="envId" [width]="60">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+        <span
+        title="Double click to edit"
+        (dblclick)="editedRow[rowIndex + '-envId'] = true"
+        *ngIf="!editedRow[rowIndex + '-envId']">
+        {{value}}
+        </span>
+        <select
+          *ngIf="editedRow[rowIndex + '-envId']"
+          (blur)="editedRow[rowIndex + '-envId'] = false"
+          (change)="updateValue($event, 'envId', rowIndex)"
+          [value]="value">
+          <option value="replica">REPLICA</option>
+          <option value="o2a">O2A</option>
+          <option value="new">http://localhost:3004/envs</option>
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="touchPoints">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="testdataType" headerClass="is-testdata" [cellClass]="getCellClass" [width]="60">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+        <span
+        title="Double click to edit"
+        (dblclick)="editedRow[rowIndex + '-testdatatype'] = true"
+        *ngIf="!editedRow[rowIndex + '-testdatatype']">
+        {{value}}
+        </span>
+        <select
+          *ngIf="editedRow[rowIndex + '-testdatatype']"
+          (blur)="editedRow[rowIndex + '-testdatatype'] = false"
+          (change)="updateValue($event, 'testdataType', rowIndex)"
+          [value]="value">
+          <option value="test">Test</option>
+          <option value="actual">Actual</option>
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="testType" [width]="60">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+        <span
+        title="Double click to edit"
+        (dblclick)="editedRow[rowIndex + '-testtype'] = true"
+        *ngIf="!editedRow[rowIndex + '-testtype']">
+        {{value}}
+        </span>
+        <select
+          *ngIf="editedRow[rowIndex + '-testtype']"
+          (blur)="editedRow[rowIndex + '-testtype'] = false"
+          (change)="updateValue($event, 'testType', rowIndex)"
+          [value]="value">
+          <option value="info">Info</option>
+          <option value="txn">Txn</option>
+          <option value="ops">Ops</option>
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="diffId">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        <span tooltip="Is it working as tool tip" span></span>
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="responseTime" [width]="60">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="dateTime">
+      <ng-template ngx-datatable-cell-template let-value="value">
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
 
-      </ngx-datatable>
-    </div>
-
-    <div class='selected-column'>
-      <h4>Selections</h4>
-      <ul>
-        <li *ngFor='let sel of selected'>
-          Use case: {{sel.useCase}}
-        </li>
-        <li *ngIf="!selected.length">No Selections</li>
-      </ul>
-    </div>
+    </ngx-datatable>
   </div>
-  <div class="info">
-      <p *ngIf="rawEvent">On Right click <strong>Mouse position:</strong> <code>(x: {{rawEvent?.x}}, y: {{rawEvent?.y}})</code></p>
-      <p *ngIf="contextmenuRow">On Right click <strong>Row:</strong> The TouchPoints : {{contextmenuRow?.touchPoints}}</p>
-      <p *ngIf="contextmenuColumn">On Right click <strong>Header:</strong>
+  <div class="col span_1_of_4" id="rowconext" style='margin-bottom: 1px; margin-top: 1px;'>
+    <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
+      <fieldset style='background: #9ed8fa;'>
+        <legend>Env Settings #ChosenEnv</legend>
+        <label for="serviceinstances" style='background: #cafa9e;'>No of instances: 7</label> <br>
+        <label for="servicemachines" style='background: #faec9e;'>Machines: IP Address1 (2),IP Address2 (5) </label> <br>
+        <label for="servicedeploymentdate" style='background: #cafa9e;'>Last deployed: DateTime</label> <br>
+        <label for="servicedeploymentreason" style='background: #faec9e;'>Deployed reason: CRNo</label>
+      </fieldset>
+    </form>
+    <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
+        <fieldset style='background: #9ed8fa;'>
+          <legend>#Service Info</legend>
+          <textarea cols=80 rows=3 name="servcieInfo" id="servcieInfo" style='font-weight: bold; font-style: italic; background: #6fff47;' maxlength=300 placeholder='servcieInfo in 300 letters, purpose, actors, intent (main parameters)'></textarea>
+          <textarea cols=80 rows=3 name="servcieInfo" id="servcieInfo" style='font-weight: bold; font-style: italic; background: #eef592;' maxlength=300 placeholder='a linked list of sequences of activity, highlighting present activity in the sequence, on doubleClick it will take to dependency matric component window'></textarea>
+        </fieldset>
+      </form>
+    <form style='background: #cafa9e;' *ngIf="contextmenuRow">
+      <button type="submit">Edit</button><button type="submit">Save</button><br>
+      <fieldset id="debugtempId" style='background: #cafa9e;'>
+        <legend>Query Params</legend>
+        <label for="name">Username:</label>
+        <input type="text" name="name" id="name" />
+        <label for="mail">E-mail:</label>
+        <input type="text" name="mail" id="mail" />
+        <label for="address">Address:</label>
+        <input type="text" name="address" id="address" size="40" />
+      </fieldset>
+      <button type="submit" id="onpreviousResponse">Resposnes</button> |
+      <button type="submit" id="onTest">Test</button> |
+      <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label>
+    </form>
+    <form style='background: #faec9e;' *ngIf="contextmenuRow">
+        <fieldset style='background: #faec9e;'>
+          <legend>Touch Points</legend>
+          <input type="text" name="touchpoint1" id="touchpoint1" style='float:left; width:30%; margin:3px;' value='touchpoint1'/>
+          <input type="text" name="touchpoint2" id="touchpoint2" style='float:left; width:30%; margin:3px;' value='touchpoint2'/>
+          <input type="text" name="touchpoint3" id="touchpoint3" style='float:left; width:30%; margin:3px;' size="40" value='touchpoint3'/>
+          <input type="text" name="touchpoint1" id="touchpoint4" style='float:left; width:30%; margin:3px;' value='touchpoint4'/>
+        </fieldset>
+    </form>
+  </div>
+</div>
+<!-- <hr> -->
+  <!-- <div class='selected-column'>
+    <h4>Selections</h4>
+    <ul>
+      <li *ngFor='let sel of selected'>
+        Use case: {{sel.useCase}}
+      </li>
+      <li *ngIf="!selected.length">No Selections</li>
+    </ul>
+  </div> -->
+  <!-- <div class="info"> -->
+      <!-- <p *ngIf="rawEvent">On Right click <strong>Mouse position:</strong> <code>(x: {{rawEvent?.x}}, y: {{rawEvent?.y}})</code></p> -->
+      <!-- <p *ngIf="contextmenuRow">On Right click <strong>Row:</strong> The TouchPoints : {{contextmenuRow?.touchPoints}}</p> -->
+      <!-- <p *ngIf="contextmenuColumn">On Right click <strong>Header:</strong>
         name: {{contextmenuColumn?.name}}
         prop: {{contextmenuColumn?.prop}}
       </p>
+  </div> -->
+
+  <div class="ResponseDiff" id="responseDetail">
+    <div class="ResponseDiff" id="responseDetail"></div>
+    <!-- <div class="section group" *ngIf="onTest"> -->
+    <div class="section group">
+      <!-- <div class="col span_1_of_10" style='margin-bottom: 1px; margin-top: 1px;'>
+      <button type="submit">Submit</button><br>
+      </div> -->
+      <div class="col span_1_of_3" >
+          <fieldset>
+              <legend>Response message</legend>
+          <div class="panel with-nav-tabs panel-primary">
+              <div class="panel-heading">
+                      <ul class="nav nav-tabs nav-justified" role="tablist">
+                          <li class="nav-item"><a class="nav-link active" href="#tab1primary" data-toggle="tab" role="tab" >Primary 1</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab2primary" data-toggle="tab" role="tab" > Primary 2</a></li>
+                      </ul>
+              </div>
+              <div class="panel-body">
+                  <div class="tab-content">
+                      <div class="tab-pane active" id="tab1primary" role="tabpanel">Primary 1 {{newobj1.myArray | json}}</div>
+                      <div class="tab-pane" id="tab2primary"role="tabpanel" >Primary 2 {{newobj2 | json}}</div>
+                  </div>
+              </div>
+          </div>
+        </fieldset>
+
+      </div>
+      <div class="col span_1_of_3">
+          <form>
+
+            <fieldset >
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Home</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+                    </li>
+                  </ul>
+
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="home" role="tabpanel">pane 1</div>
+                    <div class="tab-pane" id="profile" role="tabpanel">pane 2</div>
+                    <div class="tab-pane" id="messages" role="tabpanel">pane 3</div>
+                    <div class="tab-pane" id="settings" role="tabpanel">pane 4</div>
+                  </div>
+            </fieldset>
+        </form>
+      </div>
+      <div class="col span_1_of_3">
+          <div class="panel with-nav-tabs panel-primary">
+              <div class="panel-heading">
+                      <ul class="nav nav-tabs nav-justified" role="tablist">
+                          <li class="nav-item"><a class="nav-link active" href="#tab1primary" data-toggle="tab" role="tab" >Primary 1</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#tab2primary" data-toggle="tab" role="tab" > Primary 2</a></li>
+                      </ul>
+              </div>
+              <div class="panel-body">
+                  <div class="tab-content">
+                      <div class="tab-pane fade in active" id="tab1primary">Primary 1</div>
+                      <div class="tab-pane fade" id="tab2primary">Primary 2</div>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- <div class="myOwnJioDetailData">
+  <div class="section group">
+    <div class="col span_1_of_2" >
+      <label id="myOwnJioSubHeader">Request Parameters</label>
+        <p><em><b>By default it will display request parameter of selected message in a dynamic grid where name and value can be added or removed or modified. The modified vaule can be saved in same message or new message.
+      Then SUBMIT the button to test.
+      Display the new response in sideby column.</b></em></p>
+    </div>
+    <div class="col span_1_of_2">
+      <label id="myOwnJioSubHeader">Response Parameters</label>
+      <p><em>By default show the last response of the message selected.
+      On submit in left column, it display current result</em></p>
+    </div>
+  </div>
+  <div class="section group">
+    <div class="col span_1_of_2">
+      <label id="myOwnJioSubHeader">Diff against last test</label>
+      <p><em>This column will always show the diff against last run that is stored in database.</em></p>
+    </div>
+    <div class="col span_1_of_2">
+        <label id="myOwnJioSubHeader"> Service Running parameters</label>
+        <p><em>This column will detail all running parameters, instances server name etc.</em></p>
+    </div>
+  </div>
+</div> -->
