@@ -358,11 +358,6 @@ console.log('this.theDiff : ', this.theDiff );
                             error => {console.log(error, 'Error'); }  );
         },
         error => {console.log(error, 'Error'); }  );
-
-
-
-
-
   },
   error => {console.log(error, 'Error'); }  );
 
@@ -400,7 +395,7 @@ console.log('this.theDiff : ', this.theDiff );
       if ( this.workdata.workitems[i].is1stSelect === true) {isThere1stSelect = true;} // atleast one 1stSelect (actually one)
       if ( this.workdata.workitems[i].is2ndSelect === true) {isThere2ndSelect = true;} // atleast one 1stSelect (actually one)
      }
-
+    console.log('isThere1stSelect:',isThere1stSelect, 'isThere2ndSelect:', isThere2ndSelect );
 
      if (isThere1stSelect === true && isThere2ndSelect === true){ // when both 1stSelect and 2ndSelect
         for ( let i = 0; i < this.workdata.workitems.length ; i++) {
@@ -436,7 +431,7 @@ console.log('this.theDiff : ', this.theDiff );
                 this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg; }
           }
      }
-
+     console.log('this.workdata.theOldORBase:',this.workdata.theOldORBase, 'this.workdata.theNewOne:', this.workdata.theNewOne );
      this.workdata.theDiffData = this.doTheDiff(this.workdata.theOldORBase, this.workdata.theNewOne );
 
 
