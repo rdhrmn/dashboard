@@ -423,7 +423,7 @@ select {
   margin-bottom: 2.33em;
   margin-left: 0;
   margin-right: 0;
-  font-weight: bold;
+  font-weight: bold;stypeeeeeeeeeee
 } */
 
 
@@ -571,3 +571,7 @@ margin-bottom: -1px;
 	border-color: #428bca;
 	border-bottom-color: transparent;
 } */
+
+@keyframes mymove {
+  50% {border: 5px solid lightblue;}
+}

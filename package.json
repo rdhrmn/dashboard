@@ -1,5 +1,5 @@
 {
-  "name": "my-trial-responsive-navbar",
+  "name": "my-own-jio-dashboard",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -23,16 +23,20 @@
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "@swimlane/ngx-datatable": "^11.2.0",
+    "angular-bootstrap-md": "^6.0.1",
     "angular-font-awesome": "^3.1.2",
     "bootstrap": "^4.0.0-alpha.6",
+    "chart.js": "^2.5.0",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
+    "hammerjs": "^2.0.8",
     "just-clone": "^3.0.0",
     "just-diff": "^2.1.1",
     "just-pluck-it": "^1.1.21",
     "just-unique": "^3.1.1",
     "just-values": "^1.0.1",
     "ng-bootstrap": "^1.6.3",
+    "ng2-json-view": "^3.0.0",
     "ngx-toastr": "^8.3.0",
     "nmp": "^1.0.3",
     "rxjs": "^5.5.6",
@@ -40,6 +44,7 @@
     "tether": "^1.4.3",
     "to": "^0.2.9",
     "update": "^0.7.4",
+    "xml2js": "^0.4.19",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
@@ -49,6 +54,7 @@
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^6.0.103",
+    "@types/xml2js": "^0.4.2",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",

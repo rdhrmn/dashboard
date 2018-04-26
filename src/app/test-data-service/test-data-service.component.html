@@ -20,7 +20,8 @@
             </ng-container>
           </ul>
       </div>
-      <span class="input-group-addon" id="ServiceList">SelectService</span>
+      <span class="btn btn-secondary" id="ServiceList">Service -> </span>
+      <!-- <span class="input-group-addon" id="ServiceList">SelectService</span> --> <!-- changed class for same button colour-->
       <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {{currData.service.name}}-{{currData.service.operation}}
       </button>
@@ -45,33 +46,33 @@
         <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button"> -->
   </div>
   <!-- <textarea >Test: ENV = {{currData.env.envId}} : {{currData.env.envName}} : SERVICE = {{currData.service.serviceId}} : {{currData.service.name}} : {{currData.service.operation}} </textarea> -->
-  <div>
-  <!-- Name: <input type='text' [(ngModel)]="recordHighlightParam" ng-init="recordHighlightParam=10">
-  <h1>{{recordHighlightParam}}</h1> -->
-  Filtering choices:
-  <section class="selection">
-      <!-- <input type='text' value="Filter" /> -->
-      <input type='text' style='padding:8px;margin:1px auto;width:90%;'
-      placeholder='Filter the useCases...'
-      (keyup)='updateFilter($event)'
-      />
-      <!-- <input type='text' value="Filter" /> -->
-      <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
-        placeholder='ResponseTime<100'
-      />
-      <!-- <input type='text' value="Filter" /> -->
-      <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
-        placeholder='CellSelection==Test'
-      />
-      <!-- <input type='text' style='background-color:slateblue;font-size:20px' value="Filter" /> -->
-      <!-- <input type='text'  style='padding:8px;margin:1px auto;width:100%; '
-        placeholder='Type to filter the name column...'
-      /> -->
-      <!-- <input type='text' value="Filter" /> -->
-      <!-- <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
-        placeholder='Type to filter the name column...'
-      /> -->
-    </section>
+  <div id= filtering style='font:50%/1 sans-serif' >
+    <!-- Name: <input type='text' [(ngModel)]="recordHighlightParam" ng-init="recordHighlightParam=10">
+    <h1>{{recordHighlightParam}}</h1> -->
+    Filtering choices:
+    <section class="selection">
+        <!-- <input type='text' value="Filter" /> -->
+        <input type='text' style='padding:8px;margin:1px auto;width:90%;'
+        placeholder='Filter the useCases...'
+        (keyup)='updateFilter($event)'
+        />
+        <!-- <input type='text' value="Filter" /> -->
+        <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+          placeholder='ResponseTime<100'
+        />
+        <!-- <input type='text' value="Filter" /> -->
+        <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+          placeholder='CellSelection==Test'
+        />
+        <!-- <input type='text' style='background-color:slateblue;font-size:20px' value="Filter" /> -->
+        <!-- <input type='text'  style='padding:8px;margin:1px auto;width:100%; '
+          placeholder='Type to filter the name column...'
+        /> -->
+        <!-- <input type='text' value="Filter" /> -->
+        <!-- <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+          placeholder='Type to filter the name column...'
+        /> -->
+      </section>
   </div>
 </div>
 
@@ -132,28 +133,39 @@
           <!-- {{currData.service.name}} -->
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column name="UseCaseName" prop="useCase">
+    <ngx-datatable-column name="UseCase" prop="useCase">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
           <span
             title="Double click to edit"
-            (dblclick)="editedRow[rowIndex + '-usecase'] = true"
-            *ngIf="!editedRow[rowIndex + '-usecase']">
+            (dblclick)="editedRow[rowIndex + '-UseCase'] = true"
+            *ngIf="!editedRow[rowIndex + '-UseCase']">
             {{value}}
           </span>
           <input
             autofocus
-            (blur)="updateValue($event, 'useCase', rowIndex)"
-            *ngIf="editedRow[rowIndex+ '-usecase']"
+            (blur)="updateValue($event, 'UseCase', rowIndex)"
+            *ngIf="editedRow[rowIndex+ '-UseCase']"
             type="text"
             [value]="value"
           />
         </ng-template>
       </ngx-datatable-column>
-    <ngx-datatable-column name="requestId">
-      <ng-template ngx-datatable-cell-template let-value="value">
-        {{value}}
-      </ng-template>
+    <ngx-datatable-column name="touchPoints">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{value}}
+        </ng-template>
     </ngx-datatable-column>
+    <ngx-datatable-column name="responseTime" [width]="100">
+        <ng-template ngx-datatable-cell-template let-value="value">
+            <span tooltip="Is it working as tool tip" span></span>
+          {{value}}
+        </ng-template>
+      </ngx-datatable-column>
+    <ngx-datatable-column name="requestId">
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{value}}
+        </ng-template>
+      </ngx-datatable-column>
     <ngx-datatable-column name="responseId">
       <ng-template ngx-datatable-cell-template let-value="value">
         {{value}}
@@ -174,16 +186,11 @@
           [value]="value">
           <option value="replica">REPLICA</option>
           <option value="o2a">O2A</option>
-          <option value="new">http://localhost:3004/envs</option>
+          <option value="new">N2A</option>
         </select>
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column name="touchPoints">
-      <ng-template ngx-datatable-cell-template let-value="value">
-        {{value}}
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column name="testdataType" headerClass="is-testdata" [cellClass]="getCellClass" [width]="60">
+    <ngx-datatable-column name="testdataType" headerClass="is-testdata" [cellClass]="getCellClass" [width]="100">
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
         <span
         title="Double click to edit"
@@ -201,7 +208,7 @@
         </select>
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column name="testType" [width]="60">
+    <ngx-datatable-column name="testType" [width]="100">
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
         <span
         title="Double click to edit"
@@ -220,17 +227,6 @@
         </select>
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column name="diffId">
-      <ng-template ngx-datatable-cell-template let-value="value">
-        <span tooltip="Is it working as tool tip" span></span>
-        {{value}}
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column name="responseTime" [width]="60">
-      <ng-template ngx-datatable-cell-template let-value="value">
-        {{value}}
-      </ng-template>
-    </ngx-datatable-column>
     <ngx-datatable-column name="dateTime">
       <ng-template ngx-datatable-cell-template let-value="value">
         {{value}}
@@ -242,7 +238,7 @@
   <div class="col span_1_of_4" id="rowconext" style='margin-bottom: 1px; margin-top: 1px;'>
     <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
       <fieldset style='background: #9ed8fa;'>
-        <legend>Env Settings #ChosenEnv</legend>
+        <legend>Env Settings : {{currData.env.envName}} for {{currData.row.serviceId}}</legend>
         <label for="serviceinstances" style='background: #cafa9e;'>No of instances: 7</label> <br>
         <label for="servicemachines" style='background: #faec9e;'>Machines: IP Address1 (2),IP Address2 (5) </label> <br>
         <label for="servicedeploymentdate" style='background: #cafa9e;'>Last deployed: DateTime</label> <br>
@@ -251,27 +247,37 @@
     </form>
     <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
         <fieldset style='background: #9ed8fa;'>
-          <legend>#Service Info</legend>
+          <legend>#Service Info for {{currData.row.serviceId}}</legend>
           <textarea cols=80 rows=3 name="servcieInfo" id="servcieInfo" style='font-weight: bold; font-style: italic; background: #6fff47;' maxlength=300 placeholder='servcieInfo in 300 letters, purpose, actors, intent (main parameters)'></textarea>
           <textarea cols=80 rows=3 name="servcieInfo" id="servcieInfo" style='font-weight: bold; font-style: italic; background: #eef592;' maxlength=300 placeholder='a linked list of sequences of activity, highlighting present activity in the sequence, on doubleClick it will take to dependency matric component window'></textarea>
         </fieldset>
       </form>
-    <form style='background: #cafa9e;' *ngIf="contextmenuRow">
-      <button type="submit">Edit</button><button type="submit">Save</button><br>
+    <!-- <form style='background: #cafa9e;' *ngIf="contextmenuRow"> -->
+    <form style='background: #cafa9e;' *ngIf="isSelected">
+      <!-- <button type="submit">Edit</button><button type="submit">Save</button><br> -->
       <fieldset id="debugtempId" style='background: #cafa9e;'>
-        <legend>Query Params</legend>
-        <label for="name">Username:</label>
-        <input type="text" name="name" id="name" />
-        <label for="mail">E-mail:</label>
-        <input type="text" name="mail" id="mail" />
+
+        <legend>Query Params - {{currData.row.serviceId}}</legend>
+        <!-- *ngFor outdated to be replaced with ngForOf -->
+        <ng-container *ngFor="let param of currData.requestParams; let i = index">
+            <!-- <ng-container *ngIf="env.envDiv === uniqueEnvDiv"> -->
+                <label for="name">{{param.name}}</label>
+                <input type="text" name="name" id="name" placeholder={{queryitem}} [(ngModel)] = "currData.requestParams[i].value"/>
+                <!-- <label for="myval">{{currData.requestParams[i].value}}</label> -->
+            <!-- </ng-container> -->
+            </ng-container>
+        <!-- <label for="mail">E-mail:</label>
+        <input type="text" name="mail" id="mail" value ={{selected[0].id}}/>
         <label for="address">Address:</label>
-        <input type="text" name="address" id="address" size="40" />
+        <input type="text" name="address" id="address" size="40" /> -->
       </fieldset>
-      <button type="submit" id="onpreviousResponse">Resposnes</button> |
-      <button type="submit" id="onTest">Test</button> |
-      <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label>
+      <button type="submit" id="onTest" (click)="onTest()">Test</button> |
+      <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label> |
+      <input type="checkbox" id="unlikeRequestChek" (value)="isUnlikeRequests" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Against Other</label> |
+      <!-- <label class="switch"><input type="checkbox"> <span class="slider round"></span> </label> -->
     </form>
-    <form style='background: #faec9e;' *ngIf="contextmenuRow">
+    <!-- <form style='background: #faec9e;' *ngIf="contextmenuRow"> -->
+    <form style='background: #faec9e;' *ngIf="isSelected">
         <fieldset style='background: #faec9e;'>
           <legend>Touch Points</legend>
           <input type="text" name="touchpoint1" id="touchpoint1" style='float:left; width:30%; margin:3px;' value='touchpoint1'/>
@@ -302,7 +308,6 @@
   </div> -->
 
   <div class="ResponseDiff" id="responseDetail">
-    <div class="ResponseDiff" id="responseDetail"></div>
     <!-- <div class="section group" *ngIf="onTest"> -->
     <div class="section group">
       <!-- <div class="col span_1_of_10" style='margin-bottom: 1px; margin-top: 1px;'>
@@ -314,14 +319,18 @@
           <div class="panel with-nav-tabs panel-primary">
               <div class="panel-heading">
                       <ul class="nav nav-tabs nav-justified" role="tablist">
-                          <li class="nav-item"><a class="nav-link active" href="#tab1primary" data-toggle="tab" role="tab" >Primary 1</a></li>
-                          <li class="nav-item"><a class="nav-link" href="#tab2primary" data-toggle="tab" role="tab" > Primary 2</a></li>
+                          <li class="nav-item"><a class="nav-link active" href="#reponseTreeView" data-toggle="tab" role="tab" >TreeView</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#responseXMLView" data-toggle="tab" role="tab" > XMLView</a></li>
+                          <li class="nav-item"><a class="nav-link" href="#responseJSON" data-toggle="tab" role="tab" > JSONView</a></li>
                       </ul>
               </div>
               <div class="panel-body">
                   <div class="tab-content">
-                      <div class="tab-pane active" id="tab1primary" role="tabpanel">Primary 1 {{newobj1.myArray | json}}</div>
-                      <div class="tab-pane" id="tab2primary"role="tabpanel" >Primary 2 {{newobj2 | json}}</div>
+                      <div class="tab-pane active" id="reponseTreeView" role="tabpanel">
+                          <json-tree [json]="newobj2" [expand]="false"></json-tree>
+                      </div>
+                      <div class="tab-pane" id="responseXMLView"role="tabpanel" >{{transformProvider.convertToXml(newobj2)}}</div>
+                      <div class="tab-pane" id="responseJSON"role="tabpanel" >Primary 2 {{currData | json}}</div>
                   </div>
               </div>
           </div>
@@ -329,50 +338,102 @@
 
       </div>
       <div class="col span_1_of_3">
-          <form>
-
-            <fieldset >
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Home</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
-                    </li>
-                  </ul>
-
-                  <!-- Tab panes -->
-                  <div class="tab-content">
-                    <div class="tab-pane active" id="home" role="tabpanel">pane 1</div>
-                    <div class="tab-pane" id="profile" role="tabpanel">pane 2</div>
-                    <div class="tab-pane" id="messages" role="tabpanel">pane 3</div>
-                    <div class="tab-pane" id="settings" role="tabpanel">pane 4</div>
-                  </div>
-            </fieldset>
-        </form>
-      </div>
-      <div class="col span_1_of_3">
+          <!-- <form> -->
+        <fieldset>
+          <legend>Working Responses</legend>
           <div class="panel with-nav-tabs panel-primary">
-              <div class="panel-heading">
-                      <ul class="nav nav-tabs nav-justified" role="tablist">
-                          <li class="nav-item"><a class="nav-link active" href="#tab1primary" data-toggle="tab" role="tab" >Primary 1</a></li>
-                          <li class="nav-item"><a class="nav-link" href="#tab2primary" data-toggle="tab" role="tab" > Primary 2</a></li>
-                      </ul>
-              </div>
-              <div class="panel-body">
-                  <div class="tab-content">
-                      <div class="tab-pane fade in active" id="tab1primary">Primary 1</div>
-                      <div class="tab-pane fade" id="tab2primary">Primary 2</div>
-                  </div>
-              </div>
+            <div class="panel-heading">
+                    <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" href="#sameRequestResponses" data-toggle="tab" role="tab" >SameRequest</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#differentRequestResponses" data-toggle="tab" role="tab" > DifferentRequest</a></li>
+                    </ul>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="sameRequestResponses" role="tabpanel">
+
+                        <ng-container *ngFor="let workitem of workdata.workitems">
+                            <ng-container *ngIf="workitem.isUnlikeRequests === false">
+                                <!-- [style.display]="'inline-block'" [style.border]="'5px solid #bbb'" [style.border-radius]="'10px'" [style.width]="'100%'" -->
+                                <!-- [style.box-shadow]="'inset 0px -5px 30px 50px #777'" [style.text-shadow]="'1px 1px 1px #eee'" -->
+                                <!-- [style.background-color]="'dodgerblue'" -->
+                          <button style='width: 100%; display: inline-block; border-radius:10px;' [style.border]="workitem.changeDiffStyle['border']" [style.box-shadow]="workitem.changeDiffStyle['box-shadow']" [style.text-shadow]="workitem.changeDiffStyle['text-shadow']" [style.background-color]="workitem.changeDiffStyle['background-color']"
+                                (mouseover)="workitem.response._envId"
+                                (click)="select2nd(workitem.response.id);"
+                                (dblclick)="select1st(workitem.response.id);"
+                                >
+                                <label style='width: 40%; vertical-align: middle;' for="responseId" [mdbTooltip]="workitem.response.responseMsg"  mdbWavesEffect>{{workitem.response.id}} for {{workitem.response._servcieId }} </label>
+                                <label style='width: 40%; vertical-align: middle;'for="requestParams" [mdbTooltip]="workitem.useCase + ' at ' + workitem.request._envId" mdbWavesEffect>{{workitem.request.requestMsg}}</label>
+                                <!-- <label style='width: 40%; vertical-align: middle;' for="responseId" ng-mouseover="workitem.response.responseMsg">1234 </label>
+                                <label style='width: 40%; vertical-align: middle;'for="requestParams" (mouseover)="testMethod()">3333</label> -->
+                                </button>
+                              <!-- <li class="dropdown-item"(click)="currData.service.name=service.name; currData.service.operation=service.operation; currData.service.serviceId=service.id; getTestDataFromEnvForService();">{{service.name}}-{{service.operation}}</li> -->
+                            </ng-container>
+                        </ng-container>
+
+
+                        <button style='width: 100%; display: inline-block; border-radius:10px;
+                        box-shadow: inset 0px -5px 30px 50px #777; border: 5px solid #bbb;
+                        text-shadow: 1px 1px 1px #eee;'
+                            (click)="count = count + 1">
+                            <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
+                            <label style='width: 40%;'for="requestParams">RequestParams</label>
+                        </button>
+                        <button style='width: 100%; display: inline-block; background-color:dodgerblue;border: 5px solid #bbb;'
+                            (click)="count = count + 1">
+                            <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
+                            <label style='width: 40%;'for="requestParams">RequestParams</label>
+                        </button>
+                    </div>
+                    <div class="tab-pane" id="differentRequestResponses"role="tabpanel" >
+                        <button style='width: 100%; display: inline-block; background-color:slateblue;'
+                            (click)="count = count + 1">
+                            <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
+                            <label style='width: 40%;'for="requestParams">RequestParams</label>
+                        </button>
+                        <button style='width: 100%; display: inline-block; background-color:slateblue;'
+                            (click)="count = count + 1">
+                            <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
+                            <label style='width: 40%;'for="requestParams">RequestParams</label>
+                        </button>
+                    </div>
+                </div>
+            </div>
           </div>
+
+        </fieldset>
+
+
+        <!-- </form> -->
       </div>
+      <div class="col span_1_of_3" >
+        <fieldset>
+            <legend>Diff Viewer</legend>
+        <div class="panel with-nav-tabs panel-primary">
+            <div class="panel-heading">
+                    <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" href="#diffTreeView" data-toggle="tab" role="tab" >Diff in Tree</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#diffGridView" data-toggle="tab" role="tab" > Diff in Grid</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#diffRAW" data-toggle="tab" role="tab" > Diff in RAW</a></li>
+                    </ul>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="diffTreeView" role="tabpanel">
+                        <json-tree [json]= "theDiff" [expand]="false"></json-tree>
+                    </div>
+                    <div class="tab-pane" id="diffGridView"role="tabpanel" >
+                        <json-tree [json]= "myDiff()" [expand]="true"></json-tree>
+                    </div>
+                    <div class="tab-pane" id="diffRAW"role="tabpanel" >
+                        <!-- <json-tree [json]= "myDiff2()[0]['op']" [expand]="true"></json-tree> -->
+                        <json-tree [json]= "TestDiff" [expand]="false"></json-tree>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </fieldset>
+    </div>
     </div>
   </div>
 </div>

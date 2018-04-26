@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // -Begin
 
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 // #my 3rd Party Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { RouterModule, Routes } from '@angular/router';
 
@@ -22,6 +23,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 import { MyGlobal } from './myglobals';
+
+// TreeView
+import { JsonTree } from 'ng2-json-view';
 
 // ngx-datatable
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -42,6 +46,7 @@ import { MyOwnJioHeaderComponent } from './my-own-jio-header/my-own-jio-header.c
 import { MyOwnJioHighlightsComponent } from './my-own-jio-highlights/my-own-jio-highlights.component';
 import { MyOwnJioFooterComponent } from './my-own-jio-footer/my-own-jio-footer.component';
 import { TestDataServiceComponent } from './test-data-service/test-data-service.component';
+import { TransformProvider } from '../providers/transform';
 
 const appRoutes: Routes = [
   { path: 'home', component: MyOwnJioHomeComponent },
@@ -65,7 +70,8 @@ const appRoutes: Routes = [
     MyOwnJioHeaderComponent,
     MyOwnJioHighlightsComponent,
     MyOwnJioFooterComponent,
-    TestDataServiceComponent
+    TestDataServiceComponent,
+    JsonTree
   ],
   imports: [
     BrowserModule,
@@ -82,15 +88,23 @@ const appRoutes: Routes = [
     CommonModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
-    NgxDatatableModule // Datatable
+
+    NgxDatatableModule, // Datatable
+
+    // JsonTree // Treeview
+
+    MDBBootstrapModule.forRoot() // Material Design 
   ],
   providers: [
+    TransformProvider,
     DataService, RequestsService,
     UrlUtils,
     DataPathUtils,
     MyGlobal
   ]
     ,
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class AppModule { }
