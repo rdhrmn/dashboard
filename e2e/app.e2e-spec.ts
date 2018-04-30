@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('my-trial-responsive-navbar App', () => {
+describe('my-own-jio-dashboard App', () => {
   let page: AppPage;
 
   beforeEach(() => {
