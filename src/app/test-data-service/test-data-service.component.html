@@ -327,10 +327,28 @@
               <div class="panel-body">
                   <div class="tab-content">
                       <div class="tab-pane active" id="reponseTreeView" role="tabpanel">
-                          <json-tree [json]="newobj2" [expand]="false"></json-tree>
+                          <json-tree [json]="workdata.theNewOne" [expand]="false"></json-tree>
                       </div>
-                      <div class="tab-pane" id="responseXMLView"role="tabpanel" >{{transformProvider.convertToXml(newobj2)}}</div>
-                      <div class="tab-pane" id="responseJSON"role="tabpanel" >Primary 2 {{currData | json}}</div>
+                      <div class="tab-pane" id="responseXMLView"role="tabpanel" >
+                          <pre lang="xml">
+                        {{transformProvider.convertToXml(workdata.theNewOne)}}
+                      </pre>
+
+                      </div>
+                      <div class="tab-pane" id="responseJSON"role="tabpanel" >
+
+                        <!-- <textarea name="test-deleteit" id="deleteit" cols="30" rows="10"> -->
+                            <code>
+                                <pre>{{workdata.theNewOne | json}}</pre>
+                            </code>
+
+                        <!-- </textarea> -->
+                        <!-- {{workdata.theNewOne | json}} -->
+
+
+
+                      </div>
+
                   </div>
               </div>
           </div>
@@ -352,27 +370,35 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="sameRequestResponses" role="tabpanel">
 
-                        <ng-container *ngFor="let workitem of workdata.workitems">
+                        <ng-container *ngFor="let workitem of workdata.workitems; let i = index" >
                             <ng-container *ngIf="workitem.isUnlikeRequests === false">
                                 <!-- [style.display]="'inline-block'" [style.border]="'5px solid #bbb'" [style.border-radius]="'10px'" [style.width]="'100%'" -->
                                 <!-- [style.box-shadow]="'inset 0px -5px 30px 50px #777'" [style.text-shadow]="'1px 1px 1px #eee'" -->
                                 <!-- [style.background-color]="'dodgerblue'" -->
-                          <button style='width: 100%; display: inline-block; border-radius:10px;' [style.border]="workitem.changeDiffStyle['border']" [style.box-shadow]="workitem.changeDiffStyle['box-shadow']" [style.text-shadow]="workitem.changeDiffStyle['text-shadow']" [style.background-color]="workitem.changeDiffStyle['background-color']"
+                          <button style='width: 100%; display: inline-block; border-radius:10px; border: 5px solid #bbb;'
+                          [style.animation]="workitem.changeDiffStyle['animation']" [style.border-color]="workitem.changeDiffStyle['border-color']"
+                          [style.box-shadow]="workitem.changeDiffStyle['box-shadow']" [style.text-shadow]="workitem.changeDiffStyle['text-shadow']"
+                          [style.background-color]="workitem.changeDiffStyle['background-color']"
+                          [style.border-style]="workitem.changeDiffStyle['border-style']"
                                 (mouseover)="workitem.response._envId"
                                 (click)="select2nd(workitem.response.id);"
                                 (dblclick)="select1st(workitem.response.id);"
                                 >
-                                <label style='width: 40%; vertical-align: middle;' for="responseId" [mdbTooltip]="workitem.response.responseMsg"  mdbWavesEffect>{{workitem.response.id}} for {{workitem.response._servcieId }} </label>
+                                <label style='width: 40%; vertical-align: middle;' for="responseId" [mdbTooltip]="workitem.response.responseMsg | json"  mdbWavesEffect>{{workitem.response.id}} for {{workitem.response._servcieId }} </label>
                                 <label style='width: 40%; vertical-align: middle;'for="requestParams" [mdbTooltip]="workitem.useCase + ' at ' + workitem.request._envId" mdbWavesEffect>{{workitem.request.requestMsg}}</label>
-                                <!-- <label style='width: 40%; vertical-align: middle;' for="responseId" ng-mouseover="workitem.response.responseMsg">1234 </label>
-                                <label style='width: 40%; vertical-align: middle;'for="requestParams" (mouseover)="testMethod()">3333</label> -->
+                                <!-- <ng-template #tipOnWorkResponse> <pre [innerHtml]="workitem.response.responseMsg | json" ></pre> </ng-template> -->
+                                <!-- <ng-template #tipOnWorkResponse> <div [innerHtml]= "<code> <pre> worktem.response.responseMsg | json </pre> </code>" ></div> </ng-template> -->
+                              <!-- <ng-template #tipOnWorkResponse> <div><code> <pre> [innerHTML] = {{workdata.workitems[i].response.responseMsg | json}} </pre> </code> </div> </ng-template> -->
+                                <!-- "<code> <pre>" + {{workitem.response.responseMsg | json }} + "</pre> </code>"  -->
+                                <!-- "<code>" +"<pre>" + "worktem.response.responseMsg | json" +  "</pre>" + "</code>" -->
+                                <!-- `<code> <pre> {{worktem.response.responseMsg | json}}</pre> </code>` -->
                                 </button>
                               <!-- <li class="dropdown-item"(click)="currData.service.name=service.name; currData.service.operation=service.operation; currData.service.serviceId=service.id; getTestDataFromEnvForService();">{{service.name}}-{{service.operation}}</li> -->
                             </ng-container>
                         </ng-container>
 
 
-                        <button style='width: 100%; display: inline-block; border-radius:10px;
+<!--                         <button style='width: 100%; display: inline-block; border-radius:10px;
                         box-shadow: inset 0px -5px 30px 50px #777; border: 5px solid #bbb;
                         text-shadow: 1px 1px 1px #eee;'
                             (click)="count = count + 1">
@@ -383,7 +409,7 @@
                             (click)="count = count + 1">
                             <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
                             <label style='width: 40%;'for="requestParams">RequestParams</label>
-                        </button>
+                        </button> -->
                     </div>
                     <div class="tab-pane" id="differentRequestResponses"role="tabpanel" >
                         <button style='width: 100%; display: inline-block; background-color:slateblue;'
@@ -420,14 +446,15 @@
             <div class="panel-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="diffTreeView" role="tabpanel">
-                        <json-tree [json]= "theDiff" [expand]="false"></json-tree>
+                        <json-tree [json]= "workdata.theDiffData" [expand]="false"></json-tree>
                     </div>
                     <div class="tab-pane" id="diffGridView"role="tabpanel" >
-                        <json-tree [json]= "myDiff()" [expand]="true"></json-tree>
+                        <json-tree [json]= "workdata.theDiffData" [expand]="true"></json-tree>
                     </div>
                     <div class="tab-pane" id="diffRAW"role="tabpanel" >
                         <!-- <json-tree [json]= "myDiff2()[0]['op']" [expand]="true"></json-tree> -->
-                        <json-tree [json]= "TestDiff" [expand]="false"></json-tree>
+                        <!-- <json-tree [json]= "TestDiff" [expand]="false"></json-tree> -->
+                          {{workdata.theDiffData | json}}
                     </div>
                 </div>
             </div>
@@ -437,6 +464,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- <div class="myOwnJioDetailData">
   <div class="section group">
@@ -460,6 +488,7 @@
     <div class="col span_1_of_2">
         <label id="myOwnJioSubHeader"> Service Running parameters</label>
         <p><em>This column will detail all running parameters, instances server name etc.</em></p>
+
     </div>
   </div>
 </div> -->

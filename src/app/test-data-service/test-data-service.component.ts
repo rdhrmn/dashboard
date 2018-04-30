@@ -68,15 +68,17 @@ export class TestDataServiceComponent implements OnInit {
   //                           response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null }}] ,
   //               unalikeRequests: [{request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
   //                           response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null }}]};
-  workdata = {workitems: [{request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
-                          response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null },
-                          useCase: null, isUnlikeRequests: false, is1stSelect: false, is2ndSelect: false,
-                          changeDiffStyle: {'box-shadow': null, 'text-shadow':null,'background-color': null, 'border': '5px solid #bbb'},
-                          isCurrent: false, isPrevious: false}],
-                          theDiffData: null, theNewOne: null, theOldORBase: null };
+  workdata = {workitems:
+    [{request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
+      response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null },
+      useCase: null, isUnlikeRequests: false, is1stSelect: false, is2ndSelect: false,
+      changeDiffStyle: {'box-shadow': null, 'text-shadow':null,'background-color': null,
+                        'border-color': null, 'animation': null, 'border-style': null },
+      isCurrent: false, isPrevious: false}],
+      theDiffData: null, theNewOne: null, theOldORBase: null };
   // workitems: [ request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
   //                         response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null }, isAlikeRequests: boolean};
-  theDiff = {removed:[], replaced:[], added:[]};
+  // theDiff = {removed:[], replaced:[], added:[]};
 
   currData = {'row': null,
               // 'queryParams': null,
@@ -90,17 +92,10 @@ export class TestDataServiceComponent implements OnInit {
 obj1 = {a: 4, b: 5};
 obj2 = {a: 3, b: 5};
 obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_animal':{'bat','platypus'}}
-newobj1 = {'myArray':[{'array':[1,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},'string':'Hello World'},
-{'array':[1,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
-                                                                                        'string':'Hello World','newcomplexArray':[1,2,3]},
-{'array':[1,2,3],'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
-                                                                                        'string':'Hello World','newcomplexArray':[1,2,3]}]}
-newobj2 = {'myArray':[{'array':[1,2,4,5],'boolean':false,'null':null,'number2':1245,'string':'Hello Earth','newcomplexArray':[1,2,3]},
-{'array':[1,2,3],'boolean':true,'null':null,'number':123,
-   'object':{'a':'book','animal':{'domestic':'cat','wild':'lion', 'special':{'sea':'platypus','tree':'bat'}},'e':'f'},'string':'Great World'},
-{'array':[10,2,3],'boolean':false,'null':null,'number':123,
-                                            'object':{'a':'x','c':'d','e':'y'},'string':'Hello Earth','newcomplexArray':[5,7,3]}]}
 
+
+  tempid1 = 1000;
+  tempid2 = 2000;
   // columns = [
   //   { prop: 'name' },
   //   { name: 'Gender' },
@@ -122,7 +117,12 @@ newobj2 = {'myArray':[{'array':[1,2,4,5],'boolean':false,'null':null,'number2':1
   ) {
     this.diffStyle = `width: 100%; display: inline-block; border-radius:10px;`; // ng-style failed sudenly all ng-* faliing ... this var is used in styleItemForDiff
     this.toastrService.toastrConfig.maxOpened = 1; // only one toast at a time
-    console.log('My diff :', diff(this.obj2, this.obj3));
+
+    this.workdata.theNewOne = {};
+    this.workdata.theDiffData = {};
+
+ /*
+     console.log('My diff :', diff(this.obj2, this.obj3));
     const TestDiff = diff(this.newobj1, this.newobj2);
     // this.theDiffString = JSON.parse(this.theDiff);
     console.log('Test diff :', TestDiff);
@@ -157,6 +157,7 @@ for (let i = 0; i < TestDiff.length; i++) {
 
 }
 console.log('this.theDiff : ', this.theDiff );
+*/
 /*  //   this.theDiff.returnDiffs.pop();
     // Test
     let newpath = '';
@@ -205,16 +206,18 @@ console.log('this.theDiff : ', this.theDiff );
       this.filteredRows = [...data];
       // --
       // console.log('this.services for data :', this.services);
-      for (let i = 0; i < data.length; i++) {
-        const id = data[i].serviceId;
-        data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
-        this.services.find( service => service.id === id).operation;
-      }
+      // for (let i = 0; i < data.length; i++) {
+      //   const id = data[i].serviceId;
+      //   data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
+      //   this.services.find( service => service.id === id).operation;
+      // }
       // --
       // push our inital complete list
       this.rows = data;
       setTimeout(() => { this.loadingIndicator = false; }, 1500);
     });
+
+    // this.modifyServiceIds();
    }
 
   fetch(cb) {
@@ -274,6 +277,30 @@ console.log('this.theDiff : ', this.theDiff );
   }
 
   onTest() {
+    //
+const newobj1 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:3},
+                        'boolean':true,'null':null,'number':123,
+                            'object':{'a':'b','c':'d','e':'f'},'string':'Hello World'},
+                            {id:123, 'customer':{id:2,name:3,ph:5},
+                            'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
+                            'string':'Hello World',
+                            'otherobj':{1:1,2:2,3:3}
+                          },
+                            {id:345, 'customer':{id:5,name:2,ph:5},
+                            'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
+                              'string':'Hello World',
+                              'otherobj':{1:1,2:2,3:3}}
+                            ]}
+const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean':false,'null':null,'number2':1245,
+                            'string':'Hello Earth','otherobj':{1:1,2:2,3:3}},
+                            {id:123, 'customer':{id:1,ph:5,mo:6},'boolean':true,'null':null,
+                            'object':{'a':'book','animal':{'domestic':'cat','wild':'lion',
+                                        'special':{'sea':'platypus','tree':'bat'}},'e':'f'},'string':'Great World'},
+                            {id:678, 'customer':{id:10,name:20,ph:5},'boolean':false,'null':null,'number':123,
+                                            'object':{'a':'x','c':'d','e':'y'},'string':'Hello Earth','otherobj':{5:3, 7:4, 3:4}}
+                           ]
+                  }
+    //
     let requestMsg = null;
     let responseMsg = null;
     const serviceName = this.currData.row.serviceId;
@@ -304,8 +331,8 @@ console.log('this.theDiff : ', this.theDiff );
                   (data => {
                     // console.log('POST on requests, returns :', data);
                     theRequest = data;
-                    theRequest._servcieId = serviceName; // for workdata, display requires name
-                    theRequest._envId = envName; // for workdata, display requires name
+                    theRequest._servcieId = serviceName; // for workdata only not for table, display requires name
+                    theRequest._envId = envName; // for workdata only not for table, display requires name
                     console.log('theRequest :', theRequest);
 
                             this.requestsService.post
@@ -314,19 +341,22 @@ console.log('this.theDiff : ', this.theDiff );
                               theResponse._servcieId = serviceName; // for workdata, display requires name,
                               theResponse._envId = envName; // for workdata, display requires name
                               // for demo
+                              newobj1.myArray[0].id = this.tempid1++;
+                              newobj2.myArray[0].id = this.tempid2++;
                               theResponse.responseMsg = (Math.round(Math.random() * Math.pow(10, 10)) % 2 === 0)
-                                                           ? JSON.stringify(this.newobj1) : JSON.stringify(this.newobj2);
-                            console.log('theResponse :', theResponse);
+                                                           ? newobj1 : newobj2;
+                              // console.log('theResponse :', theResponse);
 
                             if (this.workdata.workitems[0].request.id === null) {
                               this.workdata.workitems[0] =
                                   {request: theRequest, response: theResponse, isUnlikeRequests: false,
                                       useCase: 'usecase' + '-' + theRequest.id, is1stSelect: false, is2ndSelect: false,
                                       changeDiffStyle:
-                                      {'box-shadow': '', 'text-shadow': '', 'background-color': '', 'border': '5px solid #bbb'},
+                                      {'box-shadow': '', 'text-shadow': '', 'background-color': '',
+                                                          'border-color': null, 'animation': null, 'border-style': null },
                                       isCurrent: true, isPrevious: false}; // 1stTime isCurrest is set
                             } else {
-                              for(let i = 0; i< this.workdata.workitems.length ; i++) { // every next entry
+                              for(let i = 0; i < this.workdata.workitems.length ; i++) { // every next entry
                                 // 1. unset any privious (one current, none privious)
                                 // 2. unset current, set privious (none current, one privious)
                                 // 3. new entry will be current (one current , one previous)
@@ -336,10 +366,12 @@ console.log('this.theDiff : ', this.theDiff );
                                   this.workdata.workitems[i].isPrevious = true;
                                 } // 2
                               }
+
                             this.workdata.workitems.push({
                               request: theRequest, response: theResponse, isUnlikeRequests: false,
                                 useCase: 'usecase' + '-' + theRequest.id, is1stSelect: false, is2ndSelect: false,
-                                changeDiffStyle: {'box-shadow': '', 'text-shadow':'','background-color': '', 'border': '5px solid #bbb'},
+                                changeDiffStyle: {'box-shadow': '', 'text-shadow': '', 'background-color': '',
+                                                  'border-color': null, 'animation': null, 'border-style': null },
                                 isCurrent: true, isPrevious: false}); // 3
                             }
                             console.log('this.workdata :', this.workdata);
@@ -353,7 +385,7 @@ console.log('this.theDiff : ', this.theDiff );
                                     console.log('theTest :', theTest);
                                     },
                                     error => {console.log(error, 'Error'); }  );
-
+                            this.theDiffOnTest();
                             },
                             error => {console.log(error, 'Error'); }  );
         },
@@ -362,25 +394,10 @@ console.log('this.theDiff : ', this.theDiff );
   error => {console.log(error, 'Error'); }  );
 
     // ;
+
   }
 
-  addTouchPoints() {
-    // ;
-  }
-  saveResponse() {
-    // ;
-  }
 
-  myDiff() {
-    // ;
-        // return diff(this.newobj1, this.newobj2);
-
-
-    const theDiff = {returnDiffs:[]};
-    theDiff.returnDiffs = diff(this.newobj1, this.newobj2);
-
-    return theDiff;
-  }
 
   theDiffOnTest() {
     // ;
@@ -425,15 +442,29 @@ console.log('this.theDiff : ', this.theDiff );
 
                this.workdata.theNewOne = this.workdata.workitems[i].response.responseMsg;
                if (this.workdata.workitems[i].isCurrent === true) {
-                 console.log ('Need to give a pop up as one is selecting the current one, no diff is selected'); }
+                 console.log ('Need to give a pop up as one is selecting the current one, no diff is selected, workdata:', this.workdata); }
               }
             if (this.workdata.workitems[i].isCurrent === true) { // choose the current one amonmg all, there shoudl be only one current
                 this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg; }
           }
      }
-     console.log('this.workdata.theOldORBase:',this.workdata.theOldORBase, 'this.workdata.theNewOne:', this.workdata.theNewOne );
-     this.workdata.theDiffData = this.doTheDiff(this.workdata.theOldORBase, this.workdata.theNewOne );
+     console.log('this.workdata.theOldORBase:', this.workdata.theOldORBase, 'this.workdata.theNewOne:', this.workdata.theNewOne );
+     if (this.workdata.theOldORBase != null) {
+      this.workdata.theDiffData = this.doTheDiff(this.workdata.theOldORBase, this.workdata.theNewOne );
+    } else {console.log ('Pop up or toastr as workdata.theOldORBase is :', this.workdata.theOldORBase,
+    'when workdata is:', this.workdata);} // remove else after implemetation
 
+    // set style for current, previous and diff
+    for(let i = 0; i < this.workdata.workitems.length ; i ++){
+      if (this.workdata.workitems[i].isCurrent === true) {this.workdata.workitems[i].changeDiffStyle['animation'] = 'mymove 2s infinite';}
+      if (this.workdata.workitems[i].isCurrent !== true) {this.workdata.workitems[i].changeDiffStyle['animation'] = '';}
+      if (this.workdata.workitems[i].isPrevious === true){
+        this.workdata.workitems[i].changeDiffStyle['border-style'] = 'ridge';
+        // // unset the animation for current
+        // this.workdata.workitems[i].changeDiffStyle['animation'] = '';
+      }
+      if (this.workdata.workitems[i].isPrevious !== true){this.workdata.workitems[i].changeDiffStyle['border-style'] = '';}
+    }
 
 /* // like , unlike requested are ttreated same based on current and privious or 1st or 2nd select
      // All the below cases will go by current and privious if any like request, return to theDiffTextLike else theDiffTextUnlike
@@ -490,17 +521,91 @@ console.log('this.theDiff : ', this.theDiff );
       } else { newvalue = value; }
 
 
+
       switch (rawDiff[i]['op']) {
       case 'remove': theDiff.removed.push({'path': newpath}); break;
       case 'replace': theDiff.replaced.push({'path': newpath, 'value': newvalue}); break;
       case 'add': theDiff.added.push({'path': newpath, 'value': newvalue}); break;
       }
 
-      return theDiff;
 
     }
-    console.log(' returned theDiff : ', theDiff );
 
+    if ( theDiff.removed.length === 0) {theDiff.removed.push({'message': 'Nothing removed'}); }
+    if ( theDiff.replaced.length === 0) {theDiff.replaced.push({'message': 'Nothing replaced'}); }
+    if ( theDiff.added.length === 0) {theDiff.added.push({'message': 'Nothing added'}); }
+    console.log(' returned theDiff : ', theDiff );
+    return theDiff;
+
+  }
+
+  select1st(responseId){
+
+    clearTimeout(this.clickTimer);
+    for (let i = 0; i < this.workdata.workitems.length ; i++ ) {
+
+      if(this.workdata.workitems[i].response.id !== responseId) {
+        this.workdata.workitems[i].is1stSelect = false;
+        // exclude 1st select workitem
+        if (this.workdata.workitems[i].is2ndSelect !== true) {
+        this.workdata.workitems[i].changeDiffStyle['box-shadow'] = '';
+        this.workdata.workitems[i].changeDiffStyle['text-shadow'] = ''; }
+      } else {
+        this.obj1 = this.workdata.workitems[i].response.responseMsg;
+        this.workdata.workitems[i].is1stSelect = true;
+        this.workdata.workitems[i].is2ndSelect = false;
+        this.workdata.workitems[i].changeDiffStyle['box-shadow'] = 'inset 0px -5px 30px 50px #777';
+        this.workdata.workitems[i].changeDiffStyle['text-shadow'] = '1px 1px 1px #eee';
+        this.workdata.workitems[i].changeDiffStyle['background-color'] = '';
+        console.log('double click select1st-workitems :', this.workdata.workitems[i]);
+      }
+    }
+    console.log('double click select1st-this.workdata :', this.workdata);
+    this.theDiffOnTest();
+
+  // this.obj1 = this.workdata.workitems.find(workitem => workitem.response.id === responseId
+  //   && workitem.isUnlikeRequests === isUnlikeRequests).response.responseMsg;
+  }
+
+  styleItemForDiff(workitem) { // styleItemForDiff is not use das ng-style did not work
+    const secondSelect = `width: 100%; display: inline-block; background-color:dodgerblue;`;
+    const firstSelect = `width: 100%; display: inline-block; border-radius:10px;
+                        box-shadow: inset 0px -5px 30px 50px #777; border: 5px solid #bbb;
+                        text-shadow: 1px 1px 1px #eee;`;
+    const noneSelect = `width: 100%; display: inline-block; border-radius:10px;`;
+    this.diffStyle = noneSelect;
+    if ( workitem.is2ndSelect === true) {
+      this.diffStyle = secondSelect;
+    } else if (workitem.is1stSelect === true) {
+      this.diffStyle = firstSelect;
+    } // else {return noneSelect; }
+  }
+
+  select2nd(responseId) { // styleItemForDiff() is not use das ng-style did not work
+    clearTimeout(this.clickTimer);
+    this.clickTimer = setTimeout(() => {
+        for (let i = 0; i < this.workdata.workitems.length ; i++ ) {
+
+          if(this.workdata.workitems[i].response.id !== responseId) {
+              this.workdata.workitems[i].is2ndSelect = false;
+
+            // exclude 1st select workitem
+            if (this.workdata.workitems[i].is1stSelect !== true) { this.workdata.workitems[i].changeDiffStyle['background-color'] = '';}
+            } else {
+              this.obj2 = this.workdata.workitems[i].response.responseMsg;
+              this.workdata.workitems[i].is2ndSelect = true;
+              this.workdata.workitems[i].is1stSelect = false; // once workitem selected for 2nd should be removed from 1st if it is already 1st select
+              this.workdata.workitems[i].changeDiffStyle['background-color'] = 'dodgerblue';
+              this.workdata.workitems[i].changeDiffStyle['box-shadow'] = '';
+              this.workdata.workitems[i].changeDiffStyle['text-shadow'] = '';
+              console.log('single click select2nd-workitems :', this.workdata.workitems[i]);
+            }
+        }
+        console.log('single click select1st-this.workdata :', this.workdata);
+        this.theDiffOnTest();
+        // this.obj1 = this.workdata.workitems.find(workitem => workitem.response.id === responseId
+        //   && workitem.isUnlikeRequests === isUnlikeRequests).response.responseMsg;
+      }, 300);
   }
 
   onCellActivate(event) {
@@ -599,71 +704,33 @@ console.log('this.theDiff : ', this.theDiff );
   }
 
 
-  select1st(responseId){
+  modifyServiceIds() {
 
-    clearTimeout(this.clickTimer);
-    for (let i = 0; i < this.workdata.workitems.length ; i++ ) {
+    this.requestsService.get
+              (baseURL + '/tests').subscribe
+              (data => { this.rows = data;
 
-      if(this.workdata.workitems[i].response.id !== responseId) {
-        this.workdata.workitems[i].is1stSelect = false;
-        // exclude 1st select workitem
-        if (this.workdata.workitems[i].is2ndSelect !== true) {
-        this.workdata.workitems[i].changeDiffStyle['box-shadow'] = '';
-        this.workdata.workitems[i].changeDiffStyle['text-shadow'] = ''; }
-      } else {
-        this.obj1 = this.workdata.workitems[i].response.responseMsg;
-        this.workdata.workitems[i].is1stSelect = true;
-        this.workdata.workitems[i].is2ndSelect = false;
-        this.workdata.workitems[i].changeDiffStyle['box-shadow'] = 'inset 0px -5px 30px 50px #777';
-        this.workdata.workitems[i].changeDiffStyle['text-shadow'] = '1px 1px 1px #eee';
-        this.workdata.workitems[i].changeDiffStyle['background-color'] = '';
-        console.log('double click select1st-workitems :', this.workdata.workitems[i]);
-      }
-    }
-    console.log('double click select1st-this.workdata :', this.workdata);
-  // this.obj1 = this.workdata.workitems.find(workitem => workitem.response.id === responseId
-  //   && workitem.isUnlikeRequests === isUnlikeRequests).response.responseMsg;
+                      for (let i = 0; i < data.length; i++) {
+                      const id = data[i].serviceId;
+                      data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
+                      this.services.find( service => service.id === id).operation;
+
+
+                      this.requestsService.put
+                      (baseURL + '/' + 'tests' + '/' + data[i].id, data[i]).subscribe
+                      (data => { const tempTest = data;
+                      console.log('theTest :', tempTest);
+                      },
+                      error => {console.log(error, 'Error', 'data:', data); }  );
+
+                      }
+              console.log('modifyServiceIds :', this.rows;
+
+    },
+    error => {console.log(error, 'Error', ); }  );
   }
 
-  styleItemForDiff(workitem) { // styleItemForDiff is not use das ng-style did not work
-    const secondSelect = `width: 100%; display: inline-block; background-color:dodgerblue;`;
-    const firstSelect = `width: 100%; display: inline-block; border-radius:10px;
-                        box-shadow: inset 0px -5px 30px 50px #777; border: 5px solid #bbb;
-                        text-shadow: 1px 1px 1px #eee;`;
-    const noneSelect = `width: 100%; display: inline-block; border-radius:10px;`;
-    this.diffStyle = noneSelect;
-    if ( workitem.is2ndSelect === true) {
-      this.diffStyle = secondSelect;
-    } else if (workitem.is1stSelect === true) {
-      this.diffStyle = firstSelect;
-    } // else {return noneSelect; }
-  }
 
-  select2nd(responseId) { // styleItemForDiff() is not use das ng-style did not work
-    clearTimeout(this.clickTimer);
-    this.clickTimer = setTimeout(() => {
-        for (let i = 0; i < this.workdata.workitems.length ; i++ ) {
-
-          if(this.workdata.workitems[i].response.id !== responseId) {
-              this.workdata.workitems[i].is2ndSelect = false;
-
-            // exclude 1st select workitem
-            if (this.workdata.workitems[i].is1stSelect !== true) { this.workdata.workitems[i].changeDiffStyle['background-color'] = '';}
-            } else {
-              this.obj2 = this.workdata.workitems[i].response.responseMsg;
-              this.workdata.workitems[i].is2ndSelect = true;
-              this.workdata.workitems[i].is1stSelect = false; // once workitem selected for 2nd should be removed from 1st if it is already 1st select
-              this.workdata.workitems[i].changeDiffStyle['background-color'] = 'dodgerblue';
-              this.workdata.workitems[i].changeDiffStyle['box-shadow'] = '';
-              this.workdata.workitems[i].changeDiffStyle['text-shadow'] = '';
-              console.log('single click select2nd-workitems :', this.workdata.workitems[i]);
-            }
-        }
-        console.log('single click select1st-this.workdata :', this.workdata);
-        // this.obj1 = this.workdata.workitems.find(workitem => workitem.response.id === responseId
-        //   && workitem.isUnlikeRequests === isUnlikeRequests).response.responseMsg;
-      }, 300);
-  }
   getServiceIdFromServcieOps(serviceName, OpsName) {
     const sameServices = [];
     for (let i = 0; i < this.services.length; i++) {
@@ -678,6 +745,24 @@ console.log('this.theDiff : ', this.theDiff );
         console.log('the id for  :' , serviceName, 'with', OpsName, 'is :', sameServices[i].Id);
         return sameServices[i].Id;
       }}
+  }
+
+  addTouchPoints() {
+    // ;
+  }
+  saveResponse() {
+    // ;
+  }
+
+  myDiff() {
+    // ;
+        // return diff(this.newobj1, this.newobj2);
+
+
+    const theDiff = {returnDiffs:[]};
+    // theDiff.returnDiffs = diff(this.newobj1, this.newobj2);
+
+    return theDiff;
   }
   testMethod(){
     console.log('testMethod:', 'I am in testMethod')
