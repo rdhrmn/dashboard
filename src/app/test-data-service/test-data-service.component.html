@@ -1,40 +1,16 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-10" id="Headline" style="padding-left: 0px; padding-right: 0px;">
-          <!-- <b>Servcie Test details</b> -->
-
       <ng-container *ngIf="theView==0;then testcases else testsuits">here is ignored</ng-container>
       <ng-template #testcases> <h3> <b>Servcie Readiness: Test cases</b> </h3> </ng-template>
       <ng-template #testsuits> <h3 style="background-color: #0b51c5 !important;"> <b>Servcie Readiness: Test suits</b> </h3> </ng-template>
-
     </div>
     <div class="col-sm-2" id="SwitchBetCaseAndSuit" style="padding-left: 0px; padding-right: 0px;">
-
-
-
-      <!-- <input type="button" [ngStyle]="myStyle" value="set color" (click)="myStyle={color:'red'}">
-      <span [ngStyle]="myStyle">Sample Text</span> -->
-      <!-- <input type="button" value="set color" ng-click=testMethod()> --
-      <!-- <input type="button" value="set color" (click)=testMethod()> --
-      <!-- <div [ngStyle]="{'background-color':person.country === 'UK' ? 'green' : 'red' }"></<div> -->
-
-      <!-- <span [ngStyle]="{'background-color':'green'}">Sample Text</span> -->
-      <!-- <pre>myStyle={{myStyle}} {{singleModel}}</pre> -->
-      <!-- myStyle={{myStyle}}  -->
-      <!-- click="showSwiper = !showSwiper" -->
-      <!-- <input type="button" [ngStyle]="myStyle" value="set color" (click)="myStyle={color:'red'}"> -->
-      <!-- <button type="button" class="btn btn-primary waves-light" autocomplete="off" [(ngModel)]="singleModel2" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
-          Single toggle {{singleModel2}}
-      </button> -->
-
-      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 1px; ; margin: 0; height: 32px;" autocomplete="off" [(ngModel)]="theView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
-      <ng-container *ngIf="theView==0;then ontestcases else ontestsuits">this.theView is declared baanana [()] here and can be accessed from any where, if only [] then within UI access</ng-container>
-      <ng-template #ontestcases> <h3 style="font-size: medium; text-align: inherit;"> <b>Testsuits</b> </h3> </ng-template> <!-- Go to Test suits -->
-      <ng-template #ontestsuits> <h3 style="font-size: medium; text-align: inherit; background-color: #0b51c5 !important;"> <b>Testcases</b> </h3> </ng-template>
+      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 0px; ; margin: 0; height: 32px;" autocomplete="off" [(ngModel)]="theView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
+      <ng-container *ngIf="theView==0;then ontestcases else ontestsuits">this.theView is declared baanana [()] here and can be accessed from any where, if only [] one way component to UI, https://angular.io/api/forms/NgModel</ng-container>
+      <ng-template #ontestcases> <h3 style="font-size: medium; text-align: inherit;"> <b>For Testsuits</b> </h3> </ng-template> <!-- Go to Test suits -->
+      <ng-template #ontestsuits> <h3 style="font-size: medium; text-align: inherit; background-color: #0b51c5 !important;"> <b>For Testcases</b> </h3> </ng-template>
       </button>
-
-
-
     </div>
   </div>
   <div class="row">
@@ -116,14 +92,13 @@
   </div>
 </div>
 
-
 <!-- Testcase area -->
 
-<div class="TestCasesArea">
+<div class="container-fluid">
   <!-- <textarea ></textarea> -->
     <!-- <div style='float:left;width:75%'> -->
-  <div class="section group" style='margin-bottom: 0px;'>
-    <div class="col span_3_of_4" >
+  <div class="row" style=''>
+    <div class="col-sm-8" style='padding-left: 5px;padding-right: 5px;'>
       <!-- <div class="info">
         <p> abcd</p>
       </div> -->
@@ -142,6 +117,11 @@
         [rowHeight]="'auto'"
 
         [selected]="selected"
+        [selectionType]="'multi'"
+        (activate)="onActivate($event)"
+        (select)='onSelect($event)'
+
+        [selected]="selected"
         [selectionType]="'checkbox'"
         (activate)="onActivate($event)"
         (select)='onSelect($event)'
@@ -157,14 +137,14 @@
 
         [rowClass]="getRowClass"
       >
-      <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" *ngIf="isuseCasesDiff">
+      <!-- <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" *ngIf="isuseCasesDiff">
           <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
             <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"/>
           </ng-template>
           <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
             <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)"/>
           </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
 
       <ngx-datatable-column name="Id" [width]="30">
         <ng-template ngx-datatable-cell-template let-value="value">
@@ -184,18 +164,18 @@
             <!-- {{currData.service.name}} -->
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="UseCase" prop="useCase">
+      <ngx-datatable-column name="useCase" prop="useCase">
           <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
             <span
               title="Double click to edit"
-              (dblclick)="editedRow[rowIndex + '-UseCase'] = true"
-              *ngIf="!editedRow[rowIndex + '-UseCase']">
+              (dblclick)="editedRow[rowIndex + '-useCase'] = true"
+              *ngIf="!editedRow[rowIndex + '-useCase']">
               {{value}}
             </span>
             <input
               autofocus
-              (blur)="updateValue($event, 'UseCase', rowIndex)"
-              *ngIf="editedRow[rowIndex+ '-UseCase']"
+              (blur)="updateValue($event, 'useCase', rowIndex)"
+              *ngIf="editedRow[rowIndex+ '-useCase']"
               type="text"
               [value]="value"
             />
@@ -286,7 +266,7 @@
 
       </ngx-datatable>
     </div>
-    <div class="col span_1_of_4" id="rowconext" style='margin-bottom: 1px; margin-top: 1px;'>
+    <div class="col-sm-4" id="rowconext" style='padding-left: 5px;padding-right: 5px;'>
       <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
         <fieldset style='background: #9ed8fa;'>
           <legend>Env Settings : {{currData.env.envName}} for {{currData.row.serviceId}}</legend>
@@ -312,8 +292,10 @@
           <!-- *ngFor outdated to be replaced with ngForOf -->
           <ng-container *ngFor="let param of currData.requestParams; let i = index">
               <!-- <ng-container *ngIf="env.envDiv === uniqueEnvDiv"> -->
+                <div [ngStyle]="{'float': (i+1) % 3 === 0 ? '' : 'left'}">
                   <label for="name">{{param.name}}</label>
                   <input type="text" name="name" id="name" placeholder={{queryitem}} [(ngModel)] = "currData.requestParams[i].value"/>
+                </div>
                   <!-- <label for="myval">{{currData.requestParams[i].value}}</label> -->
               <!-- </ng-container> -->
           </ng-container>
@@ -328,7 +310,7 @@
         <!-- <label class="switch"><input type="checkbox"> <span class="slider round"></span> </label> -->
       </form>
       <!-- <form style='background: #faec9e;' *ngIf="contextmenuRow"> -->
-      <form style='background: #faec9e;' *ngIf="isSelected">
+      <!-- <form style='background: #faec9e;' *ngIf="isSelected">
           <fieldset style='background: #faec9e;'>
             <legend>Touch Points</legend>
             <input type="text" name="touchpoint1" id="touchpoint1" style='float:left; width:30%; margin:3px;' value='touchpoint1'/>
@@ -336,7 +318,7 @@
             <input type="text" name="touchpoint3" id="touchpoint3" style='float:left; width:30%; margin:3px;' size="40" value='touchpoint3'/>
             <input type="text" name="touchpoint1" id="touchpoint4" style='float:left; width:30%; margin:3px;' value='touchpoint4'/>
           </fieldset>
-      </form>
+      </form> -->
     </div>
   </div>
 <!-- <hr> -->
@@ -361,13 +343,13 @@
 
 <!-- Response diff Area -->
 
-<div class="ResponseDiff" id="responseDetail">
+<div class="container-fluid" id="responseDetail">
   <!-- <div class="section group" *ngIf="onTest"> -->
-  <div class="section group">
+  <div class="row">
     <!-- <div class="col span_1_of_10" style='margin-bottom: 1px; margin-top: 1px;'>
     <button type="submit">Submit</button><br>
     </div> -->
-    <div class="col span_1_of_3" >
+    <div class="col-sm-4" >
         <fieldset>
             <legend>Response message</legend>
         <div class="panel with-nav-tabs panel-primary">
@@ -409,7 +391,7 @@
       </fieldset>
 
     </div>
-    <div class="col span_1_of_3">
+    <div class="col-sm-4">
         <!-- <form> -->
       <fieldset>
         <legend>Working Responses</legend>
@@ -487,7 +469,7 @@
 
       <!-- </form> -->
     </div>
-    <div class="col span_1_of_3" >
+    <div class="col-sm-4" >
       <fieldset>
           <legend>Diff Viewer</legend>
       <div class="panel with-nav-tabs panel-primary">

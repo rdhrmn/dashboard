@@ -208,11 +208,11 @@ console.log('this.theDiff : ', this.theDiff );
       this.filteredRows = [...data];
       // --
       // console.log('this.services for data :', this.services);
-      // for (let i = 0; i < data.length; i++) {
-      //   const id = data[i].serviceId;
-      //   data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
-      //   this.services.find( service => service.id === id).operation;
-      // }
+      for (let i = 0; i < data.length; i++) {
+        const id = data[i].serviceId;
+        data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
+        this.services.find( service => service.id === id).operation;
+      }
       // --
       // push our inital complete list
       this.rows = data;
@@ -240,8 +240,11 @@ console.log('this.theDiff : ', this.theDiff );
     console.log('Select Event', 'From event, selected:->', selected, 'this.selected:->', this.selected);
     this.isSelected = true;
     console.log('isSelected', this.isSelected);
-    this.currData.row = selected[0];
+    this.currData.row = selected[0]; // should work if editing (wrt property ~ name) at page is good
+    // this.currData.row = this.selected[0]; // this works
     const serviceOperation = selected[0].serviceId.split('-');
+    // const serviceOperation = this.selected[0].serviceId.split('-'); // this works
+    // const serviceOperation = this.currData.row.serviceId.split('-'); // this works
     console.log('this.currData.row:', this.currData.row, this.currData,
                 serviceOperation[0], serviceOperation[1]
               );
