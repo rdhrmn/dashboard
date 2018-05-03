@@ -93,7 +93,7 @@ const appRoutes: Routes = [
 
     // JsonTree // Treeview
 
-    MDBBootstrapModule.forRoot() // Material Design 
+    MDBBootstrapModule.forRoot() // Material Design
   ],
   providers: [
     TransformProvider,

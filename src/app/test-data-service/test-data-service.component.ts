@@ -52,12 +52,14 @@ export class TestDataServiceComponent implements OnInit {
   contextmenuRow: any;
   contextmenuColumn: any;
   isSelected = false;
+  isuseCasesDiff = false;
   activatedRow: any;
   editedRow = {};
   recordHighlightParam = 10;
   cellHighlightParam = 'female';
 
   clickTimer: any;
+  singleModel = 1;
   // request = {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null };
   // response = {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null };
   // workitem = {request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
@@ -610,10 +612,12 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
 
   onCellActivate(event) {
     console.log('Activate Cell Event', event);
+    this.isuseCasesDiff = true;
   }
 
   onCellSelect({ selected }) {
     console.log('Select Cell Event', selected, this.selected);
+
 
   }
 
@@ -724,7 +728,7 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
                       error => {console.log(error, 'Error', 'data:', data); }  );
 
                       }
-              console.log('modifyServiceIds :', this.rows;
+              console.log('modifyServiceIds :', this.rows);
 
     },
     error => {console.log(error, 'Error', ); }  );
@@ -765,7 +769,10 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
     return theDiff;
   }
   testMethod(){
-    console.log('testMethod:', 'I am in testMethod')
+
+    console.log('testMethod:', 'I am in testMethod');
+    this.singleModel = this.singleModel + 1;
+    console.log('singleModel:', this.singleModel, 'the variable name to be removed');
   }
 
   ngOnInit() {
