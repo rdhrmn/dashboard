@@ -98,6 +98,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
   tempid1 = 1000;
   tempid2 = 2000;
+  words2 = [{value: 'word1'}, {value: 'word2'}, {value: 'word3'}, {value: ''}];
   // columns = [
   //   { prop: 'name' },
   //   { name: 'Gender' },
@@ -776,6 +777,10 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
     console.log('testMethod:', 'I am in testMethod');
     this.singleModel = this.singleModel + 1;
     console.log('singleModel:', this.singleModel, 'the variable name to be removed');
+  }
+
+  add() {
+    this.words2.push({value: 'gsre'});
   }
 
   ngOnInit() {

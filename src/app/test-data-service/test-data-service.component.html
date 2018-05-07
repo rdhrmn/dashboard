@@ -98,7 +98,7 @@
   <!-- <textarea ></textarea> -->
     <!-- <div style='float:left;width:75%'> -->
   <div class="row" style=''>
-    <div class="col-sm-8" style='padding-left: 5px;padding-right: 5px;'>
+    <div class="col-sm-9" style='padding-left: 5px;padding-right: 5px;'>
       <!-- <div class="info">
         <p> abcd</p>
       </div> -->
@@ -266,7 +266,7 @@
 
       </ngx-datatable>
     </div>
-    <div class="col-sm-4" id="rowconext" style='padding-left: 5px;padding-right: 5px;'>
+    <div class="col-sm-3" id="rowconext" style='padding-left: 5px;padding-right: 5px;'>
       <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
         <fieldset style='background: #9ed8fa;'>
           <legend>Env Settings : {{currData.env.envName}} for {{currData.row.serviceId}}</legend>
@@ -307,6 +307,49 @@
         <button type="submit" id="onTest" (click)="onTest()">Test</button> |
         <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label> |
         <input type="checkbox" id="unlikeRequestChek" (value)="isUnlikeRequests" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Against Other</label> |
+
+<div class="bd-example">
+    <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#finaliseTestCase" data-whatever="@mdo" (click)="testCaseFinalDetail.show()" mdbWavesEffect>Open</button>
+
+    <div mdbModal #testCaseFinalDetail="mdb-modal" class="modal fade" id="finaliseTestCase" tabindex="-1" role="dialog" aria-labelledby="finaliseTestCaseLabel"
+                                                  aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false, show: fasle, animated:true}" >
+        <div class="modal-dialog modal-side modal-top-right" role="document">
+            <div class="modal-content">
+                <div class="modal-header blue darken-3 white-text">
+                    <h4 class="modal-title" id="finaliseTestCaseLabel"> <i class="fa fa-pencil"></i> New message to {{ currData.service.name }}</h4>
+                    <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close" (click)="testCaseFinalDetail.hide()">
+                        <span aria-hidden="true" class="white-text"> <b>x</b></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-angle-double-right prefix"></i>
+                            <input mdbInputDirective type="text" id="UpdateUsecaseName" class="form-control" [value]="currData.service.name">
+                            <label for="UpdateUsecaseName">Usecase name</label>
+                        </div>
+                        <form #formRef="ngForm">
+                            <div class="form-group">
+                                  <div *ngFor="let word2 of words2; let in=index" class="col-sm-3" style = "float:left" >
+                                  <input type="text" [(ngModel)]="words2[in].value" name="name{{in}}" class="form-control" #name="ngModel" required />
+                                  <!--<p [hidden]="words2[in].value">Field is required</p>
+                                  {{formRef.form.name1}}-->
+                                </div>
+                          </div>
+                          <button [disabled]="!formRef.form.valid" (click)="add()">Add input</button>
+                          <!-- Have implementation for delete the column with action i each column input box, takeout from array -->
+                      </form>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-light" data-dismiss="modal" (click)="testCaseFinalDetail.hide()" mdbWavesEffect>Close</button>
+                    <button type="button" class="btn btn-primary waves-light" mdbWavesEffect>Send message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
         <!-- <label class="switch"><input type="checkbox"> <span class="slider round"></span> </label> -->
       </form>
       <!-- <form style='background: #faec9e;' *ngIf="contextmenuRow"> -->
