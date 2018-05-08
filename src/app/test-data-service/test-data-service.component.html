@@ -323,21 +323,21 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="md-form form-sm">
+                        <div style="border-style: solid; border-width: 5px; border-color: aliceblue aliceblue transparent aliceblue;" class="md-form form-sm">
                             <i class="fa fa-angle-double-right prefix"></i>
                             <input mdbInputDirective type="text" id="UpdateUsecaseName" class="form-control" [value]="currData.service.name">
                             <label for="UpdateUsecaseName">Usecase name</label>
                         </div>
-                        <form #formRef="ngForm">
+                        <form style="border-style: solid; border-width: 5px; border-color: aliceblue;" #formRef="ngForm">
                             <div class="form-group">
-                                  <div *ngFor="let word2 of words2; let in=index" class="col-sm-3" style = "float:left" >
-                                  <input type="text" [(ngModel)]="words2[in].value" name="name{{in}}" class="form-control" #name="ngModel" required />
+                                  <div *ngFor="let touchPoint of touchPoints; let in=index" class="col-sm-3" style = "float:left" >
+                                  <input type="text" [(ngModel)]="touchPoint.value" name="name{{in}}" class="form-control" #name="ngModel" required data-toggle="tooltip" [title]="touchPoint.value"/>
                                   <!--<p [hidden]="words2[in].value">Field is required</p>
                                   {{formRef.form.name1}}-->
                                 </div>
                           </div>
-                          <button [disabled]="!formRef.form.valid" (click)="add()">Add input</button>
-                          <!-- Have implementation for delete the column with action i each column input box, takeout from array -->
+                          <button [disabled]="!formRef.form.valid" (click)="addTouchPoints()">Add Touchpoints</button>
+                          <!-- Have implementation for delete the column with action i each column input box, takeout from the array -->
                       </form>
                     </form>
                 </div>

@@ -98,7 +98,9 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
   tempid1 = 1000;
   tempid2 = 2000;
-  words2 = [{value: 'word1'}, {value: 'word2'}, {value: 'word3'}, {value: ''}];
+  // touchPoints = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}, {value: ''}];
+  touchPoints = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}];
+  requestMsg = 'partyId=P123&channelId=C123&serviceId=S123&subCatagory=abc&accountId=A12345';
   // columns = [
   //   { prop: 'name' },
   //   { name: 'Gender' },
@@ -755,8 +757,10 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
       }}
   }
 
-  addTouchPoints() {
+  addTouchPoints(newtouchPoint) {
     // ;
+    this.touchPoints.push({value: newtouchPoint});
+    console.log('this.touchPoints:', this.touchPoints);
   }
   saveResponse() {
     // ;
@@ -780,7 +784,7 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
   }
 
   add() {
-    this.words2.push({value: 'gsre'});
+    this.touchPoints.push({value: 'gsre'});
   }
 
   ngOnInit() {
