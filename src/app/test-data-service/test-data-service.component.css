@@ -322,19 +322,19 @@ select {
   }
 
   #rowconext button,
-  #debugtempId  button {
+  #queryParamBox button {
     padding: 0.2em 0.5em;
     /* border:1px solid firebrick; */
     color:darkblue;
     /* font:70%/1 sans-serif; */
-    font:90%/1 sans-serif;
+    font:70%/1 sans-serif;
     font-weight: bold;
     margin: 1% 0 1% 1.6%;
     margin-top: 1px;
     margin-bottom: 1px;
     }
 
-#debugtempId   label {
+#queryParamBox  label {
   float:left;
   /* width:25%; */
   width:50px;
@@ -343,13 +343,14 @@ select {
   text-align:right;
   font-weight:bold;
   }
-#debugtempId   input {
+#queryParamBox  input {
   /* float:left; */
   /* width:25%; */
   width:50px;
   /* margin-right:0.5em; */
   /* padding-top:0.2em; */
-  text-align:right;
+  /* text-align:left; */
+  font-size: inherit;
   font-weight:bold;
   display: initial;
   border-bottom: none;
@@ -434,4 +435,9 @@ margin-bottom: -1px;
 @keyframes mymove {
   50% {border: 5px solid lightblue;}
 }
+
+input[type="text"]:disabled {
+    /* background: #dddddd; */
+    background-color:#aaa;text-shadow:0px 1px 0px rgba(0,0,0,.5);color:#666;
+} 
 

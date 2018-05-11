@@ -286,15 +286,27 @@
       <!-- <form style='background: #cafa9e;' *ngIf="contextmenuRow"> -->
       <form style='background: #cafa9e;' *ngIf="isSelected">
         <!-- <button type="submit">Edit</button><button type="submit">Save</button><br> -->
-        <fieldset id="debugtempId" style='background: #cafa9e;'>
+        <fieldset id="queryParamBox" style='background: #cafa9e;'>
 
           <legend>Query Params - {{currData.row.serviceId}}</legend>
           <!-- *ngFor outdated to be replaced with ngForOf -->
           <ng-container *ngFor="let param of currData.requestParams; let i = index">
               <!-- <ng-container *ngIf="env.envDiv === uniqueEnvDiv"> -->
-                <div [ngStyle]="{'float': (i+1) % 3 === 0 ? '' : 'left'}">
-                  <label for="name">{{param.name}}</label>
-                  <input type="text" name="name" id="name" placeholder={{queryitem}} [(ngModel)] = "currData.requestParams[i].value"/>
+                <!-- <div [ngStyle]="{'float': (i+1) % 3 === 0 ? '' : 'left'}"> -->
+                <div [ngStyle]="{'float': 'left'}">
+                  <!-- <label (mouseover)='toggleDisable = !toggleDisable' [(ngModel)]="toggleDisable" for="name">{{param.name}}</label>
+                  <input [disabled]='toggleDisable' type="text" name={{param.name}} id={{param.name}} placeholder={{param.name}} [(ngModel)] = "param.value"/> -->
+
+                  <label name=123 (mouseover)='toggleDisable = !toggleDisable' [(ngModel)]="toggleDisable" [ngValue]="false"  ngDefaultControl
+                  for={{param.name}}>{{param.name}}</label>
+                  <!-- <input [ngStyle]="{'background-color':'#aaa';'text-shadow':'0px 1px 0px rgba(0,0,0,.5)';'color':#'666'}" disabled -->
+                  <input disabled 
+                  [disabled]='toggleDisable' 
+                  [ngStyle]="{'background-color':toggleDisable === true ? '#aaa' : ''}" 
+                  [ngStyle]="{'text-shadow': toggleDisable === true ? '0px 1px 0px rgba(0,0,0,.5)' : ''}" 
+                  [ngStyle]="{'color': toggleDisable === true ? '#666' : ''}" 
+                  type="text" name='"{{param.name}}"' id={{param.name}} placeholder={{param.name}} [(ngModel)] = "param.value"/>
+                  <!-- <input type="text" name="param-{{i}}" #param="ngModel" id={{param.name}} placeholder={{param.name}} [(ngModel)] = "param.value"/> -->
                 </div>
                   <!-- <label for="myval">{{currData.requestParams[i].value}}</label> -->
               <!-- </ng-container> -->
@@ -305,8 +317,8 @@
           <input type="text" name="address" id="address" size="40" /> -->
         </fieldset>
         <button type="submit" id="onTest" (click)="onTest()">Test</button> |
-        <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label> |
-        <input type="checkbox" id="unlikeRequestChek" (value)="isUnlikeRequests" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:90%/1 sans-serif;font-weight: bold;color:darkblue;">Against Other</label> |
+        <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:70%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label> |
+        <input type="checkbox" id="unlikeRequestChek" (value)="isUnlikeRequests" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:70%/1 sans-serif;font-weight: bold;color:darkblue;">Against Other</label> |
 
 <div class="bd-example">
     <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#finaliseTestCase" data-whatever="@mdo" (click)="testCaseFinalDetail.show()" mdbWavesEffect>Open</button>
@@ -464,7 +476,7 @@
                                     (dblclick)="select1st(workitem.response.id);"
                                     >
                               <label style='width: 40%; vertical-align: middle;' for="responseId" [mdbTooltip]="workitem.response.responseMsg | json"  mdbWavesEffect>{{workitem.response.id}} for {{workitem.response._servcieId }} </label>
-                              <label style='width: 40%; vertical-align: middle;'for="requestParams" [mdbTooltip]="workitem.useCase + ' at ' + workitem.request._envId" mdbWavesEffect>{{workitem.request.requestMsg}}</label>
+                              <label style='width: 40%; vertical-align: middle; overflow:hidden'for="requestParams" [mdbTooltip]="workitem.useCase + ' at ' + workitem.request._envId + '\n' + workitem.request.requestMsg " mdbWavesEffect>{{workitem.request.requestMsg}}</label>
                               <!-- <ng-template #tipOnWorkResponse> <pre [innerHtml]="workitem.response.responseMsg | json" ></pre> </ng-template> -->
                               <!-- <ng-template #tipOnWorkResponse> <div [innerHtml]= "<code> <pre> worktem.response.responseMsg | json </pre> </code>" ></div> </ng-template> -->
                             <!-- <ng-template #tipOnWorkResponse> <div><code> <pre> [innerHTML] = {{workdata.workitems[i].response.responseMsg | json}} </pre> </code> </div> </ng-template> -->

@@ -100,7 +100,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   tempid2 = 2000;
   // touchPoints = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}, {value: ''}];
   touchPoints = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}];
-  requestMsg = 'partyId=P123&channelId=C123&serviceId=S123&subCatagory=abc&accountId=A12345';
+  requestMsgDeletelater = 'partyId=P123&channelId=C123&serviceId=S123&subCatagory=abc&accountId=A12345';
   // columns = [
   //   { prop: 'name' },
   //   { name: 'Gender' },
@@ -264,13 +264,27 @@ console.log('this.theDiff : ', this.theDiff );
               this.requestsService.get('http://localhost:3004/queryparams?_serviceId=' + service[0].id)
                       .subscribe(newdata => { const queryParams = newdata;
               // console.log(' query detail :', queryParams); // comment this line once things fine
-
               const temprequestParam = [];
-              for (let _i = 0; _i < queryParams[0].items.length; _i++) {
+              for (let _i = 0; _i < queryParams[0].items.length; _i++) { // populate all names
                   temprequestParam.push({'name': queryParams[0].items[_i], 'value': null});
               }
+
+              const splitTheRequest = this.requestMsgDeletelater.split('&');
+              for(let it = 0; it < splitTheRequest.length; it++ ){
+                const the2ndSplit = splitTheRequest[it].split('=');
+                // console.log('it:', it, ' the2ndSplit :', the2ndSplit, 'the2ndSplit[0]:', the2ndSplit[0],
+                // 'the2ndSplit[1]:', the2ndSplit[1]);
+                for (let _j = 0; _j < temprequestParam.length; _j++) { // for matched name in the request
+                  if (temprequestParam[_j].name === the2ndSplit[0]) {
+                    temprequestParam[_j].value = the2ndSplit[1];
+                    // console.log('_j:',  _j, 'temprequestParam[_j].name :', temprequestParam[_j].name ,
+                    //             'temprequestParam[_j].value', temprequestParam[_j].value);
+                  }
+                }
+              }
+
               this.currData.requestParams = temprequestParam;
-              // console.log(' currData.requestParams detail :', this.currData.requestParams);
+              console.log(' currData.requestParams detail :', this.currData.requestParams);
               },
               error => {console.log(error, 'Error'); }  );
   },
@@ -309,7 +323,7 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
                            ]
                   }
     //
-    let requestMsg = null;
+    let requestMsg = '';
     let responseMsg = null;
     const serviceName = this.currData.row.serviceId;
     const envName = this.currData.env.envName;
@@ -318,7 +332,7 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
     let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null };
     for ( let i = 0 ; i < this.currData.requestParams.length; i++) {
       if (this.currData.requestParams[i].value != null){
-        requestMsg = this.currData.requestParams[i].name + '=' + this.currData.requestParams[i].value + '&';
+        requestMsg = requestMsg + this.currData.requestParams[i].name + '=' + this.currData.requestParams[i].value + '&';
       }
     }
     const requestURL = baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg; console.log('requestURL :', requestURL);
