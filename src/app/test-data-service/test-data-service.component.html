@@ -297,14 +297,14 @@
                   <!-- <label (mouseover)='toggleDisable = !toggleDisable' [(ngModel)]="toggleDisable" for="name">{{param.name}}</label>
                   <input [disabled]='toggleDisable' type="text" name={{param.name}} id={{param.name}} placeholder={{param.name}} [(ngModel)] = "param.value"/> -->
 
-                  <label name=123 (mouseover)='toggleDisable = !toggleDisable' [(ngModel)]="toggleDisable" [ngValue]="false"  ngDefaultControl
+                  <label name=123 (click)='toggleDisable = !toggleDisable' [(ngModel)]="toggleDisable" [ngValue]="false"  ngDefaultControl
                   for={{param.name}}>{{param.name}}</label>
                   <!-- <input [ngStyle]="{'background-color':'#aaa';'text-shadow':'0px 1px 0px rgba(0,0,0,.5)';'color':#'666'}" disabled -->
-                  <input disabled 
-                  [disabled]='toggleDisable' 
-                  [ngStyle]="{'background-color':toggleDisable === true ? '#aaa' : ''}" 
-                  [ngStyle]="{'text-shadow': toggleDisable === true ? '0px 1px 0px rgba(0,0,0,.5)' : ''}" 
-                  [ngStyle]="{'color': toggleDisable === true ? '#666' : ''}" 
+                  <input disabled
+                  [disabled]='toggleDisable'
+                  [ngStyle]="{'background-color':toggleDisable === true ? '#aaa' : ''}"
+                  [ngStyle]="{'text-shadow': toggleDisable === true ? '0px 1px 0px rgba(0,0,0,.5)' : ''}"
+                  [ngStyle]="{'color': toggleDisable === true ? '#666' : ''}"
                   type="text" name='"{{param.name}}"' id={{param.name}} placeholder={{param.name}} [(ngModel)] = "param.value"/>
                   <!-- <input type="text" name="param-{{i}}" #param="ngModel" id={{param.name}} placeholder={{param.name}} [(ngModel)] = "param.value"/> -->
                 </div>
@@ -320,47 +320,48 @@
         <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:70%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label> |
         <input type="checkbox" id="unlikeRequestChek" (value)="isUnlikeRequests" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:70%/1 sans-serif;font-weight: bold;color:darkblue;">Against Other</label> |
 
-<div class="bd-example">
-    <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#finaliseTestCase" data-whatever="@mdo" (click)="testCaseFinalDetail.show()" mdbWavesEffect>Open</button>
+        <div class="storeResponse" style="display: inline;">
+            <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#finaliseTestCase" data-whatever="@mdo" (click)="testCaseFinalDetail.show()" mdbWavesEffect>Store Test</button>
 
-    <div mdbModal #testCaseFinalDetail="mdb-modal" class="modal fade" id="finaliseTestCase" tabindex="-1" role="dialog" aria-labelledby="finaliseTestCaseLabel"
-                                                  aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false, show: fasle, animated:true}" >
-        <div class="modal-dialog modal-side modal-top-right" role="document">
-            <div class="modal-content">
-                <div class="modal-header blue darken-3 white-text">
-                    <h4 class="modal-title" id="finaliseTestCaseLabel"> <i class="fa fa-pencil"></i> New message to {{ currData.service.name }}</h4>
-                    <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close" (click)="testCaseFinalDetail.hide()">
-                        <span aria-hidden="true" class="white-text"> <b>x</b></span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div style="border-style: solid; border-width: 5px; border-color: aliceblue aliceblue transparent aliceblue;" class="md-form form-sm">
-                            <i class="fa fa-angle-double-right prefix"></i>
-                            <input mdbInputDirective type="text" id="UpdateUsecaseName" class="form-control" [value]="currData.service.name">
-                            <label for="UpdateUsecaseName">Usecase name</label>
+            <div mdbModal #testCaseFinalDetail="mdb-modal" class="modal fade" id="finaliseTestCase" tabindex="-1" role="dialog" aria-labelledby="finaliseTestCaseLabel"
+                                                          aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false, show: fasle, animated:true}" >
+                <div class="modal-dialog modal-side modal-top-right" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header blue darken-3 white-text">
+                            <!-- <h4 class="modal-title" id="finaliseTestCaseLabel"> <i class="fa fa-pencil"></i> New message to {{ currData.service.name }}</h4> -->
+                            <h4 class="modal-title" id="finaliseTestCaseLabel"> <i class="fa fa-pencil"></i> Finalise the testcase</h4>
+                            <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close" (click)="testCaseFinalDetail.hide()">
+                                <span aria-hidden="true" class="white-text"> <b>x</b></span>
+                            </button>
                         </div>
-                        <form style="border-style: solid; border-width: 5px; border-color: aliceblue;" #formRef="ngForm">
-                            <div class="form-group">
-                                  <div *ngFor="let touchPoint of touchPoints; let in=index" class="col-sm-3" style = "float:left" >
-                                  <input type="text" [(ngModel)]="touchPoint.value" name="name{{in}}" class="form-control" #name="ngModel" required data-toggle="tooltip" [title]="touchPoint.value"/>
-                                  <!--<p [hidden]="words2[in].value">Field is required</p>
-                                  {{formRef.form.name1}}-->
+                        <div class="modal-body">
+                            <form>
+                                <div style="border-style: solid; border-width: 5px; border-color: lightgray lightgray  lightgray aliceblue;" class="md-form form-sm">
+                                    <i class="fa fa-angle-double-right prefix"></i>
+                                    <input mdbInputDirective type="text" id="UpdateUsecaseName" class="form-control" [value]="currData.service.name">
+                                    <label for="UpdateUsecaseName">Usecase name</label>
                                 </div>
-                          </div>
-                          <button [disabled]="!formRef.form.valid" (click)="addTouchPoints()">Add Touchpoints</button>
-                          <!-- Have implementation for delete the column with action i each column input box, takeout from the array -->
-                      </form>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary waves-light" data-dismiss="modal" (click)="testCaseFinalDetail.hide()" mdbWavesEffect>Close</button>
-                    <button type="button" class="btn btn-primary waves-light" mdbWavesEffect>Send message</button>
+                                <form style="border-style: solid; border-width: 5px; border-color: lightgray lightgray  lightgray aliceblue; margin-top: 35px; padding-top: 5px;" #formRef="ngForm">
+                                    <div class="form-group">
+                                          <div *ngFor="let touchPoint of touchPointsDisplay; let in=index" class="col-sm-3" style = "float:left" >
+                                          <input type="text" [(ngModel)]="touchPoint.value" name="name{{in}}" class="form-control" #name="ngModel" required data-toggle="tooltip" [title]="touchPoint.value"/>
+                                          <!--<p [hidden]="words2[in].value">Field is required</p>
+                                          {{formRef.form.name1}}-->
+                                        </div>
+                                  </div>
+                                  <button [disabled]="!formRef.form.valid" (click)="addTouchPoints()">Add Touchpoints</button>
+                                  <!-- Have implementation for delete the column with action i each column input box, takeout from the array -->
+                              </form>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary waves-light" data-dismiss="modal" (click)="testCaseFinalDetail.hide()" mdbWavesEffect>Close</button>
+                            <button type="button" class="btn btn-primary waves-light" mdbWavesEffect>Send message</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
         <!-- <label class="switch"><input type="checkbox"> <span class="slider round"></span> </label> -->
       </form>
@@ -475,8 +476,8 @@
                                     (click)="select2nd(workitem.response.id);"
                                     (dblclick)="select1st(workitem.response.id);"
                                     >
-                              <label style='width: 40%; vertical-align: middle;' for="responseId" [mdbTooltip]="workitem.response.responseMsg | json"  mdbWavesEffect>{{workitem.response.id}} for {{workitem.response._servcieId }} </label>
-                              <label style='width: 40%; vertical-align: middle; overflow:hidden'for="requestParams" [mdbTooltip]="workitem.useCase + ' at ' + workitem.request._envId + '\n' + workitem.request.requestMsg " mdbWavesEffect>{{workitem.request.requestMsg}}</label>
+                              <label style='width: 40%; vertical-align: middle;' for="responseId" [mdbTooltip]='workitem.response.responseMsg | json'  mdbWavesEffect> response id:{{workitem.response.id}} for service:{{workitem.response._servcieId }} </label>
+                              <label style='width: 40%; vertical-align: middle; overflow:hidden'for="requestParams" [mdbTooltip]="workitem.useCase + ' at ' + workitem.request._envId + '\n' + 'The request is:' + '\n' +workitem.request.requestMsg " mdbWavesEffect>{{workitem.request.requestMsg}}</label>
                               <!-- <ng-template #tipOnWorkResponse> <pre [innerHtml]="workitem.response.responseMsg | json" ></pre> </ng-template> -->
                               <!-- <ng-template #tipOnWorkResponse> <div [innerHtml]= "<code> <pre> worktem.response.responseMsg | json </pre> </code>" ></div> </ng-template> -->
                             <!-- <ng-template #tipOnWorkResponse> <div><code> <pre> [innerHTML] = {{workdata.workitems[i].response.responseMsg | json}} </pre> </code> </div> </ng-template> -->
@@ -532,7 +533,7 @@
                   <ul class="nav nav-tabs nav-justified" role="tablist">
                       <li class="nav-item"><a class="nav-link active" href="#diffTreeView" data-toggle="tab" role="tab" >Diff in Tree</a></li>
                       <li class="nav-item"><a class="nav-link" href="#diffGridView" data-toggle="tab" role="tab" > Diff in Grid</a></li>
-                      <li class="nav-item"><a class="nav-link" href="#diffRAW" data-toggle="tab" role="tab" > Diff in RAW</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#reverseDiff" data-toggle="tab" role="tab" > The reverse diff</a></li>
                   </ul>
           </div>
           <div class="panel-body">
@@ -543,10 +544,11 @@
                   <div class="tab-pane" id="diffGridView"role="tabpanel" >
                       <json-tree [json]= "workdata.theDiffData" [expand]="true"></json-tree>
                   </div>
-                  <div class="tab-pane" id="diffRAW"role="tabpanel" >
+                  <div class="tab-pane" id="reverseDiff"role="tabpanel" >
                       <!-- <json-tree [json]= "myDiff2()[0]['op']" [expand]="true"></json-tree> -->
                       <!-- <json-tree [json]= "TestDiff" [expand]="false"></json-tree> -->
-                        {{workdata.theDiffData | json}}
+                        <!-- {{workdata.theDiffData | json}} -->
+                        <json-tree [json]= "workdata.theReverseDiff" [expand]="true"></json-tree>
                   </div>
               </div>
           </div>

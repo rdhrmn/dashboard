@@ -73,11 +73,12 @@ export class TestDataServiceComponent implements OnInit {
   workdata = {workitems:
     [{request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
       response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null },
-      useCase: null, isUnlikeRequests: false, is1stSelect: false, is2ndSelect: false,
+      useCase: null, touchPoints: null,
+      isUnlikeRequests: false, is1stSelect: false, is2ndSelect: false,
       changeDiffStyle: {'box-shadow': null, 'text-shadow':null,'background-color': null,
                         'border-color': null, 'animation': null, 'border-style': null },
       isCurrent: false, isPrevious: false}],
-      theDiffData: null, theNewOne: null, theOldORBase: null };
+      theDiffData: null, theNewOne: null, theOldORBase: null, theReverseDiff: null };
   // workitems: [ request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
   //                         response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null }, isAlikeRequests: boolean};
   // theDiff = {removed:[], replaced:[], added:[]};
@@ -99,7 +100,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   tempid1 = 1000;
   tempid2 = 2000;
   // touchPoints = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}, {value: ''}];
-  touchPoints = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}];
+  touchPointsDisplay = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}];
   requestMsgDeletelater = 'partyId=P123&channelId=C123&serviceId=S123&subCatagory=abc&accountId=A12345';
   // columns = [
   //   { prop: 'name' },
@@ -123,9 +124,10 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     this.diffStyle = `width: 100%; display: inline-block; border-radius:10px;`; // ng-style failed sudenly all ng-* faliing ... this var is used in styleItemForDiff
     this.toastrService.toastrConfig.maxOpened = 1; // only one toast at a time
 
+    this.workdata.theOldORBase = {};
     this.workdata.theNewOne = {};
     this.workdata.theDiffData = {};
-
+    this.workdata.theReverseDiff = {};
  /*
      console.log('My diff :', diff(this.obj2, this.obj3));
     const TestDiff = diff(this.newobj1, this.newobj2);
@@ -300,122 +302,124 @@ console.log('this.theDiff : ', this.theDiff );
 
   onTest() {
     //
-const newobj1 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:3},
-                        'boolean':true,'null':null,'number':123,
-                            'object':{'a':'b','c':'d','e':'f'},'string':'Hello World'},
-                            {id:123, 'customer':{id:2,name:3,ph:5},
-                            'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
-                            'string':'Hello World',
-                            'otherobj':{1:1,2:2,3:3}
-                          },
-                            {id:345, 'customer':{id:5,name:2,ph:5},
-                            'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
-                              'string':'Hello World',
-                              'otherobj':{1:1,2:2,3:3}}
-                            ]}
-const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean':false,'null':null,'number2':1245,
-                            'string':'Hello Earth','otherobj':{1:1,2:2,3:3}},
-                            {id:123, 'customer':{id:1,ph:5,mo:6},'boolean':true,'null':null,
-                            'object':{'a':'book','animal':{'domestic':'cat','wild':'lion',
-                                        'special':{'sea':'platypus','tree':'bat'}},'e':'f'},'string':'Great World'},
-                            {id:678, 'customer':{id:10,name:20,ph:5},'boolean':false,'null':null,'number':123,
-                                            'object':{'a':'x','c':'d','e':'y'},'string':'Hello Earth','otherobj':{5:3, 7:4, 3:4}}
-                           ]
-                  }
-    //
-    let requestMsg = '';
-    let responseMsg = null;
-    const serviceName = this.currData.row.serviceId;
-    const envName = this.currData.env.envName;
+    const newobj1 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:3},
+                            'boolean':true,'null':null,'number':123,
+                                'object':{'a':'b','c':'d','e':'f'},'string':'Hello World'},
+                                {id:123, 'customer':{id:2,name:3,ph:5},
+                                'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
+                                'string':'Hello World',
+                                'otherobj':{1:1,2:2,3:3}
+                              },
+                                {id:345, 'customer':{id:5,name:2,ph:5},
+                                'boolean':true,'null':null,'number':123,'object':{'a':'b','c':'d','e':'f'},
+                                  'string':'Hello World',
+                                  'otherobj':{1:1,2:2,3:3}}
+                                ]}
+    const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean':false,'null':null,'number2':1245,
+                                'string':'Hello Earth','otherobj':{1:1,2:2,3:3}},
+                                {id:123, 'customer':{id:1,ph:5,mo:6},'boolean':true,'null':null,
+                                'object':{'a':'book','animal':{'domestic':'cat','wild':'lion',
+                                            'special':{'sea':'platypus','tree':'bat'}},'e':'f'},'string':'Great World'},
+                                {id:678, 'customer':{id:10,name:20,ph:5},'boolean':false,'null':null,'number':123,
+                                                'object':{'a':'x','c':'d','e':'y'},'string':'Hello Earth','otherobj':{5:3, 7:4, 3:4}}
+                              ]
+                      }
+        //
+        let requestMsg = '';
+        let responseMsg = null;
+        const serviceName = this.currData.row.serviceId;
+        const envName = this.currData.env.envName;
 
-    let theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': null, '_envId': null };
-    let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null };
-    for ( let i = 0 ; i < this.currData.requestParams.length; i++) {
-      if (this.currData.requestParams[i].value != null){
-        requestMsg = requestMsg + this.currData.requestParams[i].name + '=' + this.currData.requestParams[i].value + '&';
-      }
-    }
-    const requestURL = baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg; console.log('requestURL :', requestURL);
-    this.requestsService.get
-              (baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg).subscribe
-              (data => { responseMsg = data[0].response;
-              console.log('responseMsg :', responseMsg);
-    // },
-    // error => {console.log(error, 'Error'); }  );
+        let theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': null, '_envId': null };
+        let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null };
+        for ( let i = 0 ; i < this.currData.requestParams.length; i++) {
+          if (this.currData.requestParams[i].value != null){
+            requestMsg = requestMsg + this.currData.requestParams[i].name + '=' + this.currData.requestParams[i].value + '&';
+          }
+        }
+        const requestURL = baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg; console.log('requestURL :', requestURL);
+        this.requestsService.get
+                  (baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg).subscribe
+                  (data => { responseMsg = data[0].response;
+                  console.log('responseMsg :', responseMsg);
+        // },
+        // error => {console.log(error, 'Error'); }  );
 
-    theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': this.currData.service.serviceId,
-                      '_envId': this.currData.env.envId };
-    theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': this.currData.service.serviceId,
-    '_envId': this.currData.env.envId };
+        theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': this.currData.service.serviceId,
+                          '_envId': this.currData.env.envId };
+        theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': this.currData.service.serviceId,
+        '_envId': this.currData.env.envId };
 
-        this.requestsService.post
-                  (baseURL + '/' + 'requests', theRequest).subscribe
-                  (data => {
-                    // console.log('POST on requests, returns :', data);
-                    theRequest = data;
-                    theRequest._servcieId = serviceName; // for workdata only not for table, display requires name
-                    theRequest._envId = envName; // for workdata only not for table, display requires name
-                    console.log('theRequest :', theRequest);
+            this.requestsService.post
+                      (baseURL + '/' + 'requests', theRequest).subscribe
+                      (data => {
+                        // console.log('POST on requests, returns :', data);
+                        theRequest = data;
+                        theRequest._servcieId = serviceName; // for workdata only not for table, display requires name
+                        theRequest._envId = envName; // for workdata only not for table, display requires name
+                        console.log('theRequest :', theRequest);
 
-                            this.requestsService.post
-                            (baseURL + '/' + 'responses', theResponse).subscribe
-                            (data => { theResponse = data;
-                              theResponse._servcieId = serviceName; // for workdata, display requires name,
-                              theResponse._envId = envName; // for workdata, display requires name
-                              // for demo
-                              newobj1.myArray[0].id = this.tempid1++;
-                              newobj2.myArray[0].id = this.tempid2++;
-                              theResponse.responseMsg = (Math.round(Math.random() * Math.pow(10, 10)) % 2 === 0)
-                                                           ? newobj1 : newobj2;
-                              // console.log('theResponse :', theResponse);
+                                this.requestsService.post
+                                (baseURL + '/' + 'responses', theResponse).subscribe
+                                (data => { theResponse = data;
+                                  theResponse._servcieId = serviceName; // for workdata, display requires name,
+                                  theResponse._envId = envName; // for workdata, display requires name
+                                  // for demo
+                                  newobj1.myArray[0].id = this.tempid1++;
+                                  newobj2.myArray[0].id = this.tempid2++;
+                                  theResponse.responseMsg = (Math.round(Math.random() * Math.pow(10, 10)) % 2 === 0)
+                                                              ? newobj1 : newobj2;
+                                  // console.log('theResponse :', theResponse);
 
-                            if (this.workdata.workitems[0].request.id === null) {
-                              this.workdata.workitems[0] =
-                                  {request: theRequest, response: theResponse, isUnlikeRequests: false,
-                                      useCase: 'usecase' + '-' + theRequest.id, is1stSelect: false, is2ndSelect: false,
-                                      changeDiffStyle:
-                                      {'box-shadow': '', 'text-shadow': '', 'background-color': '',
-                                                          'border-color': null, 'animation': null, 'border-style': null },
-                                      isCurrent: true, isPrevious: false}; // 1stTime isCurrest is set
-                            } else {
-                              for(let i = 0; i < this.workdata.workitems.length ; i++) { // every next entry
-                                // 1. unset any privious (one current, none privious)
-                                // 2. unset current, set privious (none current, one privious)
-                                // 3. new entry will be current (one current , one previous)
-                                if (this.workdata.workitems[i].isPrevious === true) {this.workdata.workitems[i].isPrevious = false; } // 1
-                                if (this.workdata.workitems[i].isCurrent === true) {
-                                  this.workdata.workitems[i].isCurrent = false;
-                                  this.workdata.workitems[i].isPrevious = true;
-                                } // 2
-                              }
+                                if (this.workdata.workitems[0].request.id === null) {
+                                  this.workdata.workitems[0] =
+                                      {request: theRequest, response: theResponse, isUnlikeRequests: false,
+                                          useCase: 'usecase' + '-' + theRequest.id, touchPoints: '',
+                                          is1stSelect: false, is2ndSelect: false,
+                                          changeDiffStyle:
+                                          {'box-shadow': '', 'text-shadow': '', 'background-color': '',
+                                                              'border-color': null, 'animation': null, 'border-style': null },
+                                          isCurrent: true, isPrevious: false}; // 1stTime isCurrest is set
+                                } else {
+                                  for(let i = 0; i < this.workdata.workitems.length ; i++) { // every next entry
+                                    // 1. unset any privious (one current, none privious)
+                                    // 2. unset current, set privious (none current, one privious)
+                                    // 3. new entry will be current (one current , one previous)
+                          if (this.workdata.workitems[i].isPrevious === true) {this.workdata.workitems[i].isPrevious = false; } // 1
+                                    if (this.workdata.workitems[i].isCurrent === true) {
+                                      this.workdata.workitems[i].isCurrent = false;
+                                      this.workdata.workitems[i].isPrevious = true;
+                                    } // 2
+                                  }
 
-                            this.workdata.workitems.push({
-                              request: theRequest, response: theResponse, isUnlikeRequests: false,
-                                useCase: 'usecase' + '-' + theRequest.id, is1stSelect: false, is2ndSelect: false,
-                                changeDiffStyle: {'box-shadow': '', 'text-shadow': '', 'background-color': '',
-                                                  'border-color': null, 'animation': null, 'border-style': null },
-                                isCurrent: true, isPrevious: false}); // 3
-                            }
-                            console.log('this.workdata :', this.workdata);
+                                this.workdata.workitems.push({
+                                  request: theRequest, response: theResponse, isUnlikeRequests: false,
+                                    useCase: 'usecase' + '-' + theRequest.id, touchPoints : '',
+                                    is1stSelect: false, is2ndSelect: false,
+                                    changeDiffStyle: {'box-shadow': '', 'text-shadow': '', 'background-color': '',
+                                                      'border-color': null, 'animation': null, 'border-style': null },
+                                    isCurrent: true, isPrevious: false}); // 3
+                                }
+                                console.log('this.workdata :', this.workdata);
 
-                                    let theTest = {'id': null, 'serviceId': this.currData.service.serviceId, 'requestId': theRequest.id,
-                                    'responseId': theResponse.id, 'envId': this.currData.env.envId,
-                                    'useCase': '', 'testType': 'info', 'testdataType': '', 'responseTime': null, 'dateTime': new Date() };
-                                    this.requestsService.post
-                                    (baseURL + '/' + 'tests', theTest).subscribe
-                                    (data => { theTest = data;
-                                    console.log('theTest :', theTest);
-                                    },
-                                    error => {console.log(error, 'Error'); }  );
-                            this.theDiffOnTest();
-                            },
-                            error => {console.log(error, 'Error'); }  );
-        },
-        error => {console.log(error, 'Error'); }  );
-  },
-  error => {console.log(error, 'Error'); }  );
+                                        let theTest = {'id': null, 'serviceId': this.currData.service.serviceId, 'requestId': theRequest.id,
+                                        'responseId': theResponse.id, 'envId': this.currData.env.envId,
+                              'useCase': '', 'testType': 'info', 'testdataType': '', 'responseTime': null, 'dateTime': new Date() };
+                                        this.requestsService.post
+                                        (baseURL + '/' + 'tests', theTest).subscribe
+                                        (data => { theTest = data;
+                                        console.log('theTest :', theTest);
+                                        },
+                                        error => {console.log(error, 'Error'); }  );
+                                this.theDiffOnTest();
+                                },
+                                error => {console.log(error, 'Error'); }  );
+            },
+            error => {console.log(error, 'Error'); }  );
+      },
+      error => {console.log(error, 'Error'); }  );
 
-    // ;
+        // ;
 
   }
 
@@ -473,6 +477,7 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
      console.log('this.workdata.theOldORBase:', this.workdata.theOldORBase, 'this.workdata.theNewOne:', this.workdata.theNewOne );
      if (this.workdata.theOldORBase != null) {
       this.workdata.theDiffData = this.doTheDiff(this.workdata.theOldORBase, this.workdata.theNewOne );
+      this.workdata.theReverseDiff = this.doTheDiff(this.workdata.theNewOne, this.workdata.theOldORBase );
     } else {console.log ('Pop up or toastr as workdata.theOldORBase is :', this.workdata.theOldORBase,
     'when workdata is:', this.workdata);} // remove else after implemetation
 
@@ -773,8 +778,8 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
 
   addTouchPoints(newtouchPoint) {
     // ;
-    this.touchPoints.push({value: newtouchPoint});
-    console.log('this.touchPoints:', this.touchPoints);
+    this.touchPointsDisplay.push({value: newtouchPoint});
+    console.log('this.touchPointsDisplay:', this.touchPointsDisplay);
   }
   saveResponse() {
     // ;
@@ -798,7 +803,7 @@ const newobj2 = {'myArray':[{id:123, 'customer':{id:1,name:2,ph:4,mo:4},'boolean
   }
 
   add() {
-    this.touchPoints.push({value: 'gsre'});
+    this.touchPointsDisplay.push({value: 'gsre'});
   }
 
   ngOnInit() {
