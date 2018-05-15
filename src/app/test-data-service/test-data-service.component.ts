@@ -88,7 +88,8 @@ export class TestDataServiceComponent implements OnInit {
               'requestParams' : [{'name': null, 'value': null}] ,
               'env' : {'envName' : 'All Envs', 'envId' : null},
               'service' : {'name': 'All Servcies', 'operation' : 'All Operations', 'serviceId' : null, 'apendURL': null},
-              'uniqueServiceArea': null, 'uniqueEnvDiv': null};
+              'uniqueServiceArea': null, 'uniqueEnvDiv': null,
+               useCase: null, touchPointsForDisplay: [{value: null}]};
 
 
 
@@ -100,7 +101,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   tempid1 = 1000;
   tempid2 = 2000;
   // touchPoints = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}, {value: ''}];
-  touchPointsDisplay = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}];
+  // touchPointsForDisplay = [{value: 'CRM'}, {value: 'Billing'}, {value: 'touchPoint3'}];
   requestMsgDeletelater = 'partyId=P123&channelId=C123&serviceId=S123&subCatagory=abc&accountId=A12345';
   // columns = [
   //   { prop: 'name' },
@@ -128,6 +129,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     this.workdata.theNewOne = {};
     this.workdata.theDiffData = {};
     this.workdata.theReverseDiff = {};
+
  /*
      console.log('My diff :', diff(this.obj2, this.obj3));
     const TestDiff = diff(this.newobj1, this.newobj2);
@@ -253,7 +255,16 @@ console.log('this.theDiff : ', this.theDiff );
     console.log('this.currData.row:', this.currData.row, this.currData,
                 serviceOperation[0], serviceOperation[1]
               );
-    // Get Servcie details
+    this.currData.useCase = this.currData.row.useCase;
+    const tempTouchPointsForDisplay = [{value: null }];
+    tempTouchPointsForDisplay.pop();
+    if (this.currData.row.touchPoints.length > 0) {
+      for (let i = 0; i < this.currData.row.touchPoints.length; i ++) {
+        tempTouchPointsForDisplay.push({value: this.currData.row.touchPoints[i]} );
+      }
+    } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
+    this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
+    // Get Servcie details to know which query parameters to be populated
     this.requestsService.get('http://localhost:3004/services?name=' + serviceOperation[0] + '&&operation=' + serviceOperation[1] )
             .subscribe(data => { const service = data;
     // console.log(' service detail :', service); // comment this line once things fine
@@ -374,7 +385,8 @@ console.log('this.theDiff : ', this.theDiff );
                                 if (this.workdata.workitems[0].request.id === null) {
                                   this.workdata.workitems[0] =
                                       {request: theRequest, response: theResponse, isUnlikeRequests: false,
-                                          useCase: 'usecase' + '-' + theRequest.id, touchPoints: '',
+                                          // useCase: 'usecase' + '-' + theRequest.id, touchPoints: '',
+                                           useCase: this.currData.row.useCase, touchPoints: this.currData.row.touchPoints,
                                           is1stSelect: false, is2ndSelect: false,
                                           changeDiffStyle:
                                           {'box-shadow': '', 'text-shadow': '', 'background-color': '',
@@ -394,7 +406,8 @@ console.log('this.theDiff : ', this.theDiff );
 
                                 this.workdata.workitems.push({
                                   request: theRequest, response: theResponse, isUnlikeRequests: false,
-                                    useCase: 'usecase' + '-' + theRequest.id, touchPoints : '',
+                                    // useCase: 'usecase' + '-' + theRequest.id, touchPoints : '',
+                                    useCase: this.currData.row.useCase, touchPoints: this.currData.row.touchPoints,
                                     is1stSelect: false, is2ndSelect: false,
                                     changeDiffStyle: {'box-shadow': '', 'text-shadow': '', 'background-color': '',
                                                       'border-color': null, 'animation': null, 'border-style': null },
@@ -423,7 +436,9 @@ console.log('this.theDiff : ', this.theDiff );
 
   }
 
-
+  onStoreTest() {
+    // ;
+  }
 
   theDiffOnTest() {
     // ;
@@ -566,7 +581,7 @@ console.log('this.theDiff : ', this.theDiff );
 
   }
 
-  select1st(responseId){
+  select1st(responseId) {
 
     clearTimeout(this.clickTimer);
     for (let i = 0; i < this.workdata.workitems.length ; i++ ) {
@@ -778,12 +793,10 @@ console.log('this.theDiff : ', this.theDiff );
 
   addTouchPoints(newtouchPoint) {
     // ;
-    this.touchPointsDisplay.push({value: newtouchPoint});
-    console.log('this.touchPointsDisplay:', this.touchPointsDisplay);
+    this.currData.touchPointsForDisplay.push({value: newtouchPoint});
+    console.log(' this.currData.touchPointsForDisplay:',  this.currData.touchPointsForDisplay);
   }
-  saveResponse() {
-    // ;
-  }
+
 
   myDiff() {
     // ;
@@ -800,10 +813,6 @@ console.log('this.theDiff : ', this.theDiff );
     console.log('testMethod:', 'I am in testMethod');
     this.singleModel = this.singleModel + 1;
     console.log('singleModel:', this.singleModel, 'the variable name to be removed');
-  }
-
-  add() {
-    this.touchPointsDisplay.push({value: 'gsre'});
   }
 
   ngOnInit() {
