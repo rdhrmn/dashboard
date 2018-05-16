@@ -1,16 +1,17 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-10" id="Headline" style="padding-left: 0px; padding-right: 0px;">
-      <ng-container *ngIf="theView==0;then testcases else testsuits">here is ignored</ng-container>
+      <ng-container *ngIf='isTestSuitView == 1;then testsuits else testcases'>here is ignored</ng-container>
       <ng-template #testcases> <h3> <b>Servcie Readiness: Test cases</b> </h3> </ng-template>
       <ng-template #testsuits> <h3 style="background-color: #0b51c5 !important;"> <b>Servcie Readiness: Test suits</b> </h3> </ng-template>
     </div>
     <div class="col-sm-2" id="SwitchBetCaseAndSuit" style="padding-left: 0px; padding-right: 0px;">
-      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 0px; ; margin: 0; height: 32px;" autocomplete="off" [(ngModel)]="theView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
-      <ng-container *ngIf="theView==0;then ontestcases else ontestsuits">this.theView is declared baanana [()] here and can be accessed from any where, if only [] one way component to UI, https://angular.io/api/forms/NgModel</ng-container>
+      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 0px; ; margin: 0; height: 32px;" autocomplete="off" [(ngModel)]="isTestSuitView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
+      <ng-container *ngIf="isTestSuitView == 1;then ontestsuits else ontestcases">this.isTestSuitView is declared baanana [()] here and can be accessed from any where, if only [] one way component to UI, https://angular.io/api/forms/NgModel</ng-container>
       <ng-template #ontestcases> <h3 style="font-size: medium; text-align: inherit;"> <b>For Testsuits</b> </h3> </ng-template> <!-- Go to Test suits -->
       <ng-template #ontestsuits> <h3 style="font-size: medium; text-align: inherit; background-color: #0b51c5 !important;"> <b>For Testcases</b> </h3> </ng-template>
       </button>
+      {{isTestSuitView}}
     </div>
   </div>
   <div class="row">
@@ -266,7 +267,7 @@
 
       </ngx-datatable>
     </div>
-    <div class="col-sm-3" id="rowconext" style='padding-left: 5px;padding-right: 5px;'>
+    <div class="col-sm-3" id="rowconext" style='padding-left: 5px;padding-right: 5px;' *ngIf="{ isDone: false}; let isAtleastSingleTest" >
       <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
         <fieldset style='background: #9ed8fa;'>
           <legend>Env Settings : {{currData.env.envName}} for {{currData.row.serviceId}}</legend>
@@ -317,12 +318,14 @@
           <label for="address">Address:</label>
           <input type="text" name="address" id="address" size="40" /> -->
         </fieldset>
-        <button type="submit" id="onTest" (click)="onTest()">Test</button>|
+        <button type="submit" id="onTest" (click)="onTest();isAtleastSingleTest.isDone=true;">Test</button>|
         <input type="checkbox" id="actualtest" value="isActual" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:70%/1 sans-serif;font-weight: bold;color:darkblue;">Actual</label>|
-        <input type="checkbox" id="unlikeRequestChek" (value)="isUnlikeRequests" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:70%/1 sans-serif;font-weight: bold;color:darkblue;">Against Other</label> |
-
+        <input type="checkbox" id="unlikeRequestChek" (value)="isUnlikeRequests" style="width: 15px;height: 15px;" /><label for="actualtest" style="font:70%/1 sans-serif;font-weight: bold;color:darkblue;">Against Other</label>
         <div class="storeResponse" style="display: inline;">
-            <button type="button" class="btn btn-primary waves-light" data-toggle="modal" data-target="#finaliseTestCase" data-whatever="@mdo" (click)="testCaseFinaliseDetail.show()" mdbWavesEffect>Store Test</button>
+            <button type="button"  [ngClass]="{disabled : !isAtleastSingleTest.isDone}" class="btn btn-primary waves-light"
+                    data-toggle="modal" data-target="#finaliseTestCase" data-whatever="@mdo"
+                    [mdbTooltip]="workdata.testToStore | json" placement="left"
+                    (click)="testCaseFinaliseDetail.show()" mdbWavesEffect>Store Test</button>
 
             <div mdbModal #testCaseFinaliseDetail="mdb-modal" class="modal fade" id="finaliseTestCase" tabindex="-1" role="dialog" aria-labelledby="finaliseTestCaseLabel"
                                                           aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false, show: fasle, animated:true}" >
@@ -341,7 +344,7 @@
                                     <i class="fa fa-angle-double-right prefix"></i>
                                     <!-- <input mdbInputDirective type="text" id="UpdateUsecaseName" class="form-control" [(ngModel)]="currData.useCase"> -->
                                     <!-- <input mdbInputDirective type="text"  id="UpdateUsecaseName" name="currData.useCase" formControlName="currData.useCase" [(ngModel)]="currData.useCase"> -->
-                                    <input mdbInputDirective type="text"  id="UpdateUsecaseName" name="currData.useCase" [(ngModel)]="currData.useCase">
+                                    <input mdbInputDirective type="text"  id="UpdateUsecaseName" name="workdata.testToStore.useCase" [(ngModel)]="workdata.testToStore.useCase">
                                     <label for="UpdateUsecaseName">Usecase name</label>
                                 </div>
                                 <form style="border-style: solid; border-width: 5px; border-color: lightgray lightgray  lightgray aliceblue; margin-top: 35px; padding-top: 5px;" #formRef="ngForm">
@@ -359,25 +362,17 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary waves-light" data-dismiss="modal" (click)="testCaseFinalDetail.hide()" mdbWavesEffect>Close</button>
-                            <button type="button" class="btn btn-primary waves-light" mdbWavesEffect>Create Test Case</button>
+                            <button type="button" class="btn btn-primary waves-light"
+                                    (mouseover)="updateTouchPoints()"
+                                    [mdbTooltip]="workdata.testToStore | json" placement="left"
+                                    (click)="postTheTest()"
+                                    mdbWavesEffect>Create Test Case</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- <label class="switch"><input type="checkbox"> <span class="slider round"></span> </label> -->
       </form>
-      <!-- <form style='background: #faec9e;' *ngIf="contextmenuRow"> -->
-      <!-- <form style='background: #faec9e;' *ngIf="isSelected">
-          <fieldset style='background: #faec9e;'>
-            <legend>Touch Points</legend>
-            <input type="text" name="touchpoint1" id="touchpoint1" style='float:left; width:30%; margin:3px;' value='touchpoint1'/>
-            <input type="text" name="touchpoint2" id="touchpoint2" style='float:left; width:30%; margin:3px;' value='touchpoint2'/>
-            <input type="text" name="touchpoint3" id="touchpoint3" style='float:left; width:30%; margin:3px;' size="40" value='touchpoint3'/>
-            <input type="text" name="touchpoint1" id="touchpoint4" style='float:left; width:30%; margin:3px;' value='touchpoint4'/>
-          </fieldset>
-      </form> -->
     </div>
   </div>
 <!-- <hr> -->
@@ -405,9 +400,6 @@
 <div class="container-fluid" id="responseDetail">
   <!-- <div class="section group" *ngIf="onTest"> -->
   <div class="row">
-    <!-- <div class="col span_1_of_10" style='margin-bottom: 1px; margin-top: 1px;'>
-    <button type="submit">Submit</button><br>
-    </div> -->
     <div class="col-sm-4" >
         <fieldset>
             <legend>Response message</legend>
@@ -492,33 +484,18 @@
                           </ng-container>
                     </ng-container>
                 </div>
-
-
-<!--                         <button style='width: 100%; display: inline-block; border-radius:10px;
-                      box-shadow: inset 0px -5px 30px 50px #777; border: 5px solid #bbb;
-                      text-shadow: 1px 1px 1px #eee;'
-                          (click)="count = count + 1">
-                          <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
-                          <label style='width: 40%;'for="requestParams">RequestParams</label>
-                      </button>
-                      <button style='width: 100%; display: inline-block; background-color:dodgerblue;border: 5px solid #bbb;'
-                          (click)="count = count + 1">
-                          <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
-                          <label style='width: 40%;'for="requestParams">RequestParams</label>
-                      </button> -->
-              <!-- </div> -->
-                  <div class="tab-pane" id="differentRequestResponses"role="tabpanel" >
-                      <button style='width: 100%; display: inline-block; background-color:slateblue;'
-                          (click)="count = count + 1">
-                          <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
-                          <label style='width: 40%;'for="requestParams">RequestParams</label>
-                      </button>
-                      <button style='width: 100%; display: inline-block; background-color:slateblue;'
-                          (click)="count = count + 1">
-                          <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
-                          <label style='width: 40%;'for="requestParams">RequestParams</label>
-                      </button>
-                  </div>
+                <div class="tab-pane" id="differentRequestResponses"role="tabpanel" >
+                    <button style='width: 100%; display: inline-block; background-color:slateblue;'
+                        (click)="count = count + 1">
+                        <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
+                        <label style='width: 40%;'for="requestParams">RequestParams</label>
+                    </button>
+                    <button style='width: 100%; display: inline-block; background-color:slateblue;'
+                        (click)="count = count + 1">
+                        <label style='width: 40%;' for="responseId">ResponseId - {{count}}</label>
+                        <label style='width: 40%;'for="requestParams">RequestParams</label>
+                    </button>
+                </div>
               </div>
           </div>
         </div>

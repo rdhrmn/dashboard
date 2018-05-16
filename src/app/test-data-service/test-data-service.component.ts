@@ -72,13 +72,15 @@ export class TestDataServiceComponent implements OnInit {
   //                           response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null }}]};
   workdata = {workitems:
     [{request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
-      response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null },
+      response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null, 'responseTime': null, 'dateTime': null},
       useCase: null, touchPoints: null,
       isUnlikeRequests: false, is1stSelect: false, is2ndSelect: false,
       changeDiffStyle: {'box-shadow': null, 'text-shadow':null,'background-color': null,
                         'border-color': null, 'animation': null, 'border-style': null },
       isCurrent: false, isPrevious: false}],
-      theDiffData: null, theNewOne: null, theOldORBase: null, theReverseDiff: null };
+      theDiffData: null, theNewOne: null, theOldORBase: null, theReverseDiff: null,
+      testToStore: {'useCase': null, 'responseId': null, 'serviceId': null, 'touchPoints': null, 'envId': null,
+      'requestId': null, 'testType': null, 'testdataType': null, 'id': null, 'responseTime': null, 'dateTime': null}};
   // workitems: [ request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
   //                         response: {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null }, isAlikeRequests: boolean};
   // theDiff = {removed:[], replaced:[], added:[]};
@@ -89,7 +91,10 @@ export class TestDataServiceComponent implements OnInit {
               'env' : {'envName' : 'All Envs', 'envId' : null},
               'service' : {'name': 'All Servcies', 'operation' : 'All Operations', 'serviceId' : null, 'apendURL': null},
               'uniqueServiceArea': null, 'uniqueEnvDiv': null,
-               useCase: null, touchPointsForDisplay: [{value: null}]};
+               touchPointsForDisplay: [{value: null}]};
+
+  displayProp = {testsuit:false}; // not used
+  isTestSuitView = '';
 
 
 
@@ -215,6 +220,7 @@ console.log('this.theDiff : ', this.theDiff );
       this.filteredRows = [...data];
       // --
       // console.log('this.services for data :', this.services);
+       console.log('data :', data);
       for (let i = 0; i < data.length; i++) {
         const id = data[i].serviceId;
         data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
@@ -255,15 +261,15 @@ console.log('this.theDiff : ', this.theDiff );
     console.log('this.currData.row:', this.currData.row, this.currData,
                 serviceOperation[0], serviceOperation[1]
               );
-    this.currData.useCase = this.currData.row.useCase;
-    const tempTouchPointsForDisplay = [{value: null }];
-    tempTouchPointsForDisplay.pop();
-    if (this.currData.row.touchPoints.length > 0) {
-      for (let i = 0; i < this.currData.row.touchPoints.length; i ++) {
-        tempTouchPointsForDisplay.push({value: this.currData.row.touchPoints[i]} );
-      }
-    } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
-    this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
+    // this.currData.useCase = this.currData.row.useCase;
+    // const tempTouchPointsForDisplay = [{value: null }];
+    // tempTouchPointsForDisplay.pop();
+    // if (this.currData.row.touchPoints.length > 0) {
+    //   for (let i = 0; i < this.currData.row.touchPoints.length; i ++) {
+    //     tempTouchPointsForDisplay.push({value: this.currData.row.touchPoints[i]} );
+    //   }
+    // } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
+    // this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
     // Get Servcie details to know which query parameters to be populated
     this.requestsService.get('http://localhost:3004/services?name=' + serviceOperation[0] + '&&operation=' + serviceOperation[1] )
             .subscribe(data => { const service = data;
@@ -342,7 +348,8 @@ console.log('this.theDiff : ', this.theDiff );
         const envName = this.currData.env.envName;
 
         let theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': null, '_envId': null };
-        let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null };
+        let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null,
+        'responseTime': null, 'dateTime': null};
         for ( let i = 0 ; i < this.currData.requestParams.length; i++) {
           if (this.currData.requestParams[i].value != null){
             requestMsg = requestMsg + this.currData.requestParams[i].name + '=' + this.currData.requestParams[i].value + '&';
@@ -359,7 +366,7 @@ console.log('this.theDiff : ', this.theDiff );
         theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': this.currData.service.serviceId,
                           '_envId': this.currData.env.envId };
         theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': this.currData.service.serviceId,
-        '_envId': this.currData.env.envId };
+        '_envId': this.currData.env.envId, 'responseTime': null, 'dateTime': new Date() };
 
             this.requestsService.post
                       (baseURL + '/' + 'requests', theRequest).subscribe
@@ -414,7 +421,7 @@ console.log('this.theDiff : ', this.theDiff );
                                     isCurrent: true, isPrevious: false}); // 3
                                 }
                                 console.log('this.workdata :', this.workdata);
-
+                                this.identifyTestToStore();
                                         let theTest = {'id': null, 'serviceId': this.currData.service.serviceId, 'requestId': theRequest.id,
                                         'responseId': theResponse.id, 'envId': this.currData.env.envId,
                               'useCase': '', 'testType': 'info', 'testdataType': '', 'responseTime': null, 'dateTime': new Date() };
@@ -436,8 +443,84 @@ console.log('this.theDiff : ', this.theDiff );
 
   }
 
-  onStoreTest() {
+  identifyTestToStore() {
     // ;
+    let theTestToPost;
+    let workItemToStore; // static testcase store else use observable
+
+    if (+this.isTestSuitView) {
+      console.log('==============================================');
+    } else {
+      let found2ndSelectToStore = false;
+      for (let i = 0; i < this.workdata.workitems.length ; i++){
+        if (this.workdata.workitems[i].is2ndSelect === true) {
+          workItemToStore = this.workdata.workitems[i]; // static testcase store else use observable
+          found2ndSelectToStore = true;
+          console.log('2ndSelect', 'iteration, i:', i, 'this.workdata.workitems[i]:', this.workdata.workitems[i]);
+          this.workdata.testToStore = {'useCase': this.workdata.workitems[i].useCase,
+          'responseId': this.workdata.workitems[i].response.id, 'serviceId': this.workdata.workitems[0].response._servcieId,
+           'touchPoints': this.workdata.workitems[i].touchPoints, 'envId': this.workdata.workitems[i].response._envId,
+          'requestId': this.workdata.workitems[i].request.id,'testType': 'info', 'testdataType': '', 'id': null,
+          'responseTime': this.workdata.workitems[i].response.responseTime, 'dateTime': this.workdata.workitems[i].response.dateTime};
+          }
+
+          const tempTouchPointsForDisplay = [{value: null }];
+          tempTouchPointsForDisplay.pop();
+          if (this.workdata.workitems[i].touchPoints.length > 0) {
+            for (let j = 0; j < this.currData.row.touchPoints.length; j ++) {
+              tempTouchPointsForDisplay.push({value: this.currData.row.touchPoints[j]} );
+            }
+          } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
+          this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
+        }
+        if (!found2ndSelectToStore) {
+          for(let i = 0; i < this.workdata.workitems.length ; i++){
+            if (this.workdata.workitems[i].isCurrent === true) {
+              workItemToStore = this.workdata.workitems[i]; // static testcase store else use observable
+              console.log('isCurrent', 'iteration, i:', i, 'this.workdata.workitems[i]:', this.workdata.workitems[i]);
+              this.workdata.testToStore = {'useCase': this.workdata.workitems[i].useCase,
+              'responseId': this.workdata.workitems[i].response.id, 'serviceId': this.workdata.workitems[0].response._servcieId,
+               'touchPoints': this.workdata.workitems[i].touchPoints, 'envId': this.workdata.workitems[i].response._envId,
+              'requestId': this.workdata.workitems[i].request.id,'testType': 'info', 'testdataType': '', 'id': null,
+              'responseTime': this.workdata.workitems[i].response.responseTime, 'dateTime': this.workdata.workitems[i].response.dateTime};
+              }
+
+              const tempTouchPointsForDisplay = [{value: null }];
+              tempTouchPointsForDisplay.pop();
+              if (this.workdata.workitems[i].touchPoints.length > 0) {
+                for (let j = 0; j < this.currData.row.touchPoints.length; j ++) {
+                  tempTouchPointsForDisplay.push({value: this.currData.row.touchPoints[j]} );
+                }
+              } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
+              this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
+            }
+          }
+      }
+      // static testcase store else use observable
+      theTestToPost = {'id': null, 'serviceId': workItemToStore.response._servcieId,
+      'requestId': workItemToStore.request.id,   'responseId': workItemToStore.response.id,
+      'envId': workItemToStore.response._envId, 'touchPoints': workItemToStore.touchPoints,
+      'useCase': workItemToStore.useCase, 'testType': 'info', 'testdataType': '',
+      'responseTime': workItemToStore.response.responseTime, 'dateTime': workItemToStore.response.dateTime };
+
+    // blockes to use observable
+    // this.workdata.testToStore = theTestToPost;
+  }
+
+  postTheTest() {
+    const touchPoints = [];
+    for( let i = 0; i < this.currData.touchPointsForDisplay.length; i++){
+      touchPoints.push(this.currData.touchPointsForDisplay[i].value);
+    }
+    this.workdata.testToStore.touchPoints = touchPoints;
+    this.requestsService.post
+    (baseURL + '/' + 'tests', this.workdata.testToStore).subscribe
+    (data => {const theTest = data;
+    console.log('theTest :', theTest);
+    //
+    // need to populate test id whereever required
+    },
+    error => {console.log(error, 'Error'); }  );
   }
 
   theDiffOnTest() {
@@ -604,6 +687,7 @@ console.log('this.theDiff : ', this.theDiff );
     }
     console.log('double click select1st-this.workdata :', this.workdata);
     this.theDiffOnTest();
+    this.identifyTestToStore();
 
   // this.obj1 = this.workdata.workitems.find(workitem => workitem.response.id === responseId
   //   && workitem.isUnlikeRequests === isUnlikeRequests).response.responseMsg;
@@ -641,6 +725,7 @@ console.log('this.theDiff : ', this.theDiff );
               this.workdata.workitems[i].changeDiffStyle['box-shadow'] = '';
               this.workdata.workitems[i].changeDiffStyle['text-shadow'] = '';
               console.log('single click select2nd-workitems :', this.workdata.workitems[i]);
+              this.identifyTestToStore();
             }
         }
         console.log('single click select1st-this.workdata :', this.workdata);
@@ -793,8 +878,22 @@ console.log('this.theDiff : ', this.theDiff );
 
   addTouchPoints(newtouchPoint) {
     // ;
+    newtouchPoint = '';
     this.currData.touchPointsForDisplay.push({value: newtouchPoint});
     console.log(' this.currData.touchPointsForDisplay:',  this.currData.touchPointsForDisplay);
+    // this.identifyTestToStore();
+    const touchPoints = [];
+    for( let i = 0; i < this.currData.touchPointsForDisplay.length; i++){
+      touchPoints.push(this.currData.touchPointsForDisplay[i].value);
+    }
+    this.workdata.testToStore.touchPoints = touchPoints;
+  }
+  updateTouchPoints() {
+    const touchPoints = [];
+    for( let i = 0; i < this.currData.touchPointsForDisplay.length; i++){
+      touchPoints.push(this.currData.touchPointsForDisplay[i].value);
+    }
+    this.workdata.testToStore.touchPoints = touchPoints;
   }
 
 
