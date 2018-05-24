@@ -45,6 +45,7 @@ export class TestDataServiceComponent implements OnInit {
   reorderable = true;
 
   selected = [];
+  checkboxselected = [];
 
   filteredRows = [];
 
@@ -60,6 +61,8 @@ export class TestDataServiceComponent implements OnInit {
 
   clickTimer: any;
   singleModel = 1;
+
+  toastrPopup: ToastrService;
   // request = {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null };
   // response = {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null };
   // workitem = {request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
@@ -93,7 +96,7 @@ export class TestDataServiceComponent implements OnInit {
               'uniqueServiceArea': null, 'uniqueEnvDiv': null,
                touchPointsForDisplay: [{value: null}]};
 
-  displayProp = {testsuit:false}; // not used
+  displayProp = {testsuit: false}; // not used
   isTestSuitView = '';
 
 
@@ -135,54 +138,6 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     this.workdata.theDiffData = {};
     this.workdata.theReverseDiff = {};
 
- /*
-     console.log('My diff :', diff(this.obj2, this.obj3));
-    const TestDiff = diff(this.newobj1, this.newobj2);
-    // this.theDiffString = JSON.parse(this.theDiff);
-    console.log('Test diff :', TestDiff);
-    console.log('newobj2 :', this.newobj2);
-
-for (let i = 0; i < TestDiff.length; i++) {
-
-  const path = TestDiff[i]['path'];
-  const value = TestDiff[i]['value'];
-  let newpath = '';
-  let newvalue = '';
-  for (let j = 0; j < path.length; j++){
-  //  console.log('Test--------------------------------', Number( path[i]) , isNaN(path[i]) );
-   if (isNaN(path[j])) { newpath += path[j] + '/'; } else {newpath += '[' + path[j] + ']' + '/'; }
-  }
-  // Converting an array into a kind of object as tree dispaly does not support raw array
-  if (Array.isArray(value)) {
-    newvalue = '{';
-    for (let j = 0; j < value.length; j ++) {
-     newvalue += value[j] + ',';
-    }
-    newvalue = newvalue.slice(0, -1);
-    newvalue += '}';
-  } else { newvalue = value; }
-
-
-  switch (TestDiff[i]['op']) {
-  case 'remove': this.theDiff.removed.push({'path': newpath}); break;
-  case 'replace': this.theDiff.replaced.push({'path': newpath, 'value': newvalue}); break;
-  case 'add': this.theDiff.added.push({'path': newpath, 'value': newvalue}); break;
-  }
-
-}
-console.log('this.theDiff : ', this.theDiff );
-*/
-/*  //   this.theDiff.returnDiffs.pop();
-    // Test
-    let newpath = '';
-    // console.log('Test--------------------------------', Number( "1" ), isNaN("1"));
-    // console.log('Test--------------------------------', Number( "abc" ), isNaN("abc"));
-    this.mypath = this.path;
-    for (let i = 0; i < this.mypath.length; i++){
-        console.log('Test--------------------------------', Number( this.mypath[i]) , isNaN(this.mypath[i]) );
-      if (isNaN(this.mypath[i])) { newpath += this.mypath[i] + '/';
-      } else {        newpath += '[' + this.mypath[i] + ']' + '/'; }
-    } console.log('newpath--------------------------------', newpath); */
 
     // Get initial static data
     this.requestsService.get(`http://localhost:3004/services?`).subscribe(data => { this.services = data;
@@ -209,11 +164,6 @@ console.log('this.theDiff : ', this.theDiff );
       },
     error => {console.log(error, 'Error'); }  );
 
-
-    // New Table
-  /*
-    console.log('Test in Constructor xml2js:', this.transformProvider.convertToXml(this.newobj2) );
-  */
     this.fetch((data) => {
       this.selected = [data[2]]; // for default selection
       // cache filtered list
@@ -250,71 +200,74 @@ console.log('this.theDiff : ', this.theDiff );
   }
 
   onSelect({ selected }) {
-    console.log('Select Event', 'From event, selected:->', selected, 'this.selected:->', this.selected);
-    this.isSelected = true;
-    console.log('isSelected', this.isSelected);
-    this.currData.row = selected[0]; // should work if editing (wrt property ~ name) at page is good
-    // this.currData.row = this.selected[0]; // this works
-    const serviceOperation = selected[0].serviceId.split('-');
-    // const serviceOperation = this.selected[0].serviceId.split('-'); // this works
-    // const serviceOperation = this.currData.row.serviceId.split('-'); // this works
-    console.log('this.currData.row:', this.currData.row, this.currData,
-                serviceOperation[0], serviceOperation[1]
-              );
-    // this.currData.useCase = this.currData.row.useCase;
-    // const tempTouchPointsForDisplay = [{value: null }];
-    // tempTouchPointsForDisplay.pop();
-    // if (this.currData.row.touchPoints.length > 0) {
-    //   for (let i = 0; i < this.currData.row.touchPoints.length; i ++) {
-    //     tempTouchPointsForDisplay.push({value: this.currData.row.touchPoints[i]} );
-    //   }
-    // } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
-    // this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
-    // Get Servcie details to know which query parameters to be populated
-    this.requestsService.get('http://localhost:3004/services?name=' + serviceOperation[0] + '&&operation=' + serviceOperation[1] )
-            .subscribe(data => { const service = data;
-    // console.log(' service detail :', service); // comment this line once things fine
-                this.currData.service.name = service[0].name;
-                this.currData.service.operation = service[0].operation;
-                this.currData.service.serviceId = service[0].id;
-                this.currData.service.apendURL = service[0].apendURL;
+    if(!this.isTestSuitView){
+      console.log('Select Event', 'From event, selected:->', selected, 'this.selected:->', this.selected);
+      this.isSelected = true;
+      console.log('isSelected', this.isSelected);
+      this.currData.row = selected[0]; // should work if editing (wrt property ~ name) at page is good
+      // this.currData.row = this.selected[0]; // this works
+      const serviceOperation = selected[0].serviceId.split('-');
+      // const serviceOperation = this.selected[0].serviceId.split('-'); // this works
+      // const serviceOperation = this.currData.row.serviceId.split('-'); // this works
+      console.log('this.currData.row:', this.currData.row, this.currData,
+                  serviceOperation[0], serviceOperation[1]
+                );
+      // this.currData.useCase = this.currData.row.useCase;
+      // const tempTouchPointsForDisplay = [{value: null }];
+      // tempTouchPointsForDisplay.pop();
+      // if (this.currData.row.touchPoints.length > 0) {
+      //   for (let i = 0; i < this.currData.row.touchPoints.length; i ++) {
+      //     tempTouchPointsForDisplay.push({value: this.currData.row.touchPoints[i]} );
+      //   }
+      // } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
+      // this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
+      // Get Servcie details to know which query parameters to be populated
+      this.requestsService.get('http://localhost:3004/services?name=' + serviceOperation[0] + '&&operation=' + serviceOperation[1] )
+              .subscribe(data => { const service = data;
+      // console.log(' service detail :', service); // comment this line once things fine
+                  this.currData.service.name = service[0].name;
+                  this.currData.service.operation = service[0].operation;
+                  this.currData.service.serviceId = service[0].id;
+                  this.currData.service.apendURL = service[0].apendURL;
 
-              // Get query params
-              this.requestsService.get('http://localhost:3004/queryparams?_serviceId=' + service[0].id)
-                      .subscribe(newdata => { const queryParams = newdata;
-              // console.log(' query detail :', queryParams); // comment this line once things fine
-              const temprequestParam = [];
-              for (let _i = 0; _i < queryParams[0].items.length; _i++) { // populate all names
-                  temprequestParam.push({'name': queryParams[0].items[_i], 'value': null});
-              }
+                // Get query params
+                this.requestsService.get('http://localhost:3004/queryparams?_serviceId=' + service[0].id)
+                        .subscribe(newdata => { const queryParams = newdata;
+                // console.log(' query detail :', queryParams); // comment this line once things fine
+                const temprequestParam = [];
+                for (let _i = 0; _i < queryParams[0].items.length; _i++) { // populate all names
+                    temprequestParam.push({'name': queryParams[0].items[_i], 'value': null});
+                }
 
-              const splitTheRequest = this.requestMsgDeletelater.split('&');
-              for(let it = 0; it < splitTheRequest.length; it++ ){
-                const the2ndSplit = splitTheRequest[it].split('=');
-                // console.log('it:', it, ' the2ndSplit :', the2ndSplit, 'the2ndSplit[0]:', the2ndSplit[0],
-                // 'the2ndSplit[1]:', the2ndSplit[1]);
-                for (let _j = 0; _j < temprequestParam.length; _j++) { // for matched name in the request
-                  if (temprequestParam[_j].name === the2ndSplit[0]) {
-                    temprequestParam[_j].value = the2ndSplit[1];
-                    // console.log('_j:',  _j, 'temprequestParam[_j].name :', temprequestParam[_j].name ,
-                    //             'temprequestParam[_j].value', temprequestParam[_j].value);
+                const splitTheRequest = this.requestMsgDeletelater.split('&');
+                for(let it = 0; it < splitTheRequest.length; it++ ){
+                  const the2ndSplit = splitTheRequest[it].split('=');
+                  // console.log('it:', it, ' the2ndSplit :', the2ndSplit, 'the2ndSplit[0]:', the2ndSplit[0],
+                  // 'the2ndSplit[1]:', the2ndSplit[1]);
+                  for (let _j = 0; _j < temprequestParam.length; _j++) { // for matched name in the request
+                    if (temprequestParam[_j].name === the2ndSplit[0]) {
+                      temprequestParam[_j].value = the2ndSplit[1];
+                      // console.log('_j:',  _j, 'temprequestParam[_j].name :', temprequestParam[_j].name ,
+                      //             'temprequestParam[_j].value', temprequestParam[_j].value);
+                    }
                   }
                 }
-              }
 
-              this.currData.requestParams = temprequestParam;
-              console.log(' currData.requestParams detail :', this.currData.requestParams);
-              },
-              error => {console.log(error, 'Error'); }  );
-  },
-  error => {console.log(error, 'Error'); }  );
-  console.log('this.currData on select :', this.currData);
+                this.currData.requestParams = temprequestParam;
+                console.log(' currData.requestParams detail :', this.currData.requestParams);
+                },
+                error => {console.log(error, 'Error'); }  );
+    },
+    error => {console.log(error, 'Error'); }  );
+    console.log('this.currData on select :', this.currData);
 
 
-    // for multiple selection
-    this.selected.splice(0, this.selected.length);
-    this.selected.push(...selected);
-    // console.log('rcordHighlightParam :', this.recordHighlightParam);
+      // for multiple selection
+      this.selected.splice(0, this.selected.length);
+      this.selected.push(...selected);
+      // console.log('rcordHighlightParam :', this.recordHighlightParam);
+    } else {console.log('isTestSuitView: onSelect bypassed'); // comment this log and else block later
+        }
   }
 
   onTest() {
@@ -351,14 +304,22 @@ console.log('this.theDiff : ', this.theDiff );
         let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null,
         'responseTime': null, 'dateTime': null};
         for ( let i = 0 ; i < this.currData.requestParams.length; i++) {
-          if (this.currData.requestParams[i].value != null){
+          // if (this.currData.requestParams[i].value !== null || this.currData.requestParams[i].value !== '') {
+            if (this.currData.requestParams[i].value) {
             requestMsg = requestMsg + this.currData.requestParams[i].name + '=' + this.currData.requestParams[i].value + '&';
           }
         }
         const requestURL = baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg; console.log('requestURL :', requestURL);
         this.requestsService.get
                   (baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg).subscribe
-                  (data => { responseMsg = data[0].response;
+                  (data => {
+                    if (!data.length) {
+                      this.toastrService.warning('No data returned for requestMsg:\n' + requestMsg,
+                                    'No data !!!',
+                              {positionClass: 'toast-bottom-right', progressBar: true, extendedTimeOut: 0});
+                              return;
+                  }
+                    responseMsg = data[0].response;
                   console.log('responseMsg :', responseMsg);
         // },
         // error => {console.log(error, 'Error'); }  );
@@ -422,22 +383,24 @@ console.log('this.theDiff : ', this.theDiff );
                                 }
                                 console.log('this.workdata :', this.workdata);
                                 this.identifyTestToStore();
-                                        let theTest = {'id': null, 'serviceId': this.currData.service.serviceId, 'requestId': theRequest.id,
-                                        'responseId': theResponse.id, 'envId': this.currData.env.envId,
-                              'useCase': '', 'testType': 'info', 'testdataType': '', 'responseTime': null, 'dateTime': new Date() };
-                                        this.requestsService.post
-                                        (baseURL + '/' + 'tests', theTest).subscribe
-                                        (data => { theTest = data;
-                                        console.log('theTest :', theTest);
-                                        },
-                                        error => {console.log(error, 'Error'); }  );
+                              //      let theTest = {'id': null, 'serviceId': this.currData.service.serviceId, 'requestId': theRequest.id,
+                              //           'responseId': theResponse.id, 'envId': this.currData.env.envId,
+                              // 'useCase': '', 'testType': 'info', 'testdataType': '', 'responseTime': null, 'dateTime': new Date() };
+                              //           this.requestsService.post
+                              //           (baseURL + '/' + 'tests', theTest).subscribe
+                              //           (data => { theTest = data;
+                              //           console.log('theTest :', theTest);
+                              //           },
+                              //           error => {console.log(error, 'Error'); }  );
                                 this.theDiffOnTest();
                                 },
                                 error => {console.log(error, 'Error'); }  );
             },
             error => {console.log(error, 'Error'); }  );
       },
-      error => {console.log(error, 'Error'); }  );
+      error => {console.log(error, 'Error');
+      this.toastrPopup.error(error, 'Returned error for request : ' + this.currData.requestParams,
+      {positionClass: 'toast-right-top', progressBar: true, extendedTimeOut: 0}); }  );
 
         // ;
 
@@ -458,7 +421,7 @@ console.log('this.theDiff : ', this.theDiff );
           found2ndSelectToStore = true;
           console.log('2ndSelect', 'iteration, i:', i, 'this.workdata.workitems[i]:', this.workdata.workitems[i]);
           this.workdata.testToStore = {'useCase': this.workdata.workitems[i].useCase,
-          'responseId': this.workdata.workitems[i].response.id, 'serviceId': this.workdata.workitems[0].response._servcieId,
+          'responseId': this.workdata.workitems[i].response.id, 'serviceId': this.workdata.workitems[i].response._servcieId,
            'touchPoints': this.workdata.workitems[i].touchPoints, 'envId': this.workdata.workitems[i].response._envId,
           'requestId': this.workdata.workitems[i].request.id,'testType': 'info', 'testdataType': '', 'id': null,
           'responseTime': this.workdata.workitems[i].response.responseTime, 'dateTime': this.workdata.workitems[i].response.dateTime};
@@ -513,6 +476,7 @@ console.log('this.theDiff : ', this.theDiff );
       touchPoints.push(this.currData.touchPointsForDisplay[i].value);
     }
     this.workdata.testToStore.touchPoints = touchPoints;
+    this.workdata.testToStore.serviceId = this.currData.service.serviceId;
     this.requestsService.post
     (baseURL + '/' + 'tests', this.workdata.testToStore).subscribe
     (data => {const theTest = data;
@@ -754,12 +718,12 @@ console.log('this.theDiff : ', this.theDiff );
       if ( (event.type === 'mouseenter' ) && (this.activatedRow.id !== event.row.id) ) {
         this.toastrService.clear();
         this.toastrService.info('UseCaseName : ' + event.row.useCase, 'Service : ' + event.row.serviceId,
-         {positionClass: 'toast-top-center', progressBar: true, extendedTimeOut: 1000});
+         {positionClass: 'toast-top-center', progressBar: true, extendedTimeOut: 0});
       }
     } else { // 1st time
       this.activatedRow = event.row;
       this.toastrService.show('UseCaseName : ' + event.row.useCase, 'Service : ' + event.row.serviceId,
-         {positionClass: 'toast-top-center', progressBar: true, extendedTimeOut: 1000});
+         {positionClass: 'toast-top-center', progressBar: true, extendedTimeOut: 0});
     }
     this.activatedRow = event.row;
   }
@@ -915,6 +879,61 @@ console.log('this.theDiff : ', this.theDiff );
   }
 
   ngOnInit() {
+  }
+
+  onCheckBoxSelect({ selected }) {
+
+    console.log('CheckBoxSelect Event', selected, this.checkboxselected);
+
+
+
+    this.checkboxselected.splice(0, this.checkboxselected.length);
+
+    this.checkboxselected.push(...selected);
+
+  }
+
+
+
+  onCheckBoxActivate(event) {
+
+    console.log('CheckBoxActivate Event', event);
+
+  }
+
+
+
+  add() {
+
+    this.checkboxselected.push(this.rows[1], this.rows[3]);
+
+  }
+
+
+
+  update() {
+
+    this.checkboxselected = [this.rows[1], this.rows[3]];
+
+  }
+
+
+
+  remove() {
+
+    this.checkboxselected = [];
+
+  }
+
+  checkSelectable(event) {
+
+    console.log('Checking if selectable', event);
+    if (this.isTestSuitView) {
+      console.log('in Test suit view: this.isTestSuitView', this.isTestSuitView);
+    return event.id !== event.id; } else {
+      console.log('Case view: this.isTestSuitView', this.isTestSuitView);
+      return true; }
+
   }
 
 }
