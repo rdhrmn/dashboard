@@ -6,7 +6,7 @@
       <ng-template #testsuits> <h3 style="background-color: #0b51c5 !important;"> <b>Servcie Readiness: Test suits</b> </h3> </ng-template>
     </div>
     <div class="col-sm-2" id="SwitchBetCaseAndSuit" style="padding-left: 0px; padding-right: 0px;">
-      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 0px; ; margin: 0; height: 32px;" autocomplete="off" [(ngModel)]="isTestSuitView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
+      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 0px; ; margin: 0; height: 32px;" autocomplete="off" (click)="selectionType = 'checkbox'" [(ngModel)]="isTestSuitView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
       <ng-container *ngIf="isTestSuitView == 1;then ontestsuits else ontestcases">this.isTestSuitView is declared baanana [()] here and can be accessed from any where, if only [] one way component to UI, https://angular.io/api/forms/NgModel</ng-container>
       <ng-template #ontestcases> <h3 style="font-size: medium; text-align: inherit;"> <b>For Testsuits</b> </h3> </ng-template> <!-- Go to Test suits -->
       <ng-template #ontestsuits> <h3 style="font-size: medium; text-align: inherit; background-color: #0b51c5 !important;"> <b>For Testcases</b> </h3> </ng-template>
@@ -58,26 +58,46 @@
         <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button"> -->
     </div>
     <!-- <textarea >Test: ENV = {{currData.env.envId}} : {{currData.env.envName}} : SERVICE = {{currData.service.serviceId}} : {{currData.service.name}} : {{currData.service.operation}} </textarea> -->
+    <!-- {{responseTime}} -->
     <div class="col" id="FilterArea" style="padding-left: 0px; padding-right: 0px;">
-      <div style="background-color:white;color:slateblue;font:70%/1 sans-serif; font-weight: bold">Data filtering</div>
+      <div style="background-color:white;color:slateblue;font:70%/1 sans-serif; font-weight: bold">Data filtering:
+        <span style="color:firebrick;">Filter useCase</span>
+        <span style="color:darkolivegreen;padding-left:7.00em;"> &nbsp;Filter Response Time</span>
+        <span style="color:yellowgreen;padding-left:6.00em;"> Highlight TestCaseType</span>
+      </div>
+      <!-- <div style=""> -->
+        <!-- <label style="background-color:white;color:slateblue;font:70%/1 sans-serif; font-weight: bold">Filter useCase</label> -->
+        <!-- <label style="background-color:white;color:slateblue;font:70%/1 sans-serif; font-weight: bold">Filter useCase</label>
+        <label style="background-color:white;color:slateblue;font:70%/1 sans-serif; font-weight: bold">Filter useCase</label> -->
+      <!-- </div> -->
   <div id= filtering style='font:50%/1 sans-serif' >
     <!-- Name: <input type='text' [(ngModel)]="recordHighlightParam" ng-init="recordHighlightParam=10">
     <h1>{{recordHighlightParam}}</h1> -->
 
     <section class="selection">
         <!-- <input type='text' value="Filter" /> -->
-        <input type='text' style='padding:8px;margin:1px auto;width:90%;'
+        <input type='text' style='padding:8px;margin:1px auto;width:90%;color:firebrick;font-weight: bold'
         placeholder='Filter the useCases...'
         (keyup)='updateFilter($event)'
         />
         <!-- <input type='text' value="Filter" /> -->
-        <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+        <!-- <input type='text'  style='padding:8px;margin:1px auto;width:90%;color:darkolivegreen;font-weight: bold'
           placeholder='ResponseTime<100'
-        />
+          [(ngModel)]="responseTime"
+        /> -->
+        <input type='text'  style='padding:8px;margin:1px auto;width:90%;color:darkolivegreen;font-weight: normal'
+        placeholder='ResponseTime<100'
+        (keyup)='updateResponseTime($event)'
+      />
         <!-- <input type='text' value="Filter" /> -->
-        <input type='text'  style='padding:8px;margin:1px auto;width:90%;'
+        <!-- <input type='text'  style='padding:8px;margin:1px auto;width:90%;color:yellowgreen;font-weight: bold'
           placeholder='CellSelection==Test'
-        />
+          [(ngModel)]="testDataType"
+        /> -->
+        <input type='text'  style='padding:8px;margin:1px auto;width:90%;color:yellowgreen;font-weight: normal'
+        placeholder='CellSelection==Test'
+        (keyup)='updateTestDataType($event)'
+      />
         <!-- <input type='text' style='background-color:slateblue;font-size:20px' value="Filter" /> -->
         <!-- <input type='text'  style='padding:8px;margin:1px auto;width:100%; '
           placeholder='Type to filter the name column...'
@@ -116,17 +136,11 @@
         [footerHeight]="50"
         [rowHeight]="'auto'"
 
-        [selectCheck]="checkSelectable"
+
         [selected]="selected"
-        [selectionType]="'single'"
+        [selectionType]="selectionType"
         (activate)="onActivate($event)"
         (select)='onSelect($event)'
-
-        [selected]="checkboxselected"
-        [selectionType]="'checkbox'"
-        [selectAllRowsOnPage]="true"
-        (activate)="onCheckBoxActivate($event)"
-        (select)='onCheckBoxSelect($event)'
 
         [scrollbarH]="true"
 
@@ -138,8 +152,8 @@
           <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
             <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"/>
           </ng-template>
-          <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isCheckBoxSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
-            <input type="checkbox" [checked]="isCheckBoxSelected" (change)="onCheckboxChangeFn($event)"/>
+          <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+            <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)"/>
           </ng-template>
       </ngx-datatable-column>
 
@@ -189,17 +203,17 @@
             {{value}}
           </ng-template>
         </ngx-datatable-column>
-      <ngx-datatable-column name="requestId">
+      <ngx-datatable-column name="requestId" [width]="75">
           <ng-template ngx-datatable-cell-template let-value="value">
             {{value}}
           </ng-template>
         </ngx-datatable-column>
-      <ngx-datatable-column name="responseId">
+      <ngx-datatable-column name="responseId" [width]="80">
         <ng-template ngx-datatable-cell-template let-value="value">
           {{value}}
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="envId" [width]="60">
+      <ngx-datatable-column name="envId" [width]="40">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span
           title="Double click to edit"
@@ -218,7 +232,7 @@
           </select>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="testdataType" headerClass="is-testdata" [cellClass]="getCellClass" [width]="100">
+      <ngx-datatable-column name="testdataType" headerClass="is-testdata" [cellClass]="getCellClass" [width]="50">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span
           title="Double click to edit"

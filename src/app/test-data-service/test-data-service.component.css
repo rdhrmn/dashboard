@@ -439,5 +439,5 @@ margin-bottom: -1px;
 input[type="text"]:disabled {
     /* background: #dddddd; */
     background-color:#aaa;text-shadow:0px 1px 0px rgba(0,0,0,.5);color:#666;
-} 
+}
 

@@ -46,6 +46,7 @@ export class TestDataServiceComponent implements OnInit {
 
   selected = [];
   checkboxselected = [];
+  selectionType = 'multi'
 
   filteredRows = [];
 
@@ -58,6 +59,8 @@ export class TestDataServiceComponent implements OnInit {
   editedRow = {};
   recordHighlightParam = 10;
   cellHighlightParam = 'female';
+  responseTime = 120;
+  testDataType = 'test';
 
   clickTimer: any;
   singleModel = 1;
@@ -200,8 +203,9 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   }
 
   onSelect({ selected }) {
+
+    console.log('Select Event', 'From event, selected:->', selected, 'this.selected:->', this.selected);
     if(!this.isTestSuitView){
-      console.log('Select Event', 'From event, selected:->', selected, 'this.selected:->', this.selected);
       this.isSelected = true;
       console.log('isSelected', this.isSelected);
       this.currData.row = selected[0]; // should work if editing (wrt property ~ name) at page is good
@@ -745,6 +749,19 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
   }
 
+  updateResponseTime(event) {
+    const val = event.target.value;
+    // update the rows due to filter
+    this.responseTime = Number(val);
+  }
+
+  updateTestDataType(event) {
+    const val = event.target.value.toLowerCase();
+    // update the rows due to filter
+    this.testDataType = val;
+
+  }
+
   onTableContextMenu(contextMenuEvent) {
     console.log('contextMenuEvent :', contextMenuEvent);
 
@@ -761,18 +778,32 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     contextMenuEvent.event.stopPropagation();
   }
 
-  getRowClass(row) {
+ /*  getRowClass(row) {
     // console.log('rcordHighlightParam :', this.recordHighlightParam);
     // console.log('row.responsetime :', row.ResponseTime , 'row.responsetime % 10 :', row.ResponseTime % 10);
     return {
       // 'resptime-is-ten': (row.responseTime % 10) === 0
       'resptime-less-hundred': (row.responseTime < 100) === true
     };
+  } */
+
+  getRowClass = (row) => {
+    return {
+      'resptime-less-hundred': (() => {
+        return Number(row.responseTime) < this.responseTime; } )()
+    };
   }
 
-  getCellClass({ row, column, value }): any {
+/*   getCellClass({ row, column, value }): any {
     return {
       'is-test': value === 'test'
+    };
+  } */
+
+  getCellClass = ({ row, column, value }) => {
+    return {
+      'is-test': (() => {
+        return value === this.testDataType; } )()
     };
   }
 
@@ -898,6 +929,15 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   onCheckBoxActivate(event) {
 
     console.log('CheckBoxActivate Event', event);
+    const checkboxCellIndex = 1;
+    if (event.type === 'checkbox') {
+      // Stop event propagation and let onSelect() work
+      console.log('onCheckBoxActivate: Checkbox Selected', event);
+      event.event.stopPropagation();
+    } else if (event.type === 'click' && event.cellIndex !== checkboxCellIndex) {
+      // Do somethings when you click on row cell other than checkbox
+      console.log('onCheckBoxActivate: Row Clicked', event.row); /// <--- object is in the event row variable
+    }
 
   }
 
@@ -925,14 +965,20 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
   }
 
-  checkSelectable(event) {
+  checkSelectable(row, column, value) {
 
-    console.log('Checking if selectable', event);
-    if (this.isTestSuitView) {
-      console.log('in Test suit view: this.isTestSuitView', this.isTestSuitView);
-    return event.id !== event.id; } else {
-      console.log('Case view: this.isTestSuitView', this.isTestSuitView);
-      return true; }
+    console.log('Checking if selectable', row);
+    // if (this.isTestSuitView) {
+    //   console.log('in Test suit view: this.isTestSuitView', this.isTestSuitView);
+    // return event.id !== event.id; } else {
+    //   console.log('Case view: this.isTestSuitView', this.isTestSuitView);
+    //   return true; }
+
+    // if (isCheckBoxSelected) {
+    //   console.log('in Test suit view: isCheckBoxSelected', isCheckBoxSelected);
+    // return row.id !== row.id; } else {
+    //   console.log('Case view: isCheckBoxSelected', isCheckBoxSelected);
+    //   return true; }
 
   }
 

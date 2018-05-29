@@ -15,5 +15,6 @@ export class MyGlobal {
   isCreateMessage = false;
   isShowTest = false;
   isShowDiff = false;
+  isTestSuitView = '';
 
  }
