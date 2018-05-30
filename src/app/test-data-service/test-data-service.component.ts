@@ -85,6 +85,7 @@ export class TestDataServiceComponent implements OnInit {
                         'border-color': null, 'animation': null, 'border-style': null },
       isCurrent: false, isPrevious: false}],
       theDiffData: null, theNewOne: null, theOldORBase: null, theReverseDiff: null,
+      isDiffExist: {fullDiff: 'NA' , removedDiff: 'NA', replacedDiff: 'NA', addedDiff: 'NA'},
       testToStore: {'useCase': null, 'responseId': null, 'serviceId': null, 'touchPoints': null, 'envId': null,
       'requestId': null, 'testType': null, 'testdataType': null, 'id': null, 'responseTime': null, 'dateTime': null}};
   // workitems: [ request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
@@ -562,6 +563,8 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       if (this.workdata.workitems[i].isPrevious !== true){this.workdata.workitems[i].changeDiffStyle['border-style'] = '';}
     }
 
+    this.understandDiff(null);
+
 /* // like , unlike requested are ttreated same based on current and privious or 1st or 2nd select
      // All the below cases will go by current and privious if any like request, return to theDiffTextLike else theDiffTextUnlike
        // when there is no select
@@ -632,6 +635,29 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     if ( theDiff.added.length === 0) {theDiff.added.push({'message': 'Nothing added'}); }
     console.log(' returned theDiff : ', theDiff );
     return theDiff;
+
+  }
+
+  understandDiff(theDiff) {
+    let theDiffData = {removed:[], replaced:[], added:[]};
+
+    if (!theDiff) {theDiffData = this.workdata.theDiffData; } else {theDiffData = theDiff ; }
+
+    let removedLength = theDiffData.removed.length;
+    let replacedLength = theDiffData.replaced.length;
+    let addedLength = theDiffData.added.length;
+
+    if (this.workdata.workitems.length > 1){
+
+      if( theDiffData.removed[0]['message']){removedLength = 0; }
+      if( theDiffData.replaced[0]['message']){replacedLength = 0; }
+      if( theDiffData.added[0]['message']){addedLength = 0; }
+
+      this.workdata.isDiffExist =
+            { fullDiff: String(removedLength + replacedLength + addedLength)  ,
+              removedDiff: String(removedLength), replacedDiff: String(replacedLength), addedDiff: String(addedLength) };
+    } else {this.workdata.isDiffExist =
+      { fullDiff: 'NA' , removedDiff: 'NA' , replacedDiff: 'NA',addedDiff: 'NA' };}
 
   }
 
@@ -962,6 +988,26 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
     this.checkboxselected = [this.rows[1], this.rows[3]];
 
+  }
+
+  setColourOfDiffStyle() {
+
+    if (Number(this.workdata.isDiffExist.removedDiff) > 0) {
+        return {background: 'red'}; } else
+    if (Number(this.workdata.isDiffExist.replacedDiff) > 0) {
+        return {background: 'orange'}; } else
+    if (Number(this.workdata.isDiffExist.addedDiff) > 0) {
+        return {background: 'blue'}; } else
+    if (Number(this.workdata.isDiffExist.fullDiff) === 0){
+        return {background: 'green'};
+    }
+
+/*     this.currentStyles = {
+      'font-style':  this.workdata.isDiffExist.addedDiff  ? 'italic' : 'normal',
+      'color':       this.workdata.isDiffExist.removedDiff ? 'red'   : 'black',
+      'font-size':   this.workdata.isDiffExist.replacedDiff ? '24px'   : '12px'
+    };
+    return this.currentStyles; */
   }
 
 

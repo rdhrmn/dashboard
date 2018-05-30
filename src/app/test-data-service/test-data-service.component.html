@@ -520,13 +520,13 @@
 
       <!-- </form> -->
     </div>
-    <div class="col-sm-4" >
+    <div class="col-sm-4" data-toggle="tooltip" data-placement="left" [title]="workdata.isDiffExist | json">
       <fieldset>
           <legend>Diff Viewer</legend>
       <div class="panel with-nav-tabs panel-primary">
           <div class="panel-heading">
                   <ul class="nav nav-tabs nav-justified" role="tablist">
-                      <li class="nav-item"><a class="nav-link active" href="#diffTreeView" data-toggle="tab" role="tab" >Diff in Tree</a></li>
+                      <li class="nav-item" [ngStyle]="setColourOfDiffStyle()"><a class="nav-link active" href="#diffTreeView" data-toggle="tab" role="tab" >Diff in Tree</a></li>
                       <li class="nav-item"><a class="nav-link" href="#diffGridView" data-toggle="tab" role="tab" > Diff in Grid</a></li>
                       <li class="nav-item"><a class="nav-link" href="#reverseDiff" data-toggle="tab" role="tab" > The reverse diff</a></li>
                   </ul>
