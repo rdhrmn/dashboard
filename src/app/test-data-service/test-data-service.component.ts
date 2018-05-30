@@ -46,7 +46,7 @@ export class TestDataServiceComponent implements OnInit {
 
   selected = [];
   checkboxselected = [];
-  selectionType = 'multi'
+  selectionType = 'multi';
 
   filteredRows = [];
 
@@ -100,7 +100,7 @@ export class TestDataServiceComponent implements OnInit {
                touchPointsForDisplay: [{value: null}]};
 
   displayProp = {testsuit: false}; // not used
-  isTestSuitView = '';
+  isTestSuitView = 0;
 
 
 
@@ -204,8 +204,9 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
   onSelect({ selected }) {
 
-    console.log('Select Event', 'From event, selected:->', selected, 'this.selected:->', this.selected);
-    if(!this.isTestSuitView){
+    console.log('Select Event with isTestSuitView =', this.isTestSuitView,
+                ',From event, selected:->', selected, 'this.selected:->', this.selected);
+    if(!Number(this.isTestSuitView)) {
       this.isSelected = true;
       console.log('isSelected', this.isSelected);
       this.currData.row = selected[0]; // should work if editing (wrt property ~ name) at page is good
@@ -270,7 +271,9 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       this.selected.splice(0, this.selected.length);
       this.selected.push(...selected);
       // console.log('rcordHighlightParam :', this.recordHighlightParam);
-    } else {console.log('isTestSuitView: onSelect bypassed'); // comment this log and else block later
+    } else {
+      console.log('isTestSuitView:', this.isTestSuitView, ' for whileCheckBoxSelect'); // comment this log and else block later
+      this.whileCheckBoxSelect(selected);
         }
   }
 
@@ -715,7 +718,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   }
 
   onActivate(event) {
-    console.log('Activate Event', event);
+/*     console.log('Activate Event', event);
     // let isMouseEventActivated = false;
     // this.toastrService.toastrConfig.
     if (this.activatedRow) {
@@ -729,7 +732,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       this.toastrService.show('UseCaseName : ' + event.row.useCase, 'Service : ' + event.row.serviceId,
          {positionClass: 'toast-top-center', progressBar: true, extendedTimeOut: 0});
     }
-    this.activatedRow = event.row;
+    this.activatedRow = event.row; */
   }
 
   updateFilter(event) {
@@ -909,18 +912,22 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     console.log('singleModel:', this.singleModel, 'the variable name to be removed');
   }
 
+  changeUIView() {
+    if ( this.selectionType === 'multi') {
+          this.selectionType = 'checkbox';
+    } else {this.selectionType = 'multi'; }
+
+  }
+
   ngOnInit() {
   }
 
-  onCheckBoxSelect({ selected }) {
+  whileCheckBoxSelect({ selected }) {
 
-    console.log('CheckBoxSelect Event', selected, this.checkboxselected);
-
-
-
-    this.checkboxselected.splice(0, this.checkboxselected.length);
+        this.checkboxselected.splice(0, this.checkboxselected.length);
 
     this.checkboxselected.push(...selected);
+    console.log('whileCheckBoxSelect:', 'selected', selected, 'this.checkboxselected' , this.checkboxselected);
 
   }
 

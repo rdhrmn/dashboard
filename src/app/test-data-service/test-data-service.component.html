@@ -6,7 +6,7 @@
       <ng-template #testsuits> <h3 style="background-color: #0b51c5 !important;"> <b>Servcie Readiness: Test suits</b> </h3> </ng-template>
     </div>
     <div class="col-sm-2" id="SwitchBetCaseAndSuit" style="padding-left: 0px; padding-right: 0px;">
-      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 0px; ; margin: 0; height: 32px;" autocomplete="off" (click)="selectionType = 'checkbox'" [(ngModel)]="isTestSuitView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
+      <button type="button" class="btn btn-primary btn-lg btn-block waves-light" style="padding: 0px 0px 0px 0px; ; margin: 0; height: 32px;" autocomplete="off" (click)="changeUIView()" [(ngModel)]="isTestSuitView" mdbCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0" mdbWavesEffect>
       <ng-container *ngIf="isTestSuitView == 1;then ontestsuits else ontestcases">this.isTestSuitView is declared baanana [()] here and can be accessed from any where, if only [] one way component to UI, https://angular.io/api/forms/NgModel</ng-container>
       <ng-template #ontestcases> <h3 style="font-size: medium; text-align: inherit;"> <b>For Testsuits</b> </h3> </ng-template> <!-- Go to Test suits -->
       <ng-template #ontestsuits> <h3 style="font-size: medium; text-align: inherit; background-color: #0b51c5 !important;"> <b>For Testcases</b> </h3> </ng-template>
@@ -299,8 +299,10 @@
         <!-- <form style='background: #cafa9e;' *ngIf="contextmenuRow"> -->
         <form style='background: #cafa9e;' *ngIf="isSelected">
           <!-- <button type="submit">Edit</button><button type="submit">Save</button><br> -->
-          <fieldset id="queryParamBox" style='background: #cafa9e;' data-toggle="tooltip" data-placement="top" title="To toggle readonly/edit click on query param name">
-
+          <fieldset id="queryParamBox" style='background: #cafa9e;' data-toggle="tooltip" data-html="true" title= "Query data is From TestID:{{currData.row.id}}  &#10; To toggle readonly/edit click on query param name">
+            <!-- <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+              Tooltip with HTML
+            </button> -->
             <legend>Query Params - {{currData.row.serviceId}}</legend>
             <!-- *ngFor outdated to be replaced with ngForOf -->
             <ng-container *ngFor="let param of currData.requestParams; let i = index">
