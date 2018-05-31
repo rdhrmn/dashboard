@@ -849,7 +849,13 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     if (this.currData.service.serviceId === '100') { serviceIdString = ''; }
     this.requestsService.get
               (baseURL + '/envs/' + this.currData.env.envId + '/tests?' + serviceIdString).subscribe
-              (data => { this.rows = data;
+              (data => {
+                for (let i = 0; i < data.length; i++) {
+                  const id = data[i].serviceId;
+                  data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
+                  this.services.find( service => service.id === id).operation;
+                }
+                this.rows = data;
               console.log('TestDataFromEnvForService :', this.rows);
 
     },
