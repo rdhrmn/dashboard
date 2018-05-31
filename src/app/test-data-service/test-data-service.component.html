@@ -279,7 +279,7 @@
     </div>
     <!-- <div class="col-sm-3">{{isTestSuitView}}</div> -->
     <ng-template [ngIf]="isTestSuitView != 1">
-      <div class="col-sm-3" id="rowconext" style='padding-left: 5px;padding-right: 5px;' *ngIf="{ isDone: false}; let isAtleastSingleTest" >
+      <div class="col-sm-3" id="rowconext" style='padding-left: 5px;padding-right: 5px;' *ngIf="{ isDone: false, isTestCaseCreated: false}; let isAtleastSingleTest" >
         <form style='border:2px solid #9ed8fa; background: #9ed8fa;' *ngIf="isSelected">
           <fieldset style='background: #9ed8fa;'>
             <legend>Env Settings : {{currData.env.envName}} for {{currData.row.serviceId}}</legend>
@@ -375,11 +375,14 @@
                               </form>
                           </div>
                           <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary waves-light" data-dismiss="modal" (click)="testCaseFinaliseDetail.hide()" mdbWavesEffect>Close</button>
+                              <button type="button" class="btn btn-secondary waves-light" data-dismiss="modal" 
+                                      [mdbTooltip]="workdata.testToStore | json" placement="left" 
+                                      (click)="testCaseFinaliseDetail.hide()" mdbWavesEffect>Close</button>
                               <button type="button" class="btn btn-primary waves-light"
+                                      [disabled]="isAtleastSingleTest.isTestCaseCreated"
                                       (mouseover)="updateTouchPoints()"
                                       [mdbTooltip]="workdata.testToStore | json" placement="left"
-                                      (click)="postTheTest()"
+                                      (click)="postTheTest();isAtleastSingleTest.isTestCaseCreated=true;"
                                       mdbWavesEffect>Create Test Case</button>
                           </div>
                       </div>
