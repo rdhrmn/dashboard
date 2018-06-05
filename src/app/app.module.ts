@@ -78,6 +78,7 @@ const appRoutes: Routes = [
     // - Begin
     FormsModule,
     HttpModule,
+    NgxDatatableModule, // Datatable
     // HttpClientModule,
     // RouterModule.forRoot([]),
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
@@ -89,7 +90,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
 
-    NgxDatatableModule, // Datatable
+
 
     // JsonTree // Treeview
 

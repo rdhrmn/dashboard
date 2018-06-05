@@ -1,3 +1,9 @@
+/* @import '../../../node_modules/@swimlane/ngx-datatable/release/assets/datatable.css'; */
+/* @import '../../../node_modules/@swimlane/ngx-datatable/release/index.css';
+@import '../../../node_modules/@swimlane/ngx-datatable/release/themes/material.css';
+@import '../../../node_modules/@swimlane/ngx-datatable/release/assets/icons.css'; */
+
+
 /* Pattern styles */
 .selection {
   display: inline-grid;

@@ -17,7 +17,7 @@ const pluck = require('just-pluck-it');
 const values = require('just-values');
 // const diff = require('just-diff');
 const baseURL = 'http://localhost:3004' ;
-
+// const baseURL = 'http://localhost:8401' ;
 @Component({
   selector: 'app-test-data-service',
   templateUrl: './test-data-service.component.html',
@@ -321,14 +321,16 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
         this.requestsService.get
                   (baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg).subscribe
                   (data => {
+                    responseMsg = data[0].response;
+                    console.log('responseMsg :', responseMsg, 'data:', data);
                     if (!data.length) {
                       this.toastrService.warning('No data returned for requestMsg:\n' + requestMsg,
                                     'No data !!!',
                               {positionClass: 'toast-bottom-right', progressBar: true, extendedTimeOut: 0});
                               return;
-                  }
-                    responseMsg = data[0].response;
-                  console.log('responseMsg :', responseMsg);
+                    }
+                    // responseMsg = data[0].response;
+                    // console.log('responseMsg :', responseMsg);
         // },
         // error => {console.log(error, 'Error'); }  );
 
@@ -489,10 +491,29 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     (baseURL + '/' + 'tests', this.workdata.testToStore).subscribe
     (data => {const theTest = data;
     console.log('theTest :', theTest);
-    //
+
     // need to populate test id whereever required
     },
     error => {console.log(error, 'Error'); }  );
+
+    // this.getTestDataFromEnvForService(null, null, null);
+    this.fetch((data) => {
+      this.selected = [data[2]]; // for default selection
+      // cache filtered list
+      this.filteredRows = [...data];
+      // --
+      // console.log('this.services for data :', this.services);
+       console.log('data :', data);
+      for (let i = 0; i < data.length; i++) {
+        const id = data[i].serviceId;
+        data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
+        this.services.find( service => service.id === id).operation;
+      }
+      // --
+      // push our inital complete list
+      this.rows = data;
+      setTimeout(() => { this.loadingIndicator = false; }, 1500);
+    });
   }
 
   theDiffOnTest() {
