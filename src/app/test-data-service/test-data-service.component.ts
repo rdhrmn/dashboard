@@ -31,8 +31,9 @@ encapsulation: ViewEncapsulation.None
 export class TestDataServiceComponent implements OnInit {
 
   // Initial static data
+  useJsonServerForTest = false;
   services = [];
-  envs: Array<Object> = [];
+  envs = [];
   uniqueServiceAreas = [];
   uniqueEnvDivs = [];
   test = [];
@@ -65,7 +66,7 @@ export class TestDataServiceComponent implements OnInit {
   clickTimer: any;
   singleModel = 1;
 
-  toastrPopup: ToastrService;
+  // toastrPopup: ToastrService;
   // request = {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null };
   // response = {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null };
   // workitem = {request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
@@ -95,8 +96,8 @@ export class TestDataServiceComponent implements OnInit {
   currData = {'row': null,
               // 'queryParams': null,
               'requestParams' : [{'name': null, 'value': null}] ,
-              'env' : {'envName' : 'All Envs', 'envId' : null},
-              'service' : {'name': 'All Servcies', 'operation' : 'All Operations', 'serviceId' : null, 'apendURL': null},
+              'env' : {'envName' : 'All Envs', 'envId' : null, 'baseURL' : null},
+              'service' : {'name': 'All Servcies', 'operation' : 'All Operations', 'serviceId' : null, 'apendURL': null, 'responseClass': null},
               'uniqueServiceArea': null, 'uniqueEnvDiv': null,
                touchPointsForDisplay: [{value: null}]};
 
@@ -165,6 +166,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
         console.log('uniqueEnvDivs :', this.uniqueEnvDivs);
         this.currData.env.envName = this.envs[0]['envName'];
         this.currData.env.envId =    this.envs[0]['id'];
+        this.currData.env.baseURL =    this.envs[0]['baseURL'];
       },
     error => {console.log(error, 'Error'); }  );
 
@@ -173,10 +175,11 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       // cache filtered list
       this.filteredRows = [...data];
       // --
-      // console.log('this.services for data :', this.services);
+      console.log('this.services for data :', this.services);
        console.log('data :', data);
       for (let i = 0; i < data.length; i++) {
         const id = data[i].serviceId;
+        // console.log('Log to be removed, the  data[i].serviceId :', data[i].serviceId);
         data[i].serviceId = this.services.find( service => service.id === id).name + '-' +
         this.services.find( service => service.id === id).operation;
       }
@@ -229,12 +232,13 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       // this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
       // Get Servcie details to know which query parameters to be populated
       this.requestsService.get('http://localhost:3004/services?name=' + serviceOperation[0] + '&&operation=' + serviceOperation[1] )
-              .subscribe(data => { const service = data;
+              .subscribe(data => { const service = data; // we can have a look up on this.services instead of service call
       // console.log(' service detail :', service); // comment this line once things fine
                   this.currData.service.name = service[0].name;
                   this.currData.service.operation = service[0].operation;
                   this.currData.service.serviceId = service[0].id;
                   this.currData.service.apendURL = service[0].apendURL;
+                  this.currData.service.responseClass = service[0].responseClass;
 
                 // Get query params
                 this.requestsService.get('http://localhost:3004/queryparams?_serviceId=' + service[0].id)
@@ -272,6 +276,42 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       this.selected.splice(0, this.selected.length);
       this.selected.push(...selected);
       // console.log('rcordHighlightParam :', this.recordHighlightParam);
+
+      // initial work data
+      this.requestsService.get
+      (baseURL + '/' + 'requests?id=' + this.currData.row.requestId).subscribe
+      (data => {
+        // console.log('POST on requests, returns :', data);
+       const theRequest = data[0];
+        // theRequest._servcieId = serviceName; // for workdata only not for table, display requires name
+        // theRequest._envId = envName; // for workdata only not for table, display requires name
+        console.log('theRequest for selected message:', theRequest);
+
+                this.requestsService.get
+                (baseURL + '/' + 'responses?id=' + this.currData.row.responseId).subscribe
+                (data => { const theResponse = data[0];
+                  // theResponse._servcieId = serviceName; // for workdata, display requires name,
+                  // theResponse._envId = envName; // for workdata, display requires name
+                  // console.log('theResponse :', theResponse);
+
+                if (this.workdata.workitems[0].request.id === null) { // If is not needed to be removed
+                  this.workdata.workitems[0] =
+                      {request: theRequest, response: theResponse, isUnlikeRequests: false,
+                          // useCase: 'usecase' + '-' + theRequest.id, touchPoints: '',
+                           useCase: this.currData.row.useCase, touchPoints: this.currData.row.touchPoints,
+                          is1stSelect: false, is2ndSelect: false,
+                          changeDiffStyle:
+                          {'box-shadow': '', 'text-shadow': '', 'background-color': '',
+                                              'border-color': null, 'animation': null, 'border-style': null },
+                          isCurrent: true, isPrevious: false}; // 1stTime isCurrest is set
+                }
+                console.log('The 1st this.workdata :', this.workdata);
+
+                },
+                error => {console.log(error, 'Error'); }  );
+        },
+        error => {console.log(error, 'Error'); }  );
+
     } else {
       console.log('isTestSuitView:', this.isTestSuitView, ' for whileCheckBoxSelect'); // comment this log and else block later
       this.whileCheckBoxSelect(selected);
@@ -317,20 +357,30 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
             requestMsg = requestMsg + this.currData.requestParams[i].name + '=' + this.currData.requestParams[i].value + '&';
           }
         }
-        const requestURL = baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg; console.log('requestURL :', requestURL);
+        // this.services.find( service => service.id === '1').name
+        const requestURL = (this.useJsonServerForTest === true ?
+        baseURL : this.envs.find(env => env.id === this.currData.row.envId).baseURL) + '/'
+        + this.currData.service.apendURL + '?' + requestMsg;
+        console.log('requestURL :', requestURL);
         this.requestsService.get
-                  (baseURL + '/' + this.currData.service.apendURL + '?' + requestMsg).subscribe
+                  (requestURL).subscribe
                   (data => {
-                    responseMsg = data[0].response;
+                    if (this.useJsonServerForTest) { responseMsg = data[0].response;}
+                    else {responseMsg = data;}
                     console.log('responseMsg :', responseMsg, 'data:', data);
-                    if (!data.length) {
-                      this.toastrService.warning('No data returned for requestMsg:\n' + requestMsg,
+                    if (!data.length && this.useJsonServerForTest) {
+                      this.toastrService.warning('<b><i>No data returned for requestURL:</i><br/>' + requestURL,
                                     'No data !!!',
-                              {positionClass: 'toast-bottom-right', progressBar: true, extendedTimeOut: 0});
+                              {positionClass: 'toast-bottom-right', progressBar: true, extendedTimeOut: 0, enableHtml: true});
                               return;
+                    } else if (responseMsg [this.currData.service.responseClass]['CallStatus'] === 1) {
+                      this.toastrService.error('<b><i>Servcie provider issue for requestURL:</i></b><br/>' + requestURL,
+                      'Check Soap Service',
+                      {positionClass: 'toast-bottom-right', progressBar: true, extendedTimeOut: 0, enableHtml: true});
+                      return;
                     }
-                    // responseMsg = data[0].response;
-                    // console.log('responseMsg :', responseMsg);
+                    console.log('responseMsg Class :', responseMsg [this.currData.service.responseClass],
+                    'Call status:', responseMsg [this.currData.service.responseClass]['CallStatus']);
         // },
         // error => {console.log(error, 'Error'); }  );
 
@@ -356,8 +406,10 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
                                   // for demo
                                   newobj1.myArray[0].id = this.tempid1++;
                                   newobj2.myArray[0].id = this.tempid2++;
+                                  if(this.useJsonServerForTest){
                                   theResponse.responseMsg = (Math.round(Math.random() * Math.pow(10, 10)) % 2 === 0)
                                                               ? newobj1 : newobj2;
+                                  }
                                   // console.log('theResponse :', theResponse);
 
                                 if (this.workdata.workitems[0].request.id === null) {
@@ -408,9 +460,12 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
             },
             error => {console.log(error, 'Error'); }  );
       },
-      error => {console.log(error, 'Error');
-      this.toastrPopup.error(error, 'Returned error for request : ' + this.currData.requestParams,
-      {positionClass: 'toast-right-top', progressBar: true, extendedTimeOut: 0}); }  );
+      error => {
+      // const theError = error;
+      console.log(error, 'Error');
+      // this.toastrService.error(error, 'Returned error for request : ' + JSON.stringify(this.currData.requestParams),
+      this.toastrService.error('<b><i>Error:</i></b><br/>' + error + '<br/><b><i>For request :</i></b><br/>' + requestURL, 'Returned error',
+      {positionClass: 'toast-bottom-right', progressBar: true, extendedTimeOut: 0, closeButton: true, enableHtml: true}); }  );
 
         // ;
 
