@@ -16,7 +16,7 @@ const unique = require('just-unique');
 const pluck = require('just-pluck-it');
 const values = require('just-values');
 // const diff = require('just-diff');
-const baseURL = 'http://localhost:3004' ;
+const baseURL = 'http://10.64.206.53:9080' ;
 // const baseURL = 'http://localhost:8401' ;
 @Component({
   selector: 'app-test-data-service',
@@ -65,7 +65,7 @@ export class TestDataServiceComponent implements OnInit {
 
   clickTimer: any;
   singleModel = 1;
-
+  responses = {firstId: 'NA', secondId: 'NA'};
   // toastrPopup: ToastrService;
   // request = {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null };
   // response = {'id': null, 'responseMsg': null, '_servcieId': null, '_envId': null };
@@ -86,7 +86,7 @@ export class TestDataServiceComponent implements OnInit {
                         'border-color': null, 'animation': null, 'border-style': null },
       isCurrent: false, isPrevious: false}],
       theDiffData: null, theNewOne: null, theOldORBase: null, theReverseDiff: null,
-      isDiffExist: {fullDiff: 'NA' , removedDiff: 'NA', replacedDiff: 'NA', addedDiff: 'NA'},
+      isDiffExist: {responses: {firstId: 'NA', secondId: 'NA'}, fullDiff: 'NA' , removedDiff: 'NA', replacedDiff: 'NA', addedDiff: 'NA'},
       testToStore: {'useCase': null, 'responseId': null, 'serviceId': null, 'touchPoints': null, 'envId': null,
       'requestId': null, 'testType': null, 'testdataType': null, 'id': null, 'responseTime': null, 'dateTime': null}};
   // workitems: [ request: {'id': null, 'requestMsg': null, '_servcieId': null, '_envId': null },
@@ -655,16 +655,20 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
      if (isThere1stSelect === true && isThere2ndSelect === true){ // when both 1stSelect and 2ndSelect
         for ( let i = 0; i < this.workdata.workitems.length ; i++) {
           if (this.workdata.workitems[i].is2ndSelect === true) {
-                    this.workdata.theNewOne = this.workdata.workitems[i].response.responseMsg; }
+                    this.workdata.theNewOne = this.workdata.workitems[i].response.responseMsg;
+                    this.responses.secondId = this.workdata.workitems[i].response.id; }
           if (this.workdata.workitems[i].is1stSelect === true) {
-                    this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg; }
+                    this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg;
+                    this.responses.firstId = this.workdata.workitems[i].response.id;}
         }
      } else if (isThere1stSelect !== true && isThere2ndSelect !== true) { // none selected
           for ( let i = 0; i < this.workdata.workitems.length ; i++) {
             if (this.workdata.workitems[i].isCurrent === true) {
-                      this.workdata.theNewOne = this.workdata.workitems[i].response.responseMsg; }
+                      this.workdata.theNewOne = this.workdata.workitems[i].response.responseMsg;
+                      this.responses.secondId = this.workdata.workitems[i].response.id; }
             if (this.workdata.workitems[i].isPrevious === true) {
-                      this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg; }
+                      this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg;
+                      this.responses.firstId = this.workdata.workitems[i].response.id;}
           }
      } else if (isThere1stSelect === true || isThere2ndSelect === true) { // any of the select
        // any of the select event is there in the begining becomes new
@@ -679,18 +683,21 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
                // if two seletcs are there then this is not needed
 
                this.workdata.theNewOne = this.workdata.workitems[i].response.responseMsg;
+               this.responses.secondId = this.workdata.workitems[i].response.id;
                if (this.workdata.workitems[i].isCurrent === true) {
                  console.log ('Need to give a pop up as one is selecting the current one, no diff is selected, workdata:', this.workdata); }
               }
             if (this.workdata.workitems[i].isCurrent === true) { // choose the current one amonmg all, there shoudl be only one current
-                this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg; }
+                this.workdata.theOldORBase = this.workdata.workitems[i].response.responseMsg;
+                this.responses.firstId = this.workdata.workitems[i].response.id; }
           }
      }
-     console.log('this.workdata.theOldORBase:', this.workdata.theOldORBase, 'this.workdata.theNewOne:', this.workdata.theNewOne );
+     console.log('this.workdata.theOldORBase:', this.workdata.theOldORBase, 'this.workdata.theNewOne:', this.workdata.theNewOne ,
+                'this.responses:', this.responses);
      if (this.workdata.theOldORBase != null) {
       this.workdata.theDiffData = this.doTheDiff(this.workdata.theOldORBase, this.workdata.theNewOne );
       this.workdata.theReverseDiff = this.doTheDiff(this.workdata.theNewOne, this.workdata.theOldORBase );
-    } else {console.log ('Pop up or toastr as workdata.theOldORBase is :', this.workdata.theOldORBase,
+    } else {console.log ('Pop up or toastr as workdata.theOldORBase is null:', this.workdata.theOldORBase,
     'when workdata is:', this.workdata);} // remove else after implemetation
 
     // set style for current, previous and diff
@@ -796,10 +803,10 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       if( theDiffData.added[0]['message']){addedLength = 0; }
 
       this.workdata.isDiffExist =
-            { fullDiff: String(removedLength + replacedLength + addedLength)  ,
+            { responses: this.responses, fullDiff: String(removedLength + replacedLength + addedLength)  ,
               removedDiff: String(removedLength), replacedDiff: String(replacedLength), addedDiff: String(addedLength) };
     } else {this.workdata.isDiffExist =
-      { fullDiff: 'NA' , removedDiff: 'NA' , replacedDiff: 'NA',addedDiff: 'NA' };}
+      { responses: this.responses, fullDiff: 'NA' , removedDiff: 'NA' , replacedDiff: 'NA',addedDiff: 'NA' };}
 
   }
 

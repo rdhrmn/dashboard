@@ -1,0 +1,624 @@
+{
+  "services": [
+    {
+      "id": "100",
+      "name": "All Services",
+      "operation": "All Operations",
+      "apendURL": "tempreq",
+      "serviceArea": "All"
+    },
+    {
+      "id": "1",
+      "name": "CCI",
+      "operation": "CCI",
+      "responseClass": "CCICustomerServiceResponse",
+      "apendURL": "retrieveCustConfig",
+      "serviceArea": "QUERY"
+    },
+    {
+      "id": "2",
+      "name": "CCI",
+      "operation": "Digital",
+      "responseClass": "CCIDigitalServiceResponse",
+      "apendURL": "retrieveDigitConfig",
+      "serviceArea": "QUERY"
+    },
+    {
+      "id": "3",
+      "name": "SCI",
+      "operation": "ServiceConfiguration",
+      "responseClass": "SCIServiceConfigurationResponse",
+      "apendURL": "retrieveServConfig",
+      "serviceArea": "QUERY"
+    },
+    {
+      "id": "4",
+      "name": "SCI",
+      "operation": "SubscriberProfile",
+      "responseClass": "SCISubscriberProfileResponse",
+      "apendURL": "retrieveSubsProfile",
+      "serviceArea": "QUERY"
+    },	
+    {
+      "id": "5",
+      "name": "RILRecharge",
+      "operation": "RILRechargeOps",
+      "apendURL": "RILRechargeOps",
+      "serviceArea": "RECHARGE"
+    },
+    {
+      "id": "6",
+      "name": "RILRecharge2",
+      "operation": "RILRechargeOps2",
+      "apendURL": "RILRechargeOps2",
+      "serviceArea": "RECHARGE"
+    },
+    {
+      "id": "7",
+      "name": "RILProvision",
+      "operation": "RILProvisionOps2",
+      "apendURL": "RILProvisionOps2",
+      "serviceArea": "PROVISION"
+    }
+  ],
+  "queryparams": [
+    {
+      "id": "1",
+      "items": [
+        "partyId",
+        "accountId",
+        "channelId",
+        "subCategory",
+		"Identifier-value",
+		"filterKey",
+		"includeAllServices"
+      ],
+      "_serviceId": "1"
+    },
+    {
+      "id": "2",
+      "items": [
+        "Identifier-value",
+        "subCatagory"
+      ],
+      "_serviceId": "2"
+    },
+    {
+      "id": "3",
+      "items": [
+        "Identifier-value",
+        "subCatagory",
+        "filterKey"
+      ],
+      "_serviceId": "3"
+    },
+    {
+      "id": "4",
+      "items": [
+        "Identifier-name",
+        "Identifier-value",
+        "salesChannelId"
+      ],
+      "_serviceId": "3"
+    },
+    {
+      "id": "5",
+      "items": [
+        "abc",
+        "xyz",
+        "pqr"
+      ],
+      "_serviceId": "3"
+    }
+  ],
+  "envs": [
+    {
+      "id": "1",
+      "envName": "REPLICA",
+      "baseURL": "http://localhost:8401",
+      "envDiv": "REPLICA"
+    },
+    {
+      "id": "2",
+      "envName": "O2A",
+      "baseURL": "http://localhost:9321/RILServices",
+      "envDiv": "PROD"
+    },
+    {
+      "id": "3",
+      "envName": "N2A",
+      "baseURL": "http://localhost:10321/RILServices",
+      "envDiv": "PROD"
+    },
+    {
+      "id": "4",
+      "envName": "CCN",
+      "baseURL": "http://localhost:11321/RILServices",
+      "envDiv": "PROD"
+    },
+    {
+      "id": "5",
+      "envName": "Other",
+      "baseURL": "http://localhost:11321/RILServices",
+      "envDiv": "OTHER"
+    },
+    {
+      "id": "6",
+      "envName": "JSON_Server",
+      "baseURL": "http://localhost:3004",
+      "envDiv": "OTHER"
+    }
+  ],
+  "requests": [
+    {
+      "id": "1",
+      "requestMsg": "partyId=P123&channelId=C123&serviceId=S123&subCatagory=abc&accountId=A12345",
+      "_servcieId": "1",
+      "_envId": "1",
+      "_comment1": "Request should be saved against '_servcieId && _envId' both together along with unique queryparameters combinations which forms request",
+      "_comment2": "There is possibility of multiple unoque responses for a request, so is the purpose of the module",
+      "_comment3": "To get all responses for a request from the tests using http://localhost:3004/requests/{id}/tests"
+    },
+    {
+      "id": "2",
+      "requestMsg": "Identifier-value=V123&subCatagory=abc",
+      "_servcieId": "2",
+      "_envId": "1"
+    },
+    {
+      "id": "3",
+      "requestMsg": "Identifier-value=V123&subCategory=abc&filterKey=F123",
+      "_servcieId": "3",
+      "_envId": "1"
+    },
+    {
+      "id": "4",
+      "requestMsg": "Identifier-name=N123&Identifier-value=V123&salesChannelId=C123",
+      "_servcieId": "4",
+      "_envId": "1"
+    },
+    {
+      "id": "5",
+      "requestMsg": "abc=A123&xyz=X123&pqr=Q123",
+      "_servcieId": "1",
+      "_envId": "2"
+    }
+  ],
+  "responses": [
+    {
+      "id": "1",
+      "responseMsg": {"response": "CCI  Response 1"},
+      "_servcieId": "1",
+      "_envId": "1",
+	  "requestId":"1",
+      "_comment1": "Responses should be saved against '_servcieId && _envId'both together with unique fields combinations"
+    },
+    {
+      "id": "2",
+      "responseMsg": {"response": "CCI Digital Response"},
+      "_servcieId": "2",
+      "_envId": "2",
+	  "requestId":"2"
+    },
+    {
+      "id": "3",
+      "responseMsg": {"response": "SCI REPLICA Response"},
+      "_servcieId": "3",
+      "_envId": "1",
+	  "requestId":"3"
+    },
+    {
+      "id": "4",
+      "responseMsg": {"response": "SCI REPLICA Response 2"},
+      "_servcieId": "4",
+      "_envId": "1",
+	  "requestId":"4"
+    },
+	{
+      "id": "5",
+      "responseMsg": {"response": "SCI REPLICA Response 2"},
+      "_servcieId": "5",
+      "_envId": "1",
+	  "requestId":"5"
+    },
+	{
+      "id": "6",
+      "responseMsg": {"response": "CCI  Response 2"},
+      "_servcieId": "1",
+      "_envId": "1",
+	  "requestId":"1",
+      "_comment1": "Responses should be saved against '_servcieId && _envId'both together with unique fields combinations"
+    },
+    {
+      "id": "7",
+      "responseMsg": {"response": "CCI  Response 1"},
+      "_servcieId": "1",
+      "_envId": "1",
+	  "requestId":"1",
+      "_comment1": "Responses should be saved against '_servcieId && _envId'both together with unique fields combinations"
+    }
+  ],
+  "tests": [
+    {
+      "id": "1",
+      "serviceId": "1",
+      "requestId": "1",
+      "responseId": "1",
+      "envId": "1",
+      "useCase": "cci-demo",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "123",
+      "dateTime": "A dateTime 1"
+    },
+    {
+      "id": "2",
+      "serviceId": "2",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "cci-digital-demo",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "120",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "3",
+      "serviceId": "3",
+      "requestId": "3",
+      "responseId": "3",
+      "envId": "1",
+      "useCase": "sci-demo",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "121",
+      "dateTime": "A dateTime 3"
+    },
+    {
+      "id": "4",
+      "serviceId": "4",
+      "requestId": "4",
+      "responseId": "4",
+      "envId": "1",
+      "useCase": "sci-profile-demo",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "80",
+      "dateTime": "A dateTime 4"
+    },
+    {
+      "id": "5",
+      "serviceId": "5",
+      "requestId": "5",
+      "responseId": "1",
+      "envId": "1",
+      "useCase": "demo-recharge-not-implemeted",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "91",
+      "dateTime": "A dateTime 2"
+    },
+	{
+      "id": "6",
+      "serviceId": "2",
+      "requestId": "1",
+      "responseId": "1",
+      "envId": "1",
+      "useCase": "my234 use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "91",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "10",
+      "serviceId": "1",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "my891 use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "112",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "11",
+      "serviceId": "1",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "my245 use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "121",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "12",
+      "serviceId": "1",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "my245 use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "201",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "13",
+      "serviceId": "1",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "my123 use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "110",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "14",
+      "serviceId": "1",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "my124 use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "135",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "15",
+      "serviceId": "1",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "89my use23 case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "180",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "16",
+      "serviceId": "1",
+      "requestId": "2",
+      "responseId": "2",
+      "envId": "1",
+      "useCase": "67my use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "130",
+      "dateTime": "A dateTime 2"
+    },
+	{
+      "id": "99",
+      "serviceId": "2",
+      "requestId": "1",
+      "responseId": "1",
+      "envId": "1",
+      "useCase": "my234 use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "91",
+      "dateTime": "A dateTime 2"
+    },
+    {
+      "id": "100",
+      "serviceId": "1",
+      "requestId": "1",
+      "responseId": "1",
+      "envId": "1",
+      "useCase": "The new use case",
+      "touchPoints": [
+        "CRM",
+        "Billing",
+        "SelfCare",
+        "Voucher"
+      ],
+      "testdataType": "test",
+      "testType": "info",
+      "responseTime": "123",
+      "dateTime": "A dateTime 1"
+    }
+  ],
+  "tempreq": [
+    {
+      "id": "1",
+      "requestId": "1234",
+      "partyId": "P123",
+      "channelId": "C123",
+      "serviceId": "S123",
+      "subCatagory": "abc",
+      "accountId": "A12345",
+      "response": "obj1"
+    },
+    {
+      "id": "2",
+      "requestId": "1234",
+      "partyId": "P123",
+      "channelId": "C123",
+      "serviceId": "S123",
+      "subCatagory": "abc",
+      "accountId": "A12345",
+      "response": "obj2"
+    },
+    {
+      "id": "3",
+      "requestId": "5678",
+      "partyId": "P123",
+      "channelId": "C123",
+      "serviceId": "S123",
+      "subCatagory": "abc",
+      "accountId": "A12345",
+      "response": "obj3"
+    },
+    {
+      "id": "4",
+      "requestId": "5678",
+      "partyId": "P456",
+      "channelId": "C123",
+      "serviceId": "S123",
+      "subCatagory": "abc",
+      "accountId": "A12345",
+      "response": "obj3"
+    },
+    {
+      "id": "4",
+      "requestId": "5678",
+      "partyId": "P456",
+      "channelId": "C123",
+      "serviceId": "S123",
+      "subCatagory": "abc",
+      "accountId": "A12345",
+      "response": "obj3"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@gmail.com",
+      "age": 34,
+      "companyId": "1"
+    },
+    {
+      "id": "2",
+      "firstName": "Mark",
+      "lastName": "Williams",
+      "email": "mark@gmail.com",
+      "age": 33,
+      "companyId": "1"
+    },
+    {
+      "id": "3",
+      "firstName": "Sara",
+      "lastName": "Smith",
+      "email": "sara@gmail.com",
+      "age": 23,
+      "companyId": "2"
+    },
+    {
+      "firstName": "Brad",
+      "lastName": "Traversy",
+      "age": 35,
+      "email": "test@test.com",
+      "companyId": "3",
+      "id": "B1Ww3BIS-"
+    },
+    {
+      "firstName": "Radha",
+      "lastName": "Raman2",
+      "age": 47,
+      "email": "rdh@gnmail.com",
+      "serviceId": "2",
+      "id": "CCJv8ZQ"
+    }
+  ],
+  "companies": [
+    {
+      "id": "1",
+      "name": "Apple",
+      "description": "Apple Inc. is an American multinational technology company headquartered in Cupertino, California that designs, develops, and sells consumer electronics, computer software, and online services. ... Its online services include the iTunes Store, the iOS App Store and Mac App Store, Apple Music, and iCloud"
+    },
+    {
+      "id": "2",
+      "name": "Microsoft",
+      "description": "Microsoft Corporation, incorporated on September 22, 1993, is a technology company. The Company develops, licenses, and supports a range of software products, services and devices. The Company's segments include Productivity and Business Processes, Intelligent Cloud and More Personal Computing"
+    },
+    {
+      "id": "3",
+      "name": "Google",
+      "description": "Google was founded by Larry Page and Sergey Brin while they were students at Stanford University. The company was officially launched in September, 1998 in a friend's garage. ... The official mission statement of the company is to “organize the world's information and make it universally accessible and useful"
+    }
+  ]
+}
