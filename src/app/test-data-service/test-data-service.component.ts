@@ -145,7 +145,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
 
     // Get initial static data
-    this.requestsService.get(`http://localhost:3004/services?`).subscribe(data => { this.services = data;
+    this.requestsService.get(baseURL + `/services?`).subscribe(data => { this.services = data;
         console.log('this.services :', this.services); // comment this line once things fine
         this.uniqueServiceAreas = unique(pluck(this.services, 'serviceArea'));
         /*
@@ -157,7 +157,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       },
     error => {console.log(error, 'Error'); }  );
 
-    this.requestsService.get(`http://localhost:3004/envs?`).subscribe(data => { this.envs = data;
+    this.requestsService.get(baseURL + `/envs?`).subscribe(data => { this.envs = data;
 
         console.log('this.envs :', this.envs,
                                       // 'arg :', this.envs[1]
@@ -166,7 +166,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
         console.log('uniqueEnvDivs :', this.uniqueEnvDivs);
         this.currData.env.envName = this.envs[0]['envName'];
         this.currData.env.envId =    this.envs[0]['id'];
-        this.currData.env.baseURL =    this.envs[0]['baseURL'];
+        this.currData.env.baseURL =    this.envs[5]['baseURL'];// a hack to use this baseURL for JSON_Server
       },
     error => {console.log(error, 'Error'); }  );
 
@@ -195,7 +195,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   fetch(cb) {
   const req = new XMLHttpRequest();
   // req.open('GET', `assets/data/company.json`);
-  req.open('GET', `http://localhost:3004/tests?`);
+  req.open('GET', baseURL + `/tests?`);
 
   req.onload = () => {
     cb(JSON.parse(req.response));
@@ -231,7 +231,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
       // } else {tempTouchPointsForDisplay.push({value: 'touchPoint1'} );}
       // this.currData.touchPointsForDisplay = tempTouchPointsForDisplay;
       // Get Servcie details to know which query parameters to be populated
-      this.requestsService.get('http://localhost:3004/services?name=' + serviceOperation[0] + '&&operation=' + serviceOperation[1] )
+      this.requestsService.get(baseURL + '/services?name=' + serviceOperation[0] + '&&operation=' + serviceOperation[1] )
               .subscribe(data => { const service = data; // we can have a look up on this.services instead of service call
       // console.log(' service detail :', service); // comment this line once things fine
                   this.currData.service.name = service[0].name;
@@ -240,33 +240,34 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
                   this.currData.service.apendURL = service[0].apendURL;
                   this.currData.service.responseClass = service[0].responseClass;
 
-                // Get query params
-                this.requestsService.get('http://localhost:3004/queryparams?_serviceId=' + service[0].id)
-                        .subscribe(newdata => { const queryParams = newdata;
-                // console.log(' query detail :', queryParams); // comment this line once things fine
-                const temprequestParam = [];
-                for (let _i = 0; _i < queryParams[0].items.length; _i++) { // populate all names
-                    temprequestParam.push({'name': queryParams[0].items[_i], 'value': null});
-                }
+                // // Get query params
+                // this.requestsService.get(baseURL + '/queryparams?_serviceId=' + service[0].id)
+                //         .subscribe(newdata => { const queryParams = newdata;
+                // // console.log(' query detail :', queryParams); // comment this line once things fine
+                // const temprequestParam = [];
+                // for (let _i = 0; _i < queryParams[0].items.length; _i++) { // populate all names
+                //     temprequestParam.push({'name': queryParams[0].items[_i], 'value': null});
+                // }
 
-                const splitTheRequest = this.requestMsgDeletelater.split('&');
-                for(let it = 0; it < splitTheRequest.length; it++ ){
-                  const the2ndSplit = splitTheRequest[it].split('=');
-                  // console.log('it:', it, ' the2ndSplit :', the2ndSplit, 'the2ndSplit[0]:', the2ndSplit[0],
-                  // 'the2ndSplit[1]:', the2ndSplit[1]);
-                  for (let _j = 0; _j < temprequestParam.length; _j++) { // for matched name in the request
-                    if (temprequestParam[_j].name === the2ndSplit[0]) {
-                      temprequestParam[_j].value = the2ndSplit[1];
-                      // console.log('_j:',  _j, 'temprequestParam[_j].name :', temprequestParam[_j].name ,
-                      //             'temprequestParam[_j].value', temprequestParam[_j].value);
-                    }
-                  }
-                }
 
-                this.currData.requestParams = temprequestParam;
-                console.log(' currData.requestParams detail :', this.currData.requestParams);
-                },
-                error => {console.log(error, 'Error'); }  );
+                // const splitTheRequest = this.requestMsgDeletelater.split('&');
+                // for(let it = 0; it < splitTheRequest.length; it++ ){
+                //   const the2ndSplit = splitTheRequest[it].split('=');
+                //   console.log('it:', it, ' the2ndSplit :', the2ndSplit, 'the2ndSplit[0]:', the2ndSplit[0],
+                //   'the2ndSplit[1]:', the2ndSplit[1]);
+                //   for (let _j = 0; _j < temprequestParam.length; _j++) { // for matched name in the request
+                //     if (temprequestParam[_j].name === the2ndSplit[0]) {
+                //       temprequestParam[_j].value = the2ndSplit[1];
+                //       console.log('_j:',  _j, 'temprequestParam[_j].name :', temprequestParam[_j].name ,
+                //                   'temprequestParam[_j].value', temprequestParam[_j].value);
+                //     }
+                //   }
+                // }
+
+                // this.currData.requestParams = temprequestParam;
+                // console.log(' currData.requestParams detail :', this.currData.requestParams);
+                // },
+                // error => {console.log(error, 'Error'); }  );
     },
     error => {console.log(error, 'Error'); }  );
     console.log('this.currData on select :', this.currData);
@@ -286,17 +287,49 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
         // theRequest._servcieId = serviceName; // for workdata only not for table, display requires name
         // theRequest._envId = envName; // for workdata only not for table, display requires name
         console.log('theRequest for selected message:', theRequest);
+        this.requestMsgDeletelater = theRequest.requestMsg;
+        // --------------------------------------------------------------------
+                        // Get query params
+                        // this.requestsService.get(baseURL + '/queryparams?_serviceId=' + this.currData.service.serviceId)
+                        this.requestsService.get(baseURL + '/queryparams?_serviceId=' + theRequest._servcieId)
+                        .subscribe(newdata => { const queryParams = newdata;
+                // console.log(' query detail :', queryParams); // comment this line once things fine
+                const temprequestParam = [];
+                for (let _i = 0; _i < queryParams[0].items.length; _i++) { // populate all names
+                    temprequestParam.push({'name': queryParams[0].items[_i], 'value': null});
+                }
+
+                const splitTheRequest = this.requestMsgDeletelater.split('&');
+                for(let it = 0; it < splitTheRequest.length; it++ ){
+                  const the2ndSplit = splitTheRequest[it].split('=');
+                  // console.log('it:', it, ' the2ndSplit :', the2ndSplit, 'the2ndSplit[0]:', the2ndSplit[0],
+                  // 'the2ndSplit[1]:', the2ndSplit[1]);
+                  for (let _j = 0; _j < temprequestParam.length; _j++) { // for matched name in the request
+                    if (temprequestParam[_j].name === the2ndSplit[0]) {
+                      temprequestParam[_j].value = the2ndSplit[1];
+                      // console.log('_j:',  _j, 'temprequestParam[_j].name :', temprequestParam[_j].name ,
+                      //             'temprequestParam[_j].value', temprequestParam[_j].value, 'the2ndSplit[1]', the2ndSplit[1]);
+                    }
+                  }
+                }
+
+                this.currData.requestParams = temprequestParam;
+                console.log(' currData.requestParams detail :', this.currData.requestParams, 'temprequestParam:', temprequestParam);
+                },
+                error => {console.log(error, 'Error'); }  );
+        // --------------------------------------------------------------------
 
                 this.requestsService.get
-                (baseURL + '/' + 'responses?id=' + this.currData.row.responseId).subscribe
-                (data => { const theResponse = data[0];
+                (baseURL + '/' + 'responses?requestId=' + this.currData.row.requestId).subscribe
+                (data => { const theResponse = data;
                   // theResponse._servcieId = serviceName; // for workdata, display requires name,
                   // theResponse._envId = envName; // for workdata, display requires name
                   // console.log('theResponse :', theResponse);
 
-                if (this.workdata.workitems[0].request.id === null) { // If is not needed to be removed
+                // if (this.workdata.workitems[0].request.id === null) { // If is not needed to be removed
+                  this.workdata.workitems = [];
                   this.workdata.workitems[0] =
-                      {request: theRequest, response: theResponse, isUnlikeRequests: false,
+                      {request: theRequest, response: theResponse[0], isUnlikeRequests: false,
                           // useCase: 'usecase' + '-' + theRequest.id, touchPoints: '',
                            useCase: this.currData.row.useCase, touchPoints: this.currData.row.touchPoints,
                           is1stSelect: false, is2ndSelect: false,
@@ -304,8 +337,20 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
                           {'box-shadow': '', 'text-shadow': '', 'background-color': '',
                                               'border-color': null, 'animation': null, 'border-style': null },
                           isCurrent: true, isPrevious: false}; // 1stTime isCurrest is set
-                }
-                console.log('The 1st this.workdata :', this.workdata);
+                // }
+                  if ( theResponse.length > 1) {
+                    for(let k =1; k < theResponse.length; k++){
+                      this.workdata.workitems.push({
+                        request: theRequest, response: theResponse[k], isUnlikeRequests: false,
+                          // useCase: 'usecase' + '-' + theRequest.id, touchPoints : '',
+                          useCase: this.currData.row.useCase, touchPoints: this.currData.row.touchPoints,
+                          is1stSelect: false, is2ndSelect: false,
+                          changeDiffStyle: {'box-shadow': '', 'text-shadow': '', 'background-color': '',
+                                            'border-color': null, 'animation': null, 'border-style': null },
+                          isCurrent: false, isPrevious: false});
+                    }
+                  }
+                console.log('The initial this.workdata on select:', this.workdata);
 
                 },
                 error => {console.log(error, 'Error'); }  );
@@ -349,7 +394,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
         const envName = this.currData.env.envName;
 
         let theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': null, '_envId': null };
-        let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null,
+        let theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': null, '_envId': null, 'requestId': null,
         'responseTime': null, 'dateTime': null};
         for ( let i = 0 ; i < this.currData.requestParams.length; i++) {
           // if (this.currData.requestParams[i].value !== null || this.currData.requestParams[i].value !== '') {
@@ -359,7 +404,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
         }
         // this.services.find( service => service.id === '1').name
         const requestURL = (this.useJsonServerForTest === true ?
-        baseURL : this.envs.find(env => env.id === this.currData.row.envId).baseURL) + '/'
+        this.currData.env.baseURL : this.envs.find(env => env.id === this.currData.row.envId).baseURL) + '/'
         + this.currData.service.apendURL + '?' + requestMsg;
         console.log('requestURL :', requestURL);
         this.requestsService.get
@@ -387,19 +432,38 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
         theRequest = {'id': null, 'requestMsg': requestMsg, '_servcieId': this.currData.service.serviceId,
                           '_envId': this.currData.env.envId };
         theResponse = {'id': null, 'responseMsg': responseMsg, '_servcieId': this.currData.service.serviceId,
-        '_envId': this.currData.env.envId, 'responseTime': null, 'dateTime': new Date() };
+        '_envId': this.currData.env.envId, 'requestId': null,'responseTime': null, 'dateTime': new Date() };
+
+      this.requestsService.get
+      (baseURL + '/' + 'requests?').subscribe
+      (data => {
+
+       const allRequests = data;
+
+       for(let i = 0; i < allRequests.length ; i++){
+        if (allRequests[i]['requestMsg'].toLowerCase() === theRequest.requestMsg.toLowerCase()) {
+          theRequest.id = allRequests[i].id;
+          theResponse.requestId = theRequest.id;
+          console.log('Old theRequest found :', theRequest);
+        }
+       }
+
+       if (!theRequest.id) {
 
             this.requestsService.post
-                      (baseURL + '/' + 'requests', theRequest).subscribe
+                      (this.currData.env.baseURL + '/' + 'requests', theRequest).subscribe
                       (data => {
                         // console.log('POST on requests, returns :', data);
                         theRequest = data;
+                        theResponse.requestId = theRequest.id;
                         theRequest._servcieId = serviceName; // for workdata only not for table, display requires name
                         theRequest._envId = envName; // for workdata only not for table, display requires name
-                        console.log('theRequest :', theRequest);
+                        console.log('New theRequest :', theRequest);
+                      },
+                      error => {console.log(error, 'Error'); }  );}
 
                                 this.requestsService.post
-                                (baseURL + '/' + 'responses', theResponse).subscribe
+                                (this.currData.env.baseURL + '/' + 'responses', theResponse).subscribe
                                 (data => { theResponse = data;
                                   theResponse._servcieId = serviceName; // for workdata, display requires name,
                                   theResponse._envId = envName; // for workdata, display requires name
@@ -457,8 +521,10 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
                                 this.theDiffOnTest();
                                 },
                                 error => {console.log(error, 'Error'); }  );
-            },
-            error => {console.log(error, 'Error'); }  );
+            // },
+            // error => {console.log(error, 'Error'); }  );
+          },
+          error => {console.log(error, 'Error'); }  );
       },
       error => {
       // const theError = error;
@@ -543,7 +609,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     this.workdata.testToStore.touchPoints = touchPoints;
     this.workdata.testToStore.serviceId = this.currData.service.serviceId;
     this.requestsService.post
-    (baseURL + '/' + 'tests', this.workdata.testToStore).subscribe
+    (this.currData.env.baseURL + '/' + 'tests', this.workdata.testToStore).subscribe
     (data => {const theTest = data;
     console.log('theTest :', theTest);
 
@@ -924,7 +990,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
     let serviceIdString = 'serviceId=' + this.currData.service.serviceId;
     if (this.currData.service.serviceId === '100') { serviceIdString = ''; }
     this.requestsService.get
-              (baseURL + '/envs/' + this.currData.env.envId + '/tests?' + serviceIdString).subscribe
+              (this.currData.env.baseURL + '/envs/' + this.currData.env.envId + '/tests?' + serviceIdString).subscribe
               (data => {
                 for (let i = 0; i < data.length; i++) {
                   const id = data[i].serviceId;
@@ -942,7 +1008,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
   modifyServiceIds() {
 
     this.requestsService.get
-              (baseURL + '/tests').subscribe
+              (this.currData.env.baseURL + '/tests').subscribe
               (data => { this.rows = data;
 
                       for (let i = 0; i < data.length; i++) {
@@ -952,7 +1018,7 @@ obj3 = {a: 4, c: 5}; // 'object':{'a':'book','animal':{'cat', 'dog', 'special_an
 
 
                       this.requestsService.put
-                      (baseURL + '/' + 'tests' + '/' + data[i].id, data[i]).subscribe
+                      (this.currData.env.baseURL + '/' + 'tests' + '/' + data[i].id, data[i]).subscribe
                       (data => { const tempTest = data;
                       console.log('theTest :', tempTest);
                       },
